@@ -97,6 +97,7 @@ This section tracks all significant changes to the project, documentation, and c
 - Created comprehensive README for PowerShell tool (`ACS-IMPACT-ASSESSMENT-README.md`)
 - Fixed Unicode parse errors in PowerShell script (replaced ✓ with [+])
 - Added Azure PowerShell module compatibility troubleshooting to README
+- Enhanced README with Quick Reference section and Common Usage Scenarios table
 - Committed and pushed all MVP code to GitHub repository
 
 **Files Modified:**

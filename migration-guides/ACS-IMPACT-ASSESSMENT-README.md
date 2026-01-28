@@ -18,6 +18,36 @@ The **ACS Impact Assessment Tool** is a PowerShell script that automatically sca
 
 ---
 
+## Quick Reference - How to Run
+
+**Navigate to the script directory first:**
+```powershell
+cd C:\Users\YourName\ACS-Transition-Agent-v0\migration-guides
+```
+
+**Then choose your scan type:**
+
+```powershell
+# Basic scan (fast, all subscriptions, no usage metrics)
+.\acs-impact-assessment-tool.ps1
+
+# With detailed usage metrics (slower but shows actual usage counts)
+.\acs-impact-assessment-tool.ps1 -IncludeMetrics
+
+# Scan a specific subscription only
+.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-subscription-id"
+
+# Custom output location
+.\acs-impact-assessment-tool.ps1 -OutputPath "C:\Reports\ACS_Scan.csv"
+
+# Full detailed scan with everything
+.\acs-impact-assessment-tool.ps1 -IncludeMetrics -OutputPath "C:\Reports\Detailed_Scan.csv"
+```
+
+See [Usage](#usage) section below for detailed explanations and scenarios.
+
+---
+
 ## Prerequisites
 
 ### 1. PowerShell 5.1 or Later
@@ -73,6 +103,20 @@ The simplest way to run the script - scans all accessible subscriptions:
 ```
 
 **Output:** Console summary + `ACS_Impact_Assessment.csv` in current directory
+
+---
+
+### Common Usage Scenarios
+
+Choose the command that best fits your needs:
+
+| Scenario | Command | When to Use |
+|----------|---------|-------------|
+| **Quick scan** | `.\acs-impact-assessment-tool.ps1` | Fast resource discovery across all subscriptions (no usage metrics) |
+| **Detailed scan with metrics** | `.\acs-impact-assessment-tool.ps1 -IncludeMetrics` | Get actual usage counts per channel (slower but comprehensive) |
+| **Single subscription** | `.\acs-impact-assessment-tool.ps1 -SubscriptionId "xxx"` | Focus on one specific subscription |
+| **Custom output location** | `.\acs-impact-assessment-tool.ps1 -OutputPath "C:\Reports\scan.csv"` | Save results to a specific location |
+| **Full detailed analysis** | `.\acs-impact-assessment-tool.ps1 -IncludeMetrics -OutputPath "C:\Reports\detailed.csv"` | Complete scan with metrics and custom output |
 
 ---
 
