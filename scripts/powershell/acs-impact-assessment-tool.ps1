@@ -75,12 +75,36 @@ try {
 
 # Get subscriptions to scan
 if ($SubscriptionId) {
-    $subscriptions = @(Get-AzSubscription -SubscriptionId $SubscriptionId -ErrorAction Stop)
+    Write-Host "`nFiltering to specific subscription: $SubscriptionId" -ForegroundColor Cyan
+    try {
+        $subscriptions = @(Get-AzSubscription -SubscriptionId $SubscriptionId -ErrorAction Stop)
+        Write-Host "Found subscription: $($subscriptions[0].Name)" -ForegroundColor Green
+    } catch {
+        Write-Error "Could not find subscription with ID: $SubscriptionId"
+        Write-Host "`nAvailable subscriptions:" -ForegroundColor Yellow
+        Get-AzSubscription | Format-Table Name, Id, State -AutoSize
+        exit 1
+    }
 } else {
+    Write-Host "`nNo specific subscription specified - scanning all accessible subscriptions" -ForegroundColor Cyan
     $subscriptions = Get-AzSubscription
 }
 
 Write-Host "`nScanning $($subscriptions.Count) subscription(s)..." -ForegroundColor Yellow
+
+# List subscriptions that will be scanned
+if ($subscriptions.Count -le 5) {
+    Write-Host "Subscriptions to scan:" -ForegroundColor Cyan
+    foreach ($sub in $subscriptions) {
+        Write-Host "  - $($sub.Name) ($($sub.Id))" -ForegroundColor White
+    }
+} else {
+    Write-Host "First 5 subscriptions to scan:" -ForegroundColor Cyan
+    $subscriptions | Select-Object -First 5 | ForEach-Object {
+        Write-Host "  - $($_.Name) ($($_.Id))" -ForegroundColor White
+    }
+    Write-Host "  ... and $($subscriptions.Count - 5) more" -ForegroundColor Gray
+}
 
 # Initialize results array
 $impactAssessment = @()
@@ -136,7 +160,8 @@ foreach ($subscription in $subscriptions) {
 
                 # Overall impact
                 TotalChannelsImpacted = 0
-                HighestSeverity = "Info"
+              
+                
                 MigrationEffortEstimate = "Low"
             }
 
