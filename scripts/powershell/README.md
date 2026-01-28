@@ -28,21 +28,27 @@ cd C:\Users\YourName\ACS-Transition-Agent-v0\scripts\powershell
 **Then choose your scan type:**
 
 ```powershell
-# Basic scan (fast, all subscriptions, no usage metrics)
+# Basic scan - prompts to scan default subscription or all subscriptions
 .\acs-impact-assessment-tool.ps1
+
+# Scan a specific subscription only (no prompt)
+.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-subscription-id"
 
 # With detailed usage metrics (slower but shows actual usage counts)
 .\acs-impact-assessment-tool.ps1 -IncludeMetrics
-
-# Scan a specific subscription only
-.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-subscription-id"
 
 # Custom output location
 .\acs-impact-assessment-tool.ps1 -OutputPath "C:\Reports\ACS_Scan.csv"
 
 # Full detailed scan with everything
-.\acs-impact-assessment-tool.ps1 -IncludeMetrics -OutputPath "C:\Reports\Detailed_Scan.csv"
+.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-sub-id" -IncludeMetrics -OutputPath "C:\Reports\Detailed_Scan.csv"
 ```
+
+**Important:** When you run the script without `-SubscriptionId`, it will prompt you to:
+1. Scan only your **default subscription** (the one you selected during Azure login) - Recommended
+2. Scan **all accessible subscriptions** (can be 100+ subscriptions)
+
+To avoid the prompt, always specify `-SubscriptionId` parameter.
 
 See [Usage](#usage) section below for detailed explanations and scenarios.
 
@@ -94,13 +100,20 @@ Your Azure account needs at least **Reader** role on the subscriptions you want 
 
 ## Usage
 
-### Quick Start (Scan All Subscriptions)
+### Quick Start
 
-The simplest way to run the script - scans all accessible subscriptions:
+The simplest way to run the script:
 
 ```powershell
 .\acs-impact-assessment-tool.ps1
 ```
+
+**Behavior:**
+- Connects to Azure (login prompt if needed)
+- Shows your default subscription (the one you selected during login)
+- **Prompts you to choose:**
+  - Option 1: Scan only the default subscription (recommended)
+  - Option 2: Scan all accessible subscriptions
 
 **Output:** Console summary + `exports/ACS_Impact_Assessment.csv` (folder created automatically)
 
@@ -234,7 +247,18 @@ Connected to:
 Note: If you need to connect to a different tenant, please rerun:
   Connect-AzAccount -TenantId '12345678-abcd-1234-abcd-123456789abc'
 
-Scanning 3 subscription(s)...
+Default subscription detected: Production (12345678-1234-1234-1234-123456789abc)
+Options:
+  1. Scan only the default subscription (recommended)
+  2. Scan all accessible subscriptions (132 subscriptions)
+
+Enter your choice (1 or 2, default is 1): 1
+
+Scanning only default subscription: Production
+
+Scanning 1 subscription(s)...
+Subscriptions to scan:
+  - Production (12345678-1234-1234-1234-123456789abc)
 
 Scanning subscription: Production (12345678-1234-1234-1234-123456789abc)
   Found 2 ACS resource(s)

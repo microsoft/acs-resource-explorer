@@ -86,8 +86,28 @@ if ($SubscriptionId) {
         exit 1
     }
 } else {
-    Write-Host "`nNo specific subscription specified - scanning all accessible subscriptions" -ForegroundColor Cyan
-    $subscriptions = Get-AzSubscription
+    # Check if there's a default subscription in the current context
+    $defaultSubscription = (Get-AzContext).Subscription
+
+    if ($defaultSubscription) {
+        Write-Host "`nDefault subscription detected: $($defaultSubscription.Name) ($($defaultSubscription.Id))" -ForegroundColor Cyan
+        Write-Host "Options:" -ForegroundColor Yellow
+        Write-Host "  1. Scan only the default subscription (recommended)" -ForegroundColor White
+        Write-Host "  2. Scan all accessible subscriptions ($((Get-AzSubscription).Count) subscriptions)" -ForegroundColor White
+
+        $choice = Read-Host "`nEnter your choice (1 or 2, default is 1)"
+
+        if ($choice -eq "2") {
+            Write-Host "`nScanning all accessible subscriptions..." -ForegroundColor Cyan
+            $subscriptions = Get-AzSubscription
+        } else {
+            Write-Host "`nScanning only default subscription: $($defaultSubscription.Name)" -ForegroundColor Green
+            $subscriptions = @(Get-AzSubscription -SubscriptionId $defaultSubscription.Id)
+        }
+    } else {
+        Write-Host "`nNo default subscription found - scanning all accessible subscriptions" -ForegroundColor Cyan
+        $subscriptions = Get-AzSubscription
+    }
 }
 
 Write-Host "`nScanning $($subscriptions.Count) subscription(s)..." -ForegroundColor Yellow
