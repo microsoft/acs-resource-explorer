@@ -28,27 +28,34 @@ cd C:\Users\YourName\ACS-Transition-Agent-v0\scripts\powershell
 **Then choose your scan type:**
 
 ```powershell
-# Basic scan - prompts to scan default subscription or all subscriptions
+# Quick scan (FAST mode - only detects Email + Phone Numbers)
 .\acs-impact-assessment-tool.ps1
 
-# Scan a specific subscription only (no prompt)
-.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-subscription-id"
-
-# With detailed usage metrics (slower but shows actual usage counts)
+# Recommended: Full scan with metrics (detects ALL channels)
 .\acs-impact-assessment-tool.ps1 -IncludeMetrics
 
+# Scan a specific subscription only (no prompt)
+.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-subscription-id" -IncludeMetrics
+
 # Custom output location
-.\acs-impact-assessment-tool.ps1 -OutputPath "C:\Reports\ACS_Scan.csv"
+.\acs-impact-assessment-tool.ps1 -OutputPath "C:\Reports\ACS_Scan.csv" -IncludeMetrics
 
 # Full detailed scan with everything
 .\acs-impact-assessment-tool.ps1 -SubscriptionId "your-sub-id" -IncludeMetrics -OutputPath "C:\Reports\Detailed_Scan.csv"
 ```
 
-**Important:** When you run the script without `-SubscriptionId`, it will prompt you to:
-1. Scan only your **default subscription** (the one you selected during Azure login) - Recommended
-2. Scan **all accessible subscriptions** (can be 100+ subscriptions)
+**Important - Detection Modes:**
 
-To avoid the prompt, always specify `-SubscriptionId` parameter.
+| Flag | Channels Detected | Speed | Use Case |
+|------|------------------|-------|----------|
+| **No flags** (FAST) | Email, Phone Numbers only | ~30 seconds | Quick check for Email domains |
+| **`-IncludeMetrics`** (FULL) | All 5 channels (Email, SMS, Chat, Calling, Phone Numbers) | ~3-5 minutes | Complete assessment (recommended) |
+
+⚠️ **Without `-IncludeMetrics`, SMS, Chat, and Calling are NOT detected.** Always use `-IncludeMetrics` for accurate results.
+
+**Subscription Selection:**
+- Without `-SubscriptionId`: Prompts to scan default subscription or all subscriptions
+- With `-SubscriptionId`: Scans specified subscription only (no prompt)
 
 See [Usage](#usage) section below for detailed explanations and scenarios.
 
@@ -117,19 +124,54 @@ The simplest way to run the script:
 
 **Output:** Console summary + `exports/ACS_Impact_Assessment.csv` (folder created automatically)
 
+⚠️ **IMPORTANT:** This basic scan only detects **Email** and **Phone Numbers**. For complete detection of all channels, use `-IncludeMetrics` flag.
+
+---
+
+### Understanding Channel Detection
+
+The script has two detection modes:
+
+#### FAST Mode (Default - No `-IncludeMetrics`)
+**Detects via Resource Checking:**
+- ✅ **Email Service** - Checks for email domain resources
+- ✅ **Phone Numbers** - Checks for purchased phone numbers
+- ❌ **SMS** - Cannot detect (no separate resources)
+- ❌ **Chat** - Cannot detect (no separate resources)
+- ❌ **Calling** - Cannot detect (no separate resources)
+
+**Speed:** ~30 seconds per subscription
+**Use Case:** Quick Email domain check only
+
+#### FULL Mode (With `-IncludeMetrics`)
+**Detects via Azure Monitor Usage Metrics:**
+- ✅ **Email Service** - Checks message sending metrics
+- ✅ **SMS** - Checks SMS send/receive metrics
+- ✅ **Chat** - Checks message and thread metrics
+- ✅ **Calling** - Checks call duration and count metrics
+- ✅ **Phone Numbers** - Checks phone number operations
+
+**Speed:** ~3-5 minutes per subscription
+**Use Case:** Complete assessment with usage counts (recommended)
+
+**Why Metrics Are Needed:**
+SMS, Chat, and Calling are capabilities enabled on the main ACS resource, not separate resources. The only way to detect if you're using them is by checking usage metrics from Azure Monitor.
+
+**Recommendation:** Always use `-IncludeMetrics` unless you only care about Email domains.
+
 ---
 
 ### Common Usage Scenarios
 
 Choose the command that best fits your needs:
 
-| Scenario | Command | When to Use |
-|----------|---------|-------------|
-| **Quick scan** | `.\acs-impact-assessment-tool.ps1` | Fast resource discovery across all subscriptions (no usage metrics) |
-| **Detailed scan with metrics** | `.\acs-impact-assessment-tool.ps1 -IncludeMetrics` | Get actual usage counts per channel (slower but comprehensive) |
-| **Single subscription** | `.\acs-impact-assessment-tool.ps1 -SubscriptionId "xxx"` | Focus on one specific subscription |
-| **Custom output location** | `.\acs-impact-assessment-tool.ps1 -OutputPath "C:\Reports\scan.csv"` | Save results to a specific location |
-| **Full detailed analysis** | `.\acs-impact-assessment-tool.ps1 -IncludeMetrics -OutputPath "C:\Reports\detailed.csv"` | Complete scan with metrics and custom output |
+| Scenario | Command | Detects | When to Use |
+|----------|---------|---------|-------------|
+| **Email domains only** | `.\acs-impact-assessment-tool.ps1` | Email, Phone Numbers | Quick check (NOT recommended - incomplete) |
+| **Complete assessment** ⭐ | `.\acs-impact-assessment-tool.ps1 -IncludeMetrics` | All 5 channels + usage counts | Recommended for accurate results |
+| **Single subscription** | `.\acs-impact-assessment-tool.ps1 -SubscriptionId "xxx" -IncludeMetrics` | All 5 channels | Focus on one specific subscription |
+| **Custom output location** | `.\acs-impact-assessment-tool.ps1 -IncludeMetrics -OutputPath "C:\Reports\scan.csv"` | All 5 channels | Save results to a specific location |
+| **Full detailed analysis** | `.\acs-impact-assessment-tool.ps1 -SubscriptionId "xxx" -IncludeMetrics -OutputPath "C:\Reports\detailed.csv"` | All 5 channels with full details | Complete scan with all options |
 
 ---
 

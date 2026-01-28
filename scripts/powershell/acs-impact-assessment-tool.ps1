@@ -112,6 +112,18 @@ if ($SubscriptionId) {
 
 Write-Host "`nScanning $($subscriptions.Count) subscription(s)..." -ForegroundColor Yellow
 
+# Detection mode information
+if ($IncludeMetrics) {
+    Write-Host "`nDetection Mode: FULL (with metrics)" -ForegroundColor Green
+    Write-Host "  - All channels will be detected via Azure Monitor usage metrics" -ForegroundColor White
+    Write-Host "  - This will take longer but provides complete detection + usage counts" -ForegroundColor White
+} else {
+    Write-Host "`nDetection Mode: FAST (resource-only)" -ForegroundColor Yellow
+    Write-Host "  - Only Email and Phone Numbers can be detected (via resources)" -ForegroundColor White
+    Write-Host "  - SMS, Chat, and Calling require '-IncludeMetrics' flag for detection" -ForegroundColor White
+    Write-Host "  - Recommendation: Re-run with '-IncludeMetrics' for complete results" -ForegroundColor DarkYellow
+}
+
 # List subscriptions that will be scanned
 if ($subscriptions.Count -le 5) {
     Write-Host "Subscriptions to scan:" -ForegroundColor Cyan
@@ -158,6 +170,12 @@ foreach ($subscription in $subscriptions) {
         foreach ($resource in $acsResources) {
             Write-Host "    Analyzing: $($resource.Name)" -ForegroundColor White
 
+            # Warn about detection limitations without metrics
+            if (-not $IncludeMetrics) {
+                Write-Host "      Note: Running without -IncludeMetrics. Only Email and Phone Numbers can be detected via resources." -ForegroundColor Gray
+                Write-Host "            SMS, Chat, and Calling require -IncludeMetrics flag for detection via usage metrics." -ForegroundColor Gray
+            }
+
             # Initialize resource impact data
             $resourceImpact = [PSCustomObject]@{
                 SubscriptionName = $subscription.Name
@@ -185,7 +203,7 @@ foreach ($subscription in $subscriptions) {
                 MigrationEffortEstimate = "Low"
             }
 
-            # Check for Email domains
+            # Check for Email domains (resource-based detection)
             $emailDomains = Get-AzResource -ResourceGroupName $resource.ResourceGroupName `
                                           -ResourceType "Microsoft.Communication/EmailServices/Domains" `
                                           -ErrorAction SilentlyContinue
@@ -196,7 +214,30 @@ foreach ($subscription in $subscriptions) {
                 Write-Host "      [+] Email service detected ($($emailDomains.Count) domain(s))" -ForegroundColor Yellow
             }
 
-            # If IncludeMetrics is specified, get usage metrics
+            # Check for Phone Numbers (resource-based detection)
+            try {
+                $phoneNumbers = Get-AzResource -ResourceGroupName $resource.ResourceGroupName `
+                                               -ResourceType "Microsoft.Communication/CommunicationServices/phoneNumbers" `
+                                               -ErrorAction SilentlyContinue
+
+                if (-not $phoneNumbers) {
+                    # Try alternate resource type
+                    $phoneNumbers = Get-AzResource | Where-Object {
+                        $_.ResourceGroupName -eq $resource.ResourceGroupName -and
+                        $_.Name -match "^\+\d+"
+                    }
+                }
+
+                if ($phoneNumbers) {
+                    $resourceImpact.PhoneNumbersDetected = $true
+                    $resourceImpact.TotalChannelsImpacted++
+                    Write-Host "      [+] Phone Numbers detected ($($phoneNumbers.Count) number(s))" -ForegroundColor Yellow
+                }
+            } catch {
+                # Phone number detection failed, will rely on metrics if available
+            }
+
+            # If IncludeMetrics is specified, get usage metrics for all channels
             if ($IncludeMetrics) {
                 Write-Host "      Retrieving usage metrics (last 90 days)..." -ForegroundColor Gray
 
