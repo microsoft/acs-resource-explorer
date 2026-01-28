@@ -15,13 +15,25 @@
 .PARAMETER IncludeMetrics
     Optional. If specified, retrieves usage metrics from Azure Monitor (slower but more detailed).
 
+.PARAMETER LookbackDays
+    Optional. Number of days to look back for usage metrics (1-93 days). Default: 90 days.
+    Azure Monitor retention limit is 93 days for 1-hour granularity metrics.
+
 .EXAMPLE
     .\acs-impact-assessment-tool.ps1
     Scans all subscriptions and generates a CSV report
 
 .EXAMPLE
     .\acs-impact-assessment-tool.ps1 -SubscriptionId "12345678-1234-1234-1234-123456789abc" -IncludeMetrics
-    Scans a specific subscription with metrics
+    Scans a specific subscription with metrics (90-day lookback)
+
+.EXAMPLE
+    .\acs-impact-assessment-tool.ps1 -IncludeMetrics -LookbackDays 30
+    Scans with metrics using 30-day lookback period
+
+.EXAMPLE
+    .\acs-impact-assessment-tool.ps1 -IncludeMetrics -LookbackDays 93
+    Scans with metrics using maximum 93-day lookback period
 
 .NOTES
     Requires: Az PowerShell module (Install-Module -Name Az)
@@ -38,7 +50,11 @@ param(
     [string]$OutputPath = ".\exports\ACS_Impact_Assessment.csv",
 
     [Parameter(Mandatory=$false)]
-    [switch]$IncludeMetrics
+    [switch]$IncludeMetrics,
+
+    [Parameter(Mandatory=$false)]
+    [ValidateRange(1, 93)]
+    [int]$LookbackDays = 90
 )
 
 # Check if Az module is installed
@@ -116,7 +132,11 @@ Write-Host "`nScanning $($subscriptions.Count) subscription(s)..." -ForegroundCo
 if ($IncludeMetrics) {
     Write-Host "`nDetection Mode: FULL (with metrics)" -ForegroundColor Green
     Write-Host "  - All channels will be detected via Azure Monitor usage metrics" -ForegroundColor White
+    Write-Host "  - Lookback period: Last $LookbackDays days" -ForegroundColor White
     Write-Host "  - This will take longer but provides complete detection + usage counts" -ForegroundColor White
+    if ($LookbackDays -lt 93) {
+        Write-Host "  - Note: You can extend lookback up to 93 days with '-LookbackDays 93'" -ForegroundColor Gray
+    }
 } else {
     Write-Host "`nDetection Mode: FAST (resource-only)" -ForegroundColor Yellow
     Write-Host "  - Only Email and Phone Numbers can be detected (via resources)" -ForegroundColor White
@@ -185,6 +205,7 @@ foreach ($subscription in $subscriptions) {
                 ResourceGroup = $resource.ResourceGroupName
                 ResourceName = $resource.Name
                 Location = $resource.Location
+                LookbackPeriodDays = $(if ($IncludeMetrics) { $LookbackDays } else { "N/A" })
 
                 # Channel detection flags
                 EmailDetected = $false
@@ -240,10 +261,10 @@ foreach ($subscription in $subscriptions) {
 
             # If IncludeMetrics is specified, get usage metrics for all channels
             if ($IncludeMetrics) {
-                Write-Host "      Retrieving usage metrics (last 90 days)..." -ForegroundColor Gray
+                Write-Host "      Retrieving usage metrics (last $LookbackDays days)..." -ForegroundColor Gray
 
                 $endTime = Get-Date
-                $startTime = $endTime.AddDays(-90)
+                $startTime = $endTime.AddDays(-$LookbackDays)
 
                 # Check each channel's metrics
                 foreach ($channel in $metricsConfig.Keys) {
@@ -313,12 +334,27 @@ foreach ($subscription in $subscriptions) {
             }
 
             # Display usage breakdown for this resource
-            Write-Host "`n      Channel Usage Summary (last 90 days):" -ForegroundColor Cyan
-            Write-Host "        Email:        $($resourceImpact.EmailUsageCount) messages" -ForegroundColor $(if ($resourceImpact.EmailDetected) { "Yellow" } else { "Gray" })
-            Write-Host "        SMS:          $($resourceImpact.SMSUsageCount) messages" -ForegroundColor $(if ($resourceImpact.SMSDetected) { "Yellow" } else { "Gray" })
-            Write-Host "        Chat:         $($resourceImpact.ChatUsageCount) messages" -ForegroundColor $(if ($resourceImpact.ChatDetected) { "Yellow" } else { "Gray" })
-            Write-Host "        Calling:      $($resourceImpact.CallingUsageCount) calls" -ForegroundColor $(if ($resourceImpact.CallingDetected) { "Yellow" } else { "Gray" })
-            Write-Host "        Phone Numbers: $($resourceImpact.PhoneNumbersUsageCount) operations" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
+            if ($IncludeMetrics) {
+                Write-Host "`n      Channel Usage Summary (last $LookbackDays days):" -ForegroundColor Cyan
+                Write-Host "        Email:         $($resourceImpact.EmailUsageCount) messages $(if ($resourceImpact.EmailUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.EmailDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        SMS:           $($resourceImpact.SMSUsageCount) messages $(if ($resourceImpact.SMSUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.SMSDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Chat:          $($resourceImpact.ChatUsageCount) messages $(if ($resourceImpact.ChatUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.ChatDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Calling:       $($resourceImpact.CallingUsageCount) calls $(if ($resourceImpact.CallingUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.CallingDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Phone Numbers: $($resourceImpact.PhoneNumbersUsageCount) operations $(if ($resourceImpact.PhoneNumbersUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
+
+                if ($LookbackDays -lt 93) {
+                    Write-Host "`n      Want to check further back? Re-run with '-LookbackDays 93' (max: 93 days)" -ForegroundColor DarkYellow
+                } else {
+                    Write-Host "`n      Note: 93 days is the maximum lookback period for Azure Monitor metrics" -ForegroundColor Gray
+                }
+            } else {
+                Write-Host "`n      Channel Usage Summary:" -ForegroundColor Cyan
+                Write-Host "        Email:         $(if ($resourceImpact.EmailDetected) { 'Detected' } else { 'Not detected' })" -ForegroundColor $(if ($resourceImpact.EmailDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        SMS:           Requires -IncludeMetrics flag" -ForegroundColor Gray
+                Write-Host "        Chat:          Requires -IncludeMetrics flag" -ForegroundColor Gray
+                Write-Host "        Calling:       Requires -IncludeMetrics flag" -ForegroundColor Gray
+                Write-Host "        Phone Numbers: $(if ($resourceImpact.PhoneNumbersDetected) { 'Detected' } else { 'Not detected' })" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
+            }
 
             # Calculate severity and migration effort
             if ($resourceImpact.TotalChannelsImpacted -gt 0) {
@@ -396,7 +432,11 @@ if ($impactAssessment.Count -gt 0) {
     }
 
     $impactAssessment | Export-Csv -Path $OutputPath -NoTypeInformation
-    Write-Host "Export complete! All $($impactAssessment.Count) ACS resource(s) included in report." -ForegroundColor Green
+    if ($IncludeMetrics) {
+        Write-Host "Export complete! All $($impactAssessment.Count) ACS resource(s) included with $LookbackDays-day usage data." -ForegroundColor Green
+    } else {
+        Write-Host "Export complete! All $($impactAssessment.Count) ACS resource(s) included (resource detection only)." -ForegroundColor Green
+    }
 
     # Display results table
     Write-Host "`n=== Detailed Results ===" -ForegroundColor Cyan
@@ -407,7 +447,15 @@ if ($impactAssessment.Count -gt 0) {
 }
 
 Write-Host "`n=== Assessment Complete ===" -ForegroundColor Cyan
-Write-Host "Next Steps:" -ForegroundColor Yellow
+
+if ($IncludeMetrics) {
+    Write-Host "`nUsage data covers: Last $LookbackDays days" -ForegroundColor Cyan
+    if ($LookbackDays -lt 93) {
+        Write-Host "To check further back, re-run with: -IncludeMetrics -LookbackDays 93 (maximum)" -ForegroundColor Yellow
+    }
+}
+
+Write-Host "`nNext Steps:" -ForegroundColor Yellow
 Write-Host "  1. Review the CSV report: $OutputPath" -ForegroundColor White
 Write-Host "  2. Prioritize resources with 'Critical' severity" -ForegroundColor White
 Write-Host "  3. Review migration guides for each detected channel" -ForegroundColor White
