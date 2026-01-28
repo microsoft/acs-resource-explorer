@@ -54,6 +54,20 @@ Write-Host "Connecting to Azure..." -ForegroundColor Yellow
 try {
     Connect-AzAccount -ErrorAction Stop | Out-Null
     Write-Host "Successfully connected to Azure" -ForegroundColor Green
+
+    # Get current Azure context and display tenant information
+    $currentContext = Get-AzContext
+    if ($currentContext) {
+        $tenantId = $currentContext.Tenant.Id
+        $accountName = $currentContext.Account.Id
+
+        Write-Host "`nConnected to:" -ForegroundColor Cyan
+        Write-Host "  Account:   $accountName" -ForegroundColor White
+        Write-Host "  Tenant ID: $tenantId" -ForegroundColor White
+
+        Write-Host "`nNote: If you need to connect to a different tenant, please rerun:" -ForegroundColor Gray
+        Write-Host "  Connect-AzAccount -TenantId '$tenantId'" -ForegroundColor Gray
+    }
 } catch {
     Write-Error "Failed to connect to Azure: $_"
     exit 1

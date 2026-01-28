@@ -227,6 +227,13 @@ Based on the number of impacted channels:
 Connecting to Azure...
 Successfully connected to Azure
 
+Connected to:
+  Account:   user@example.com
+  Tenant ID: 12345678-abcd-1234-abcd-123456789abc
+
+Note: If you need to connect to a different tenant, please rerun:
+  Connect-AzAccount -TenantId '12345678-abcd-1234-abcd-123456789abc'
+
 Scanning 3 subscription(s)...
 
 Scanning subscription: Production (12345678-1234-1234-1234-123456789abc)
@@ -280,6 +287,31 @@ Install-Module -Name Az -Repository PSGallery -Force
 Disconnect-AzAccount
 Connect-AzAccount
 ```
+
+### Issue: Need to scan resources in a different tenant
+
+**Scenario:** You have access to multiple Azure tenants and need to scan resources in a specific tenant.
+
+**Solution:**
+
+The script displays your current tenant ID after connecting. To connect to a different tenant:
+
+```powershell
+# Option 1: Reconnect with specific tenant ID
+Disconnect-AzAccount
+Connect-AzAccount -TenantId "your-tenant-id-here"
+
+# Then run the script
+.\acs-impact-assessment-tool.ps1
+
+# Option 2: Check available tenants first
+Get-AzTenant
+
+# Then connect to the desired tenant
+Connect-AzAccount -TenantId "your-target-tenant-id"
+```
+
+**Tip:** The script shows your current tenant ID in the connection output, making it easy to verify you're connected to the correct tenant before scanning.
 
 ### Issue: "No ACS resources found" (but you know they exist)
 
