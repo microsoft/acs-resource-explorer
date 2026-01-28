@@ -15,23 +15,26 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ## How to Test
 
-1. **Navigate to the script folder:**
-   ```powershell
-   cd [path-to-ACS-Transition-Agent-v0]\scripts\powershell
-   ```
+1. **Save the script file** (`acs-impact-assessment-tool.ps1`) to a location of your choice (e.g., Documents folder)
 
-2. **Run the script:**
+2. **Open PowerShell** and navigate to where you saved the script:
+   ```powershell
+   cd "C:\Users\[YourName]\Documents"
+   ```
+   (Replace with your actual folder path)
+
+3. **Run the script:**
    ```powershell
    .\acs-impact-assessment-tool.ps1 -IncludeMetrics -LookbackDays 90
    ```
 
-3. **Follow the prompts:**
+4. **Follow the prompts:**
    - Login to Azure when prompted
    - Select subscription option:
      - `1` = Scan only default subscription (recommended)
      - `2` = Scan all accessible subscriptions
 
-4. **Wait for completion:** 3-5 minutes per subscription
+5. **Wait for completion:** 3-5 minutes per subscription
 
 ## What to Verify
 
@@ -57,7 +60,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ### CSV File ✓
 
-- [ ] **Location:** `.\exports\ACS_Impact_Assessment.csv`
+- [ ] **Location:** `.\exports\ACS_Impact_Assessment.csv` (in the same folder where you ran the script)
 - [ ] Opens in Excel without errors
 - [ ] Contains these columns:
   - `SubscriptionName`
@@ -119,5 +122,7 @@ Screenshots:
 
 ## Need Help?
 
-- Check troubleshooting section in [PowerShell README](powershell/README.md)
-- Contact: [Your support contact]
+- Review the Common Issues section above
+- If Azure PowerShell module is missing: Run `Install-Module -Name Az`
+- For execution policy errors: Run the One-Time Setup command
+- Contact your test coordinator with questions
