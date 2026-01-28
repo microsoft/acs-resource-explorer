@@ -200,9 +200,8 @@ foreach ($subscription in $subscriptions) {
 
                 # Overall impact
                 TotalChannelsImpacted = 0
-              
-                
-                MigrationEffortEstimate = "Low"
+                HighestSeverity = "None"
+                MigrationEffortEstimate = "None"
             }
 
             # Check for Email domains (resource-based detection)
@@ -313,6 +312,14 @@ foreach ($subscription in $subscriptions) {
                 }
             }
 
+            # Display usage breakdown for this resource
+            Write-Host "`n      Channel Usage Summary (last 90 days):" -ForegroundColor Cyan
+            Write-Host "        Email:        $($resourceImpact.EmailUsageCount) messages" -ForegroundColor $(if ($resourceImpact.EmailDetected) { "Yellow" } else { "Gray" })
+            Write-Host "        SMS:          $($resourceImpact.SMSUsageCount) messages" -ForegroundColor $(if ($resourceImpact.SMSDetected) { "Yellow" } else { "Gray" })
+            Write-Host "        Chat:         $($resourceImpact.ChatUsageCount) messages" -ForegroundColor $(if ($resourceImpact.ChatDetected) { "Yellow" } else { "Gray" })
+            Write-Host "        Calling:      $($resourceImpact.CallingUsageCount) calls" -ForegroundColor $(if ($resourceImpact.CallingDetected) { "Yellow" } else { "Gray" })
+            Write-Host "        Phone Numbers: $($resourceImpact.PhoneNumbersUsageCount) operations" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
+
             # Calculate severity and migration effort
             if ($resourceImpact.TotalChannelsImpacted -gt 0) {
                 # Determine highest severity
@@ -320,6 +327,8 @@ foreach ($subscription in $subscriptions) {
                     $resourceImpact.HighestSeverity = "Critical"
                 } elseif ($resourceImpact.EmailUsageCount -gt 100 -or $resourceImpact.SMSUsageCount -gt 50) {
                     $resourceImpact.HighestSeverity = "Warning"
+                } else {
+                    $resourceImpact.HighestSeverity = "Info"
                 }
 
                 # Estimate migration effort based on number of channels
@@ -327,10 +336,13 @@ foreach ($subscription in $subscriptions) {
                     $resourceImpact.MigrationEffortEstimate = "High"
                 } elseif ($resourceImpact.TotalChannelsImpacted -eq 2) {
                     $resourceImpact.MigrationEffortEstimate = "Medium"
+                } else {
+                    $resourceImpact.MigrationEffortEstimate = "Low"
                 }
-
-                $impactAssessment += $resourceImpact
             }
+
+            # Always add resource to assessment (even with 0 usage)
+            $impactAssessment += $resourceImpact
         }
 
     } catch {
@@ -341,32 +353,39 @@ foreach ($subscription in $subscriptions) {
 # Display summary
 Write-Host "`n=== Impact Assessment Summary ===" -ForegroundColor Cyan
 Write-Host "Total ACS resources found: $totalACSResourcesFound" -ForegroundColor White
-Write-Host "Resources using retiring services: $($impactAssessment.Count)" -ForegroundColor White
 
 if ($impactAssessment.Count -gt 0) {
+    $resourcesWithRetiringServices = ($impactAssessment | Where-Object { $_.TotalChannelsImpacted -gt 0 }).Count
+    Write-Host "Resources using retiring services: $resourcesWithRetiringServices" -ForegroundColor White
+
     $emailCount = ($impactAssessment | Where-Object { $_.EmailDetected }).Count
     $smsCount = ($impactAssessment | Where-Object { $_.SMSDetected }).Count
     $chatCount = ($impactAssessment | Where-Object { $_.ChatDetected }).Count
     $callingCount = ($impactAssessment | Where-Object { $_.CallingDetected }).Count
     $phoneCount = ($impactAssessment | Where-Object { $_.PhoneNumbersDetected }).Count
 
-    Write-Host "`nRetiring Services Detected:" -ForegroundColor Yellow
-    if ($emailCount -gt 0) { Write-Host "  - Email Service: $emailCount resource(s)" -ForegroundColor White }
-    if ($smsCount -gt 0) { Write-Host "  - SMS API: $smsCount resource(s)" -ForegroundColor White }
-    if ($chatCount -gt 0) { Write-Host "  - Chat SDK: $chatCount resource(s)" -ForegroundColor White }
-    if ($callingCount -gt 0) { Write-Host "  - Calling SDK: $callingCount resource(s)" -ForegroundColor White }
-    if ($phoneCount -gt 0) { Write-Host "  - Phone Numbers SDK: $phoneCount resource(s)" -ForegroundColor White }
+    if ($resourcesWithRetiringServices -gt 0) {
+        Write-Host "`nRetiring Services Detected:" -ForegroundColor Yellow
+        if ($emailCount -gt 0) { Write-Host "  - Email Service: $emailCount resource(s)" -ForegroundColor White }
+        if ($smsCount -gt 0) { Write-Host "  - SMS API: $smsCount resource(s)" -ForegroundColor White }
+        if ($chatCount -gt 0) { Write-Host "  - Chat SDK: $chatCount resource(s)" -ForegroundColor White }
+        if ($callingCount -gt 0) { Write-Host "  - Calling SDK: $callingCount resource(s)" -ForegroundColor White }
+        if ($phoneCount -gt 0) { Write-Host "  - Phone Numbers SDK: $phoneCount resource(s)" -ForegroundColor White }
 
-    $criticalCount = ($impactAssessment | Where-Object { $_.HighestSeverity -eq "Critical" }).Count
-    $warningCount = ($impactAssessment | Where-Object { $_.HighestSeverity -eq "Warning" }).Count
-    $infoCount = ($impactAssessment | Where-Object { $_.HighestSeverity -eq "Info" }).Count
+        $criticalCount = ($impactAssessment | Where-Object { $_.HighestSeverity -eq "Critical" }).Count
+        $warningCount = ($impactAssessment | Where-Object { $_.HighestSeverity -eq "Warning" }).Count
+        $infoCount = ($impactAssessment | Where-Object { $_.HighestSeverity -eq "Info" }).Count
 
-    Write-Host "`nSeverity Breakdown:" -ForegroundColor Yellow
-    if ($criticalCount -gt 0) { Write-Host "  - Critical: $criticalCount resource(s)" -ForegroundColor Red }
-    if ($warningCount -gt 0) { Write-Host "  - Warning: $warningCount resource(s)" -ForegroundColor DarkYellow }
-    if ($infoCount -gt 0) { Write-Host "  - Info: $infoCount resource(s)" -ForegroundColor Gray }
+        Write-Host "`nSeverity Breakdown:" -ForegroundColor Yellow
+        if ($criticalCount -gt 0) { Write-Host "  - Critical: $criticalCount resource(s)" -ForegroundColor Red }
+        if ($warningCount -gt 0) { Write-Host "  - Warning: $warningCount resource(s)" -ForegroundColor DarkYellow }
+        if ($infoCount -gt 0) { Write-Host "  - Info: $infoCount resource(s)" -ForegroundColor Gray }
+    } else {
+        Write-Host "`nGood news! Your ACS resources are not using any retiring services." -ForegroundColor Green
+        Write-Host "All resources analyzed - no migration action required." -ForegroundColor Green
+    }
 
-    # Export to CSV
+    # Export to CSV (always export all resources)
     Write-Host "`nExporting results to: $OutputPath" -ForegroundColor Yellow
 
     # Create exports directory if it doesn't exist
@@ -377,19 +396,14 @@ if ($impactAssessment.Count -gt 0) {
     }
 
     $impactAssessment | Export-Csv -Path $OutputPath -NoTypeInformation
-    Write-Host "Export complete!" -ForegroundColor Green
+    Write-Host "Export complete! All $($impactAssessment.Count) ACS resource(s) included in report." -ForegroundColor Green
 
     # Display results table
     Write-Host "`n=== Detailed Results ===" -ForegroundColor Cyan
-    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, TotalChannelsImpacted, EmailDetected, SMSDetected, ChatDetected, CallingDetected, HighestSeverity, MigrationEffortEstimate -AutoSize
+    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, TotalChannelsImpacted, EmailUsageCount, SMSUsageCount, ChatUsageCount, CallingUsageCount, HighestSeverity, MigrationEffortEstimate -AutoSize
 
 } else {
-    if ($totalACSResourcesFound -gt 0) {
-        Write-Host "`nGood news! Your ACS resources are not using any retiring services." -ForegroundColor Green
-        Write-Host "No migration action required." -ForegroundColor Green
-    } else {
-        Write-Host "`nNo ACS resources found in the scanned subscription(s)." -ForegroundColor Green
-    }
+    Write-Host "`nNo ACS resources found in the scanned subscription(s)." -ForegroundColor Green
 }
 
 Write-Host "`n=== Assessment Complete ===" -ForegroundColor Cyan
