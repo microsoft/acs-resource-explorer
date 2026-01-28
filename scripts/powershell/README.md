@@ -22,7 +22,7 @@ The **ACS Impact Assessment Tool** is a PowerShell script that automatically sca
 
 **Navigate to the script directory first:**
 ```powershell
-cd C:\Users\YourName\ACS-Transition-Agent-v0\migration-guides
+cd C:\Users\YourName\ACS-Transition-Agent-v0\scripts\powershell
 ```
 
 **Then choose your scan type:**
