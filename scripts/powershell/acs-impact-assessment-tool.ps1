@@ -140,6 +140,7 @@ if ($subscriptions.Count -le 5) {
 
 # Initialize results array
 $impactAssessment = @()
+$totalACSResourcesFound = 0
 
 # Metrics to check for each channel
 $metricsConfig = @{
@@ -166,6 +167,7 @@ foreach ($subscription in $subscriptions) {
         }
 
         Write-Host "  Found $($acsResources.Count) ACS resource(s)" -ForegroundColor Green
+        $totalACSResourcesFound += $acsResources.Count
 
         foreach ($resource in $acsResources) {
             Write-Host "    Analyzing: $($resource.Name)" -ForegroundColor White
@@ -257,7 +259,8 @@ foreach ($subscription in $subscriptions) {
                                                    -EndTime $endTime `
                                                    -TimeGrain 01:00:00 `
                                                    -AggregationType Total `
-                                                   -ErrorAction SilentlyContinue
+                                                   -ErrorAction SilentlyContinue `
+                                                   -WarningAction SilentlyContinue
 
                             if ($metrics -and $metrics.Data) {
                                 $sum = ($metrics.Data | Measure-Object -Property Total -Sum).Sum
@@ -337,7 +340,8 @@ foreach ($subscription in $subscriptions) {
 
 # Display summary
 Write-Host "`n=== Impact Assessment Summary ===" -ForegroundColor Cyan
-Write-Host "Total ACS resources scanned: $($impactAssessment.Count)" -ForegroundColor White
+Write-Host "Total ACS resources found: $totalACSResourcesFound" -ForegroundColor White
+Write-Host "Resources using retiring services: $($impactAssessment.Count)" -ForegroundColor White
 
 if ($impactAssessment.Count -gt 0) {
     $emailCount = ($impactAssessment | Where-Object { $_.EmailDetected }).Count
@@ -380,7 +384,12 @@ if ($impactAssessment.Count -gt 0) {
     $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, TotalChannelsImpacted, EmailDetected, SMSDetected, ChatDetected, CallingDetected, HighestSeverity, MigrationEffortEstimate -AutoSize
 
 } else {
-    Write-Host "No ACS resources with retiring services detected." -ForegroundColor Green
+    if ($totalACSResourcesFound -gt 0) {
+        Write-Host "`nGood news! Your ACS resources are not using any retiring services." -ForegroundColor Green
+        Write-Host "No migration action required." -ForegroundColor Green
+    } else {
+        Write-Host "`nNo ACS resources found in the scanned subscription(s)." -ForegroundColor Green
+    }
 }
 
 Write-Host "`n=== Assessment Complete ===" -ForegroundColor Cyan
