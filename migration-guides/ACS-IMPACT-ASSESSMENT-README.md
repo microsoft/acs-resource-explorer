@@ -307,15 +307,28 @@ Get-AzContext
 
 ### Issue: Script execution is blocked
 
-**Error:** "cannot be loaded because running scripts is disabled on this system"
+**Error:** One of the following errors may appear:
+- "cannot be loaded because running scripts is disabled on this system"
+- "File C:\...\acs-impact-assessment-tool.ps1 cannot be loaded. The file is not digitally signed. You cannot run this script on the current system."
 
-**Solution:**
+**Explanation:** By default, Windows restricts running unsigned PowerShell scripts for security. This is a common issue when running scripts downloaded from the internet or not digitally signed.
+
+**Solution Option 1 (Recommended - Permanent Fix):**
 ```powershell
 # Check current execution policy
 Get-ExecutionPolicy
 
 # Set execution policy to allow scripts (run as Administrator)
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+**Solution Option 2 (Bypass - One-Time Run):**
+```powershell
+# Run the script with execution policy bypass (doesn't change system settings)
+powershell -ExecutionPolicy Bypass -File .\acs-impact-assessment-tool.ps1
+
+# Or with parameters
+powershell -ExecutionPolicy Bypass -File .\acs-impact-assessment-tool.ps1 -IncludeMetrics
 ```
 
 ### Issue: Azure PowerShell Module Compatibility Error
