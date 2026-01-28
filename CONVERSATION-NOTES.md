@@ -88,6 +88,44 @@ This section tracks all significant changes to the project, documentation, and c
 
 ---
 
+### 2026-01-28
+
+#### Modified by: Claude (AI Assistant) + User (jameelaesa)
+
+**Changes Made:**
+- Created PowerShell impact assessment tool (`acs-impact-assessment-tool.ps1`)
+- Created comprehensive README for PowerShell tool (`ACS-IMPACT-ASSESSMENT-README.md`)
+- Fixed Unicode parse errors in PowerShell script (replaced ✓ with [+])
+- Committed and pushed all MVP code to GitHub repository
+
+**Files Modified:**
+- `migration-guides/acs-impact-assessment-tool.ps1` - Full PowerShell script for multi-subscription scanning
+- `migration-guides/ACS-IMPACT-ASSESSMENT-README.md` - Documentation with examples, troubleshooting, usage guide
+
+**Decisions Made:**
+1. **PowerShell tool with separate README** - Built-in comment-based help + comprehensive markdown README
+   - Rationale: PowerShell users can use Get-Help, but README provides richer documentation
+2. **Replace Unicode with ASCII** - Changed ✓ to [+] symbols
+   - Rationale: PowerShell has issues parsing Unicode checkmarks, ASCII is universally compatible
+3. **Multi-subscription support in PowerShell** - Web app has single-sub, PS tool supports multi-sub
+   - Rationale: Complementary tools - web for interactive, PowerShell for bulk operations
+
+**Features Added:**
+- Multi-subscription scanning capability
+- Optional metrics retrieval (-IncludeMetrics flag)
+- Severity and migration effort calculation
+- CSV export with all channel data
+- Color-coded console output
+- Comprehensive error handling
+
+**Next Steps:**
+- Test PowerShell script with actual Azure subscription
+- Create 4 remaining migration guides (SMS, Chat, Calling, Phone Numbers)
+- Clean up SendGrid references in retiring-features.ts
+- Begin MVP development work (Weeks 1-2: Setup)
+
+---
+
 ### Template for Future Entries
 
 ```markdown

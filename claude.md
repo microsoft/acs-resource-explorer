@@ -29,7 +29,7 @@ The ACS Transition Agent is a Next.js web application that:
 
 ---
 
-## Current State (as of 2026-01-26)
+## Current State (as of 2026-01-28)
 
 ### ✅ What's Complete
 - Full application architecture (Next.js + Azure SDKs)
@@ -41,13 +41,20 @@ The ACS Transition Agent is a Next.js web application that:
 - Results display UI component
 - CSV and Markdown export functionality
 - **Email Service migration guide** (comprehensive, M365 HVE only - policy compliant)
+- **PowerShell impact assessment tool** (acs-impact-assessment-tool.ps1)
+  - Multi-subscription scanning support
+  - Optional metrics retrieval
+  - Comprehensive README documentation
 - API endpoint for serving migration guides
 - Complete documentation:
   - README.md (product vision)
   - PRESENTATION-NOTES.md (v-team talking points)
   - MVP-SCOPE.md (12-week plan)
   - INTEGRATION-SUMMARY.md (technical integration details)
-  - CONVERSATION-NOTES.md (full project history)
+  - CONVERSATION-NOTES.md (full project history with change log)
+  - claude.md (this file)
+  - ACS-IMPACT-ASSESSMENT-README.md (PowerShell tool docs)
+- **All code committed and pushed to GitHub**
 
 ### ⏳ What's Pending (MVP Work)
 - **4 more migration guides** (SMS, Chat, Calling, Phone Numbers) - Use Email guide as template
@@ -407,9 +414,13 @@ az staticwebapp create --name acs-transition-agent ...
 
 ## Last Updated
 
-**Date:** 2026-01-26
+**Date:** 2026-01-28
 **Updated By:** Claude (AI Assistant)
-**Change:** Created initial claude.md context file
+**Changes:**
+- Added PowerShell impact assessment tool and documentation
+- Fixed Unicode parse errors in PowerShell script
+- Updated current state with latest completions
+- All changes committed and pushed to GitHub (commit: 5b41a12)
 
 ---
 
