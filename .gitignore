@@ -36,6 +36,7 @@ next-env.d.ts
 # Claude Code session files
 .claude/
 
-# PowerShell script output
+# PowerShell script output and exports
+exports/
 ACS_*.csv
 *Impact_Assessment*.csv
