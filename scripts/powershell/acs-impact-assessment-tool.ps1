@@ -35,7 +35,7 @@ param(
     [string]$SubscriptionId,
 
     [Parameter(Mandatory=$false)]
-    [string]$OutputPath = ".\ACS_Impact_Assessment.csv",
+    [string]$OutputPath = ".\exports\ACS_Impact_Assessment.csv",
 
     [Parameter(Mandatory=$false)]
     [switch]$IncludeMetrics
@@ -264,6 +264,14 @@ if ($impactAssessment.Count -gt 0) {
 
     # Export to CSV
     Write-Host "`nExporting results to: $OutputPath" -ForegroundColor Yellow
+
+    # Create exports directory if it doesn't exist
+    $outputDir = Split-Path -Path $OutputPath -Parent
+    if ($outputDir -and -not (Test-Path -Path $outputDir)) {
+        New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
+        Write-Host "  Created output directory: $outputDir" -ForegroundColor Gray
+    }
+
     $impactAssessment | Export-Csv -Path $OutputPath -NoTypeInformation
     Write-Host "Export complete!" -ForegroundColor Green
 

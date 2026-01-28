@@ -102,7 +102,7 @@ The simplest way to run the script - scans all accessible subscriptions:
 .\acs-impact-assessment-tool.ps1
 ```
 
-**Output:** Console summary + `ACS_Impact_Assessment.csv` in current directory
+**Output:** Console summary + `exports/ACS_Impact_Assessment.csv` (folder created automatically)
 
 ---
 
@@ -249,7 +249,8 @@ Severity Breakdown:
   - Critical: 1 resource(s)
   - Warning: 1 resource(s)
 
-Exporting results to: .\ACS_Impact_Assessment.csv
+Exporting results to: .\exports\ACS_Impact_Assessment.csv
+  Created output directory: .\exports
 Export complete!
 
 === Assessment Complete ===
