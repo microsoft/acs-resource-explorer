@@ -1,0 +1,71 @@
+# Azure Communication Services Impact Assessment Tool
+
+**Document Version:** 1.0
+**Last Updated:** January 2026
+**Target Audience:** Third-party developers, ISVs, and Partners
+
+
+## Impact Assessment - Email Services
+
+### Step 1: Identify Current Usage
+
+Run this PowerShell script to assess your ACS Email usage:
+
+```powershell
+# ACS Email Usage Assessment Script
+# Requires: Az PowerShell module
+
+Connect-AzAccount
+
+$subscriptions = Get-AzSubscription
+$acsEmailResources = @()
+
+foreach ($subscription in $subscriptions) {
+    Set-AzContext -SubscriptionId $subscription.Id
+
+    # Find ACS resources
+    $acsResources = Get-AzResource -ResourceType "Microsoft.Communication/CommunicationServices"
+
+    foreach ($resource in $acsResources) {
+        # Check for email domains
+        $emailDomains = Get-AzResource -ResourceGroupName $resource.ResourceGroupName `
+                                       -ResourceType "Microsoft.Communication/EmailServices/Domains"
+
+        if ($emailDomains) {
+            $acsEmailResources += [PSCustomObject]@{
+                SubscriptionName = $subscription.Name
+                SubscriptionId = $subscription.Id
+                ResourceGroup = $resource.ResourceGroupName
+                ResourceName = $resource.Name
+                Location = $resource.Location
+                EmailDomains = $emailDomains.Count
+            }
+        }
+    }
+}
+
+# Display results
+$acsEmailResources | Format-Table -AutoSize
+
+# Export to CSV
+$acsEmailResources | Export-Csv -Path "ACS_Email_Resources.csv" -NoTypeInformation
+
+Write-Host "`nTotal ACS Email resources found: $($acsEmailResources.Count)" -ForegroundColor Cyan
+```
+
+### Step 2: Analyze Email Metrics
+
+Use Azure Monitor to gather usage metrics:
+
+```bash
+# Azure CLI command to get email metrics (last 30 days)
+az monitor metrics list \
+  --resource /subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Communication/CommunicationServices/{resource-name} \
+  --metric "EmailMessagesSent" \
+  --start-time 2024-12-01T00:00:00Z \
+  --end-time 2024-12-31T23:59:59Z \
+  --interval PT1H \
+  --aggregation Total \
+  --output table
+```
+

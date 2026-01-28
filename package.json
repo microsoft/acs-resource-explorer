@@ -1,0 +1,35 @@
+{
+  "name": "acs-transition-agent",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@azure/arm-communication": "^4.1.0",
+    "@azure/arm-monitor": "^8.0.0",
+    "@azure/arm-resources": "^5.2.0",
+    "@azure/arm-subscriptions": "^5.1.0",
+    "@azure/identity": "^4.0.0",
+    "@azure/msal-browser": "^3.7.0",
+    "@azure/msal-node": "^2.5.0",
+    "@azure/msal-react": "^2.0.0",
+    "next": "14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3"
+  }
+}
