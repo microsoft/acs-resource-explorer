@@ -274,6 +274,47 @@ Get-ExecutionPolicy
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
+### Issue: Azure PowerShell Module Compatibility Error
+
+**Error:** "Method 'get_SerializationSettings' in type 'Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient' from assembly 'Microsoft.Azure.PowerShell.Clients.ResourceManager' does not have an implementation."
+
+**Possible causes:**
+1. Conflicting Azure PowerShell modules (old AzureRM and new Az modules installed together)
+2. Corrupted or incompatible Az module versions
+3. Missing assembly dependencies
+
+**Solution:**
+```powershell
+# 1. Check what Azure modules you have installed
+Get-Module -ListAvailable -Name Az*, Azure*
+
+# 2. Uninstall all old AzureRM modules (if any exist)
+Uninstall-Module -Name AzureRM -AllVersions -Force
+
+# 3. Uninstall all Az modules
+Uninstall-Module -Name Az -AllVersions -Force
+
+# 4. Reinstall the latest Az module
+Install-Module -Name Az -Repository PSGallery -Force -AllowClobber -Scope CurrentUser
+
+# 5. Import the module
+Import-Module Az
+
+# 6. Verify installation
+Get-Module -ListAvailable -Name Az
+
+# 7. Re-run the script
+.\acs-impact-assessment-tool.ps1
+```
+
+**Alternative Quick Fix:**
+```powershell
+# Update all Az modules to latest version
+Update-Module -Name Az -Force
+```
+
+**Important Note:** The old AzureRM modules are deprecated and incompatible with the current Az modules. Microsoft recommends uninstalling all AzureRM modules before installing Az modules to avoid conflicts.
+
 ---
 
 ## Performance Considerations

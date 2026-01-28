@@ -96,6 +96,7 @@ This section tracks all significant changes to the project, documentation, and c
 - Created PowerShell impact assessment tool (`acs-impact-assessment-tool.ps1`)
 - Created comprehensive README for PowerShell tool (`ACS-IMPACT-ASSESSMENT-README.md`)
 - Fixed Unicode parse errors in PowerShell script (replaced ✓ with [+])
+- Added Azure PowerShell module compatibility troubleshooting to README
 - Committed and pushed all MVP code to GitHub repository
 
 **Files Modified:**
@@ -117,6 +118,18 @@ This section tracks all significant changes to the project, documentation, and c
 - CSV export with all channel data
 - Color-coded console output
 - Comprehensive error handling
+
+**Issues Resolved:**
+1. **PowerShell Parse Error (Unicode characters)**
+   - Error: "Unexpected token" errors when parsing Unicode checkmark symbols (✓)
+   - Fix: Replaced all 6 instances of ✓ with ASCII [+] symbol
+   - Files: migration-guides/acs-impact-assessment-tool.ps1 (lines 137, 182, 188, 194, 200, 206)
+
+2. **Azure PowerShell Module Compatibility Error**
+   - Error: "Method 'get_SerializationSettings' in type 'Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient' does not have an implementation"
+   - Root Cause: Conflicting Azure modules (AzureRM vs Az) or corrupted Az module installation
+   - Fix: Added comprehensive troubleshooting to README with steps to uninstall AzureRM, reinstall Az modules
+   - Files: migration-guides/ACS-IMPACT-ASSESSMENT-README.md
 
 **Next Steps:**
 - Test PowerShell script with actual Azure subscription

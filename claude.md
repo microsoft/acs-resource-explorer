@@ -418,9 +418,10 @@ az staticwebapp create --name acs-transition-agent ...
 **Updated By:** Claude (AI Assistant)
 **Changes:**
 - Added PowerShell impact assessment tool and documentation
-- Fixed Unicode parse errors in PowerShell script
+- Fixed Unicode parse errors in PowerShell script (commit: 5b41a12)
+- Added Azure PowerShell module compatibility troubleshooting to README
 - Updated current state with latest completions
-- All changes committed and pushed to GitHub (commit: 5b41a12)
+- All changes committed and pushed to GitHub
 
 ---
 
