@@ -134,7 +134,7 @@ foreach ($subscription in $subscriptions) {
             if ($emailDomains) {
                 $resourceImpact.EmailDetected = $true
                 $resourceImpact.TotalChannelsImpacted++
-                Write-Host "      ✓ Email service detected ($($emailDomains.Count) domain(s))" -ForegroundColor Yellow
+                Write-Host "      [+] Email service detected ($($emailDomains.Count) domain(s))" -ForegroundColor Yellow
             }
 
             # If IncludeMetrics is specified, get usage metrics
@@ -179,31 +179,31 @@ foreach ($subscription in $subscriptions) {
                                 if (-not $resourceImpact.TotalChannelsImpacted -or $resourceImpact.TotalChannelsImpacted -eq 0) {
                                     $resourceImpact.TotalChannelsImpacted++
                                 }
-                                Write-Host "      ✓ Email usage: $totalUsage messages" -ForegroundColor Yellow
+                                Write-Host "      [+] Email usage: $totalUsage messages" -ForegroundColor Yellow
                             }
                             'SMS' {
                                 $resourceImpact.SMSDetected = $true
                                 $resourceImpact.SMSUsageCount = [int]$totalUsage
                                 $resourceImpact.TotalChannelsImpacted++
-                                Write-Host "      ✓ SMS usage: $totalUsage messages" -ForegroundColor Yellow
+                                Write-Host "      [+] SMS usage: $totalUsage messages" -ForegroundColor Yellow
                             }
                             'Chat' {
                                 $resourceImpact.ChatDetected = $true
                                 $resourceImpact.ChatUsageCount = [int]$totalUsage
                                 $resourceImpact.TotalChannelsImpacted++
-                                Write-Host "      ✓ Chat usage: $totalUsage messages" -ForegroundColor Yellow
+                                Write-Host "      [+] Chat usage: $totalUsage messages" -ForegroundColor Yellow
                             }
                             'Calling' {
                                 $resourceImpact.CallingDetected = $true
                                 $resourceImpact.CallingUsageCount = [int]$totalUsage
                                 $resourceImpact.TotalChannelsImpacted++
-                                Write-Host "      ✓ Calling usage: $totalUsage calls" -ForegroundColor Yellow
+                                Write-Host "      [+] Calling usage: $totalUsage calls" -ForegroundColor Yellow
                             }
                             'PhoneNumbers' {
                                 $resourceImpact.PhoneNumbersDetected = $true
                                 $resourceImpact.PhoneNumbersUsageCount = [int]$totalUsage
                                 $resourceImpact.TotalChannelsImpacted++
-                                Write-Host "      ✓ Phone Numbers usage detected" -ForegroundColor Yellow
+                                Write-Host "      [+] Phone Numbers usage detected" -ForegroundColor Yellow
                             }
                         }
                     }
