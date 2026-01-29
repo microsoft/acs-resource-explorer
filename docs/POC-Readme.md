@@ -79,6 +79,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 | Issue | Solution |
 |-------|----------|
+| **"Unable to acquire token"** or **"Authentication failed"** with MFA warning | Your organization requires multi-factor authentication. Run: `Connect-AzAccount -TenantId "your-tenant-id"` (use the Tenant ID from the error message) and complete MFA prompts, then run the script again |
+| **"User interaction is required"** | Complete interactive authentication with your tenant: `Connect-AzAccount -TenantId "your-tenant-id"`, then run the script again |
 | "Script cannot be loaded" | Run the setup command above |
 | "Az module not installed" | Run: `Install-Module -Name Az` |
 | "No ACS resources found" | This is normal if no ACS resources exist in your subscription |
