@@ -33,8 +33,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Claude Code session files
-.claude/
+# Claude Code session files (but keep skills directory)
+.claude/*
+!.claude/skills/
 
 # PowerShell script output and exports
 exports/
