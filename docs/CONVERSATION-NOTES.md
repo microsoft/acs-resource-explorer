@@ -140,6 +140,437 @@ This section tracks all significant changes to the project, documentation, and c
 
 ---
 
+### 2026-02-02
+
+#### Modified by: Claude (AI Assistant) + User (jameelaesa)
+
+**Changes Made:**
+- Executed ACS deprecation scan using PowerShell script with full metrics
+- Fixed authentication issue in PowerShell script (added existing connection check)
+- Generated human-readable impact report in docs/ACS-DEPRECATION-IMPACT-REPORT.md
+- Documented comprehensive PowerShell script workflows
+
+**Files Modified:**
+- `scripts/powershell/acs-impact-assessment-tool.ps1` - Added existing Azure context check before Connect-AzAccount (lines 71-77)
+- `docs/ACS-DEPRECATION-IMPACT-REPORT.md` - Created comprehensive impact report with scan results
+
+**Scan Results (2026-02-02):**
+- Subscription Scanned: JameelaPayAsYouGo (a89e7234-d3e0-4956-aee2-934220095a4e)
+- ACS Resources Found: 2 (ACSProd, ACSDevAndTest in JameelaACS_RG)
+- Detection Mode: FULL (with Azure Monitor metrics, 90-day lookback)
+- Retiring Services Detected: None (0 usage across all 5 channels)
+- Migration Action Required: None
+
+**Issue Resolved:**
+1. **PowerShell Authentication Error in Non-Interactive Environment**
+   - Error: "InteractiveBrowserCredential authentication failed: A window handle must be configured"
+   - Root Cause: Script always called Connect-AzAccount even when already authenticated
+   - Fix: Added check for existing Azure context before attempting connection
+   - Result: Script now works seamlessly in both interactive and automated environments
+
+## PowerShell Script Workflows
+
+This section documents the complete workflows implemented in the ACS Impact Assessment PowerShell script ([scripts/powershell/acs-impact-assessment-tool.ps1](../scripts/powershell/acs-impact-assessment-tool.ps1)).
+
+### 1. Authentication & Connection Workflow
+
+**Purpose:** Establish Azure connection for resource scanning
+
+**Steps:**
+1. Check if Az.Accounts PowerShell module is installed
+2. Check for existing Azure context (Get-AzContext)
+3. If not connected, initiate Azure authentication (Connect-AzAccount)
+4. Display connection information:
+   - Account ID (email)
+   - Tenant ID
+   - Current subscription context
+5. Provide guidance for connecting to different tenants if needed
+
+**Exit Conditions:**
+- Success: Valid Azure context established
+- Failure: Az module not installed OR connection failed
+
+**Related Parameters:** None (automatic workflow)
+
+---
+
+### 2. Subscription Selection Workflow
+
+**Purpose:** Determine which Azure subscriptions to scan
+
+**Steps:**
+1. **If -SubscriptionId parameter provided:**
+   - Validate subscription ID exists
+   - Use only that specific subscription
+   - Display subscription name
+   - Exit with error if not found
+
+2. **If no -SubscriptionId parameter:**
+   - Detect default subscription from current context
+   - Display options:
+     - Option 1: Scan only default subscription (recommended)
+     - Option 2: Scan all accessible subscriptions (shows count)
+   - Prompt user for choice (default: 1)
+   - Based on choice:
+     - Choice 1: Use only default subscription
+     - Choice 2: Get all accessible subscriptions
+
+3. **List subscriptions to be scanned:**
+   - If ≤5 subscriptions: Show all
+   - If >5 subscriptions: Show first 5 + count of remaining
+
+**Exit Conditions:**
+- Success: One or more subscriptions selected
+- Failure: Invalid subscription ID provided
+
+**Related Parameters:**
+- `-SubscriptionId` (optional): Specific subscription to scan
+
+---
+
+### 3. Detection Mode Configuration Workflow
+
+**Purpose:** Configure detection method and inform user of capabilities
+
+**Steps:**
+1. **If -IncludeMetrics flag is set:**
+   - Display "Detection Mode: FULL (with metrics)"
+   - Show lookback period (default: 90 days)
+   - Explain complete detection of all 5 channels
+   - Warn that it takes longer but provides complete data
+   - If lookback < 93 days, suggest extending to maximum
+
+2. **If -IncludeMetrics flag is NOT set:**
+   - Display "Detection Mode: FAST (resource-only)"
+   - Warn that only Email and Phone Numbers can be detected
+   - Explain SMS, Chat, and Calling require -IncludeMetrics
+   - Recommend re-running with -IncludeMetrics for complete results
+
+**Related Parameters:**
+- `-IncludeMetrics` (switch): Enable full metrics-based detection
+- `-LookbackDays` (1-93): Number of days for metrics lookback (default: 90)
+
+---
+
+### 4. Resource Discovery Workflow
+
+**Purpose:** Find all ACS Communication Services resources across subscriptions
+
+**Steps:**
+1. Initialize results array and counters
+2. For each subscription in selection:
+   - Set Azure context to subscription
+   - Query for resources with type "Microsoft.Communication/CommunicationServices"
+   - If no resources found:
+     - Log "No ACS resources found"
+     - Continue to next subscription
+   - If resources found:
+     - Display count of resources
+     - Add to total resource counter
+     - Proceed to analysis workflow for each resource
+
+**Exit Conditions:**
+- Success: Completes scanning all subscriptions (even if 0 resources found)
+- Failure: Permission errors, subscription access issues (logged as warnings)
+
+**Related Parameters:** None (uses subscription selection from Workflow 2)
+
+---
+
+### 5. Fast Detection Workflow (Resource-Based)
+
+**Purpose:** Quick detection of Email and Phone Numbers without metrics
+
+**Triggered When:** -IncludeMetrics flag is NOT set
+
+**Steps:**
+1. **Email Service Detection:**
+   - Query for "Microsoft.Communication/EmailServices/Domains" resources
+   - If found:
+     - Set EmailDetected = true
+     - Count domains
+     - Display: "[+] Email service detected (X domain(s))"
+     - Increment TotalChannelsImpacted
+
+2. **Phone Numbers Detection:**
+   - Query for "Microsoft.Communication/CommunicationServices/phoneNumbers" resources
+   - Try alternate detection: Resources matching phone number pattern (^\+\d+)
+   - If found:
+     - Set PhoneNumbersDetected = true
+     - Count phone numbers
+     - Display: "[+] Phone Numbers detected (X number(s))"
+     - Increment TotalChannelsImpacted
+
+3. **Limitation Warnings:**
+   - Display note: "SMS, Chat, and Calling require -IncludeMetrics flag"
+   - Show channel summary:
+     - Email: Detected/Not detected
+     - SMS: Requires -IncludeMetrics flag
+     - Chat: Requires -IncludeMetrics flag
+     - Calling: Requires -IncludeMetrics flag
+     - Phone Numbers: Detected/Not detected
+
+**Channels Detected:** 2 out of 5 (Email, Phone Numbers only)
+
+**Speed:** ~30 seconds per subscription
+
+**Related Parameters:** None (default behavior without -IncludeMetrics)
+
+---
+
+### 6. Full Detection Workflow (Metrics-Based)
+
+**Purpose:** Complete detection of all 5 retiring services via Azure Monitor metrics
+
+**Triggered When:** -IncludeMetrics flag is set
+
+**Steps:**
+1. **Resource-Based Detection First:**
+   - Run Email domain detection (Workflow 5, Step 1)
+   - Run Phone Numbers detection (Workflow 5, Step 2)
+
+2. **Azure Monitor Metrics Configuration:**
+   - Calculate time range:
+     - End time: Current date/time
+     - Start time: Current date/time minus LookbackDays (1-93)
+   - Define metric names per channel:
+     - Email: EmailMessagesSent, EmailDeliveryAttempts, EmailOperations
+     - SMS: SMSMessagesSent, SMSMessagesReceived
+     - Chat: ChatMessageCount, ChatThreadCount, ActiveChatUsers
+     - Calling: CallDuration, CallCount, ParticipantCount
+     - Phone Numbers: PhoneNumberOperations
+
+3. **For Each Channel:**
+   - Initialize usage counter = 0
+   - For each metric name in channel:
+     - Query Azure Monitor (Get-AzMetric):
+       - ResourceId: ACS resource ID
+       - MetricName: Current metric
+       - StartTime/EndTime: Calculated range
+       - TimeGrain: 1 hour (01:00:00)
+       - AggregationType: Total
+     - If metrics returned with data:
+       - Sum all metric values
+       - Add to channel usage counter
+     - Handle errors silently (metric not available)
+
+4. **Update Resource Impact:**
+   - If channel usage > 0:
+     - Set {Channel}Detected = true
+     - Set {Channel}UsageCount = usage total
+     - Increment TotalChannelsImpacted (if not already counted)
+     - Display: "[+] {Channel} usage: X messages/calls/operations"
+
+5. **Display Usage Summary:**
+   - Show all 5 channels with usage counts:
+     - Color-coded: Yellow for detected, Gray for not detected
+     - For zero usage: Add note "(zero usage in last X days)"
+   - If lookback < 93 days:
+     - Display: "Want to check further back? Re-run with '-LookbackDays 93'"
+   - If lookback = 93 days:
+     - Display: "93 days is the maximum lookback period"
+
+**Channels Detected:** All 5 (Email, SMS, Chat, Calling, Phone Numbers)
+
+**Speed:** ~3-5 minutes per subscription
+
+**Related Parameters:**
+- `-IncludeMetrics` (switch): Enable this workflow
+- `-LookbackDays` (1-93): Metrics lookback period
+
+---
+
+### 7. Impact Analysis Workflow
+
+**Purpose:** Calculate severity and migration effort for each resource
+
+**Triggered When:** TotalChannelsImpacted > 0
+
+**Steps:**
+1. **Severity Calculation:**
+   - **Critical Severity** if ANY of:
+     - Email usage > 1000 messages
+     - Calling usage > 500 calls
+   - **Warning Severity** if ANY of:
+     - Email usage > 100 messages
+     - SMS usage > 50 messages
+   - **Info Severity**:
+     - All other cases with detected usage
+
+2. **Migration Effort Estimation:**
+   - Based on number of impacted channels:
+     - **High Effort**: 3+ channels impacted (complex multi-channel migration)
+     - **Medium Effort**: 2 channels impacted
+     - **Low Effort**: 1 channel impacted
+
+3. **Resource Impact Object:**
+   - Create PSCustomObject with 19 fields:
+     - Subscription info: Name, Id
+     - Resource info: ResourceGroup, ResourceName, Location
+     - Detection flags: {Channel}Detected (5 booleans)
+     - Usage counts: {Channel}UsageCount (5 integers)
+     - Analysis: TotalChannelsImpacted, HighestSeverity, MigrationEffortEstimate
+     - Metadata: LookbackPeriodDays
+
+4. **Add to Assessment:**
+   - All resources added to assessment array (even with 0 usage)
+   - Allows complete visibility of all ACS resources
+
+**Exit Conditions:**
+- Success: Impact object created for resource
+- Failure: N/A (always completes)
+
+**Related Parameters:** None (uses detection results from Workflows 5 or 6)
+
+---
+
+### 8. Summary & Statistics Workflow
+
+**Purpose:** Display aggregate results and insights
+
+**Steps:**
+1. **Display Total ACS Resources Found:**
+   - Count across all scanned subscriptions
+
+2. **Calculate Statistics:**
+   - Resources using retiring services (TotalChannelsImpacted > 0)
+   - Per-channel counts:
+     - Email resources
+     - SMS resources
+     - Chat resources
+     - Calling resources
+     - Phone Numbers resources
+
+3. **If Retiring Services Detected:**
+   - Display list of detected services with counts
+   - Display severity breakdown:
+     - Critical resources (red)
+     - Warning resources (yellow)
+     - Info resources (gray)
+
+4. **If No Retiring Services Detected:**
+   - Display: "Good news! Your ACS resources are not using any retiring services."
+   - Display: "All resources analyzed - no migration action required."
+
+**Related Parameters:** None (uses results from all previous workflows)
+
+---
+
+### 9. CSV Export Workflow
+
+**Purpose:** Export detailed assessment results for analysis
+
+**Steps:**
+1. **Prepare Output Path:**
+   - Default: .\exports\ACS_Impact_Assessment.csv
+   - Custom: Value of -OutputPath parameter
+
+2. **Create Output Directory:**
+   - Extract directory path from OutputPath
+   - Check if directory exists
+   - If not exists:
+     - Create directory structure
+     - Display: "Created output directory: {path}"
+
+3. **Export to CSV:**
+   - Export impactAssessment array to CSV
+   - Include all 19 columns (no type information line)
+   - Always export ALL resources (even with 0 usage)
+
+4. **Display Export Confirmation:**
+   - If -IncludeMetrics:
+     - "Export complete! All X ACS resource(s) included with Y-day usage data."
+   - If no -IncludeMetrics:
+     - "Export complete! All X ACS resource(s) included (resource detection only)."
+
+**CSV Columns (19 total):**
+- SubscriptionName, SubscriptionId
+- ResourceGroup, ResourceName, Location
+- LookbackPeriodDays
+- EmailDetected, EmailUsageCount
+- SMSDetected, SMSUsageCount
+- ChatDetected, ChatUsageCount
+- CallingDetected, CallingUsageCount
+- PhoneNumbersDetected, PhoneNumbersUsageCount
+- TotalChannelsImpacted
+- HighestSeverity
+- MigrationEffortEstimate
+
+**Related Parameters:**
+- `-OutputPath` (optional): Custom CSV file path
+
+---
+
+### 10. Console Reporting Workflow
+
+**Purpose:** Display formatted results in terminal
+
+**Steps:**
+1. **Display Detailed Results Table:**
+   - Format-Table with selected columns:
+     - ResourceName
+     - ResourceGroup
+     - TotalChannelsImpacted
+     - EmailUsageCount, SMSUsageCount, ChatUsageCount, CallingUsageCount
+     - HighestSeverity
+     - MigrationEffortEstimate
+   - AutoSize for readability
+
+2. **Display Assessment Complete Banner:**
+   - "=== Assessment Complete ==="
+
+3. **If -IncludeMetrics was used:**
+   - Display: "Usage data covers: Last X days"
+   - If lookback < 93 days:
+     - Suggest: "To check further back, re-run with: -IncludeMetrics -LookbackDays 93"
+
+4. **Display Next Steps:**
+   - Review the CSV report: {OutputPath}
+   - Prioritize resources with 'Critical' severity
+   - Review migration guides for each detected channel
+   - Plan migration timeline based on retirement dates
+   - Link to migration guides: https://aka.ms/acs-transition-guides
+
+**Related Parameters:** None (uses all workflow results)
+
+---
+
+### Workflow Execution Order
+
+**Complete Execution Sequence:**
+
+```
+1. Authentication & Connection Workflow
+   └─> 2. Subscription Selection Workflow
+       └─> 3. Detection Mode Configuration Workflow
+           └─> 4. Resource Discovery Workflow (per subscription)
+               └─> FOR EACH RESOURCE:
+                   ├─> 5. Fast Detection Workflow (if no -IncludeMetrics)
+                   │   OR
+                   ├─> 6. Full Detection Workflow (if -IncludeMetrics)
+                   └─> 7. Impact Analysis Workflow
+           └─> 8. Summary & Statistics Workflow
+           └─> 9. CSV Export Workflow
+           └─> 10. Console Reporting Workflow
+```
+
+**Typical Execution Time:**
+- Fast mode (no -IncludeMetrics): ~30 seconds per subscription
+- Full mode (with -IncludeMetrics): ~3-5 minutes per subscription
+
+**Error Handling:**
+- Authentication failures: Exit with error code 1
+- Subscription access errors: Log warning, continue to next subscription
+- Metrics retrieval errors: Silent (metric may not be available), continue
+- CSV export errors: Will throw error if path invalid or permissions issue
+
+**Next Steps:**
+- Test script with larger multi-subscription environments
+- Validate metrics accuracy across different usage patterns
+- Create migration guide linking (currently placeholder URL)
+
+---
+
 ### Template for Future Entries
 
 ```markdown

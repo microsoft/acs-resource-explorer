@@ -65,14 +65,20 @@ if (-not (Get-Module -ListAvailable -Name Az.Accounts)) {
 
 # Connect to Azure
 Write-Host "`n=== Azure Communication Services Impact Assessment Tool ===" -ForegroundColor Cyan
-Write-Host "Connecting to Azure..." -ForegroundColor Yellow
+Write-Host "Checking Azure connection..." -ForegroundColor Yellow
 
 try {
-    Connect-AzAccount -ErrorAction Stop | Out-Null
+    # Check if already connected
+    $currentContext = Get-AzContext
+    if (-not $currentContext) {
+        Write-Host "Not connected to Azure. Connecting..." -ForegroundColor Yellow
+        Connect-AzAccount -ErrorAction Stop | Out-Null
+        $currentContext = Get-AzContext
+    }
+
     Write-Host "Successfully connected to Azure" -ForegroundColor Green
 
-    # Get current Azure context and display tenant information
-    $currentContext = Get-AzContext
+    # Display tenant information
     if ($currentContext) {
         $tenantId = $currentContext.Tenant.Id
         $accountName = $currentContext.Account.Id
