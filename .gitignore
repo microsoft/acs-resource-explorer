@@ -33,9 +33,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Claude Code session files (but keep skills directory)
-.claude/*
-!.claude/skills/
+# Claude Code session files
+.claude/
+
+# Agent Skills (universal standard)
+# Keep .agent/skills/ for cross-tool compatibility
+.agent/*
+!.agent/skills/
 
 # PowerShell script output and exports
 exports/
