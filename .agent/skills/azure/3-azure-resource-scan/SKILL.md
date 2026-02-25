@@ -163,4 +163,4 @@ Output:
 ```
 
 ## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 180-196 for example implementation of this workflow.
+See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 180-196 for example implementation of this workflow.

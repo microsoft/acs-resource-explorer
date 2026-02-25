@@ -140,6 +140,76 @@ This section tracks all significant changes to the project, documentation, and c
 
 ---
 
+### 2026-02-25
+
+#### Modified by: Claude (AI Assistant) + User (jameelaesa)
+
+**Changes Made:**
+- Restructured `.agent/skills/` from a flat layout into two namespaced subdirectories
+- Created `azure/` namespace with 7 generic, product-agnostic skills
+- Created `acs/` namespace with 6 ACS-specific skills (including orchestrator)
+- Replaced old `8-acs-deprecation-scan` (PowerShell-based) with `acs/0-acs-full-scan` (skills-based orchestrator)
+- Updated `.agent/skills/README.md` with new structure, workflow sequences, and skill relationship table
+- Updated `docs/STATUS-NOTES.md` to reflect restructuring milestone
+
+**Files Modified:**
+- `.agent/skills/README.md` — fully rewritten for two-namespace structure
+- `.agent/skills/azure/1-7/SKILL.md` — moved from flat structure, reference paths updated
+- `.agent/skills/acs/0-5/SKILL.md` — all new ACS-specific skills
+- `docs/STATUS-NOTES.md` — updated Phase 4 description and milestones
+- `docs/CONVERSATION-NOTES.md` — this entry
+
+**Files Removed:**
+- `.agent/skills/1-azure-auth-check/` through `7-azure-report-generate/` (moved to `azure/` subdirectory)
+- `.agent/skills/8-acs-deprecation-scan/` (replaced by `acs/0-acs-full-scan`)
+
+**New Skill Structure (13 skills total):**
+
+```
+.agent/skills/
+├── azure/   ← 7 generic skills (any Azure product)
+│   ├── 1-azure-auth-check/
+│   ├── 2-azure-subscription-select/
+│   ├── 3-azure-resource-scan/
+│   ├── 4-azure-channel-detect/
+│   ├── 5-azure-metrics-collect/
+│   ├── 6-azure-impact-analyze/
+│   └── 7-azure-report-generate/
+└── acs/     ← 6 ACS-specific skills
+    ├── 0-acs-full-scan/          (orchestrator)
+    ├── 1-acs-resource-scan/
+    ├── 2-acs-channel-detect/
+    ├── 3-acs-metrics-collect/
+    ├── 4-acs-impact-analyze/
+    └── 5-acs-report-generate/
+```
+
+**Key Decisions Made:**
+1. **Two-namespace structure** (`azure/` + `acs/`) over two separate repos
+   - Rationale: Same logical separation without deployment overhead for a small team pre-MVP; easy to extract `azure/` into a standalone repo when other Azure teams want to adopt the pattern
+2. **ACS skills implement workflow directly** (no PowerShell calls)
+   - Rationale: Skills-based approach works across all AI agents and platforms; not dependent on PowerShell being available
+3. **`acs/0-acs-full-scan` as orchestrator** (numbered 0 to sort first alphabetically)
+   - Rationale: Clear entry point; references all other acs/ skills in sequence
+4. **Auth and subscription selection remain in `azure/`** (shared by both namespaces)
+   - Rationale: These are truly generic — no ACS-specific knowledge needed
+
+**ACS Skills Pre-configured With:**
+- Resource type: `Microsoft.Communication/CommunicationServices`
+- All 5 channel metrics (Email, SMS, Chat, Calling, Phone Numbers)
+- ACS-specific severity thresholds (e.g., Email >1,000 = Critical)
+- Retirement dates per channel
+- Links to ACS migration guides in `migration-guides/`
+- 19-column CSV output format matching `acs-impact-assessment-tool.ps1`
+
+**Next Steps:**
+- Test `azure/` skills 1–7 with a real Azure subscription
+- Test `acs/` skills 1–5 + `0-acs-full-scan` end-to-end
+- Create 4 remaining migration guides (SMS, Chat, Calling, Phone Numbers)
+- Clean up SendGrid references in `src/config/retiring-features.ts`
+
+---
+
 ### 2026-02-02
 
 #### Modified by: Claude (AI Assistant) + User (jameelaesa)

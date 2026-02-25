@@ -172,4 +172,4 @@ Output:
 ```
 
 ## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 234-266 and 357-363 for example implementation of this workflow.
+See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 234-266 and 357-363 for example implementation of this workflow.
