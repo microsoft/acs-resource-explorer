@@ -1,15 +1,25 @@
-# ACS Transition Agent — Status Notes
+# Azure Transition Agent — Status Notes
 
 **Date:** 2026-02-25
-**Project:** Azure Communication Services (ACS) Transition Agent
+**Project:** Azure Transition Agent (ACS first implementation)
 **Repo:** [ACS-Transition-Agent-v0](https://github.com/jameelaesa/ACS-Transition-Agent-v0)
 **Stage:** Forming — Active Development / Pre-MVP
 
 ---
 
+## Problem & Solution
+
+**Problem:** Azure customers, PMs, and support teams face a time-intensive manual process when retiring a service — they must help customers identify which subscriptions and resources are actively using the retiring services, across potentially hundreds of subscriptions.
+
+**Solution:** We're building Azure Agent Skills that automate the full assessment workflow: scan resources, detect usage and impact, report urgency, and provide migration guidance — for any Azure service retirement.
+
+ACS (Azure Communication Services) is the first implementation. The generic `azure/` skills establish a reusable pattern any Azure team can adopt when retiring their own services.
+
+---
+
 ## Current Development Stage
 
-The project has progressed through several phases since initial conception in late January 2026. The most recent sprint shifted focus from the web application to an **AI-first, skills-based approach** for automating the deprecation assessment workflow.
+The project has progressed through several phases since initial conception in late January 2026. The most recent sprint established an **AI-first, skills-based architecture** — composable agent skills that automate the full deprecation assessment workflow without manual intervention.
 
 ---
 
@@ -56,11 +66,11 @@ Created **13 composable AI Agent Skills** in two namespaces following the [Agent
 | `acs/5-acs-report-generate` | 19-column ACS CSV, Markdown with guide links, JSON |
 
 **Key design decisions:**
-- `azure/` skills are fully **product-agnostic** — reusable for any Azure service retirement
-- `acs/` skills are **ACS-specific implementations** of the azure/ skills, with all configuration pre-filled
+- `azure/` skills are fully **product-agnostic** — the reusable pattern for any Azure service retirement
+- `acs/` skills are the **first implementation** of that pattern, pre-configured for ACS retiring channels
 - Auth and subscription selection are **shared** — both workflows use `azure/1-2`
-- No PowerShell script calls — skills implement workflows directly via Azure SDK/CLI
-- `acs/0-acs-full-scan` replaces the old `8-acs-deprecation-scan` (which called PowerShell directly)
+- No PowerShell dependency — skills implement workflows directly, compatible with any AI agent
+- `acs/0-acs-full-scan` is the single entry point for a complete ACS assessment
 
 Skills are compatible with Claude Code, GitHub Copilot, Cursor, Windsurf, Cline, and 20+ other AI agents.
 
@@ -85,12 +95,13 @@ Skills are compatible with Claude Code, GitHub Copilot, Cursor, Windsurf, Cline,
 
 | Decision | Rationale |
 |----------|-----------|
-| All 5 ACS channels in MVP (not just Email) | Same detection infrastructure, only +1 week effort, complete customer picture |
-| No database / persistent storage | Reduces complexity and security scope |
+| Agent Skills as the primary delivery mechanism | Meets customers and teams where they already work — inside their AI agent of choice |
+| Two-namespace structure (`azure/` + `acs/`) | `azure/` is the reusable open pattern; `acs/` is the first ACS implementation; easy to add more products |
+| No PowerShell dependency in skills | Skills work across any AI agent and any OS — not limited to PowerShell environments |
+| All 5 ACS channels (not just Email) | Same detection infrastructure, only +1 week effort, complete customer picture |
+| No database / persistent storage | Reduces complexity and security scope; runtime analysis only |
 | Microsoft first-party recommendations only | Policy compliance — no third-party marketplace partners (e.g., SendGrid) |
-| Two-namespace skill structure (`azure/` + `acs/`) | Generic skills reusable by any Azure team; ACS skills pre-configured for immediate use |
-| `acs/` skills replace PowerShell orchestrator | Skills implement workflow directly — no PowerShell dependency, works across all AI agents |
-| `.agent/skills/` directory standard | Universal cross-platform compatibility (25+ AI tools) vs. Claude-only `.claude/skills/` |
+| `.agent/skills/` open standard | Universal cross-platform compatibility (25+ AI tools); not locked to any one AI vendor |
 | Single subscription in MVP web app | Scope management for small team; multi-sub in Phase 2 |
 
 ---
