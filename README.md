@@ -1,270 +1,370 @@
-# Azure Communication Services Transition Agent
+# Azure Transition Agent — ACS Edition
 
-**A comprehensive suite of tools to help customers migrate from retiring ACS standalone SDKs to integrated Microsoft 365 solutions.**
-
----
-
-## Overview
-
-The **ACS Transition Agent** is a collection of assessment tools, migration guides, and future AI-powered applications designed to simplify the transition from retiring Azure Communication Services (ACS) standalone features to integrated Microsoft 365 scenarios.
-
-###  Components
-
-| Component | Status | Description |
-|-----------|--------|-------------|
-| **[Assessment Scripts](scripts/)** | ✅ Available | PowerShell tools for scanning Azure subscriptions and detecting retiring service usage |
-| **[Migration Guides](migration-guides/)** | 🚧 In Progress | Step-by-step documentation for migrating each retiring service (1 of 5 complete) |
-| **[AI Agent Application](ai-agent/)** | 📅 Planned | Interactive web application with guided migrations (Phase 2+) |
+**Automate the assessment of retiring Azure Communication Services (ACS) resources across your Azure subscriptions — detecting which channels are in active use, how urgently you need to migrate, and where to go next.**
 
 ---
 
-## Quick Start
+## The Problem
 
-### Option 1: Automated Assessment (PowerShell)
+When Microsoft retires an Azure service, customers, PMs, and support teams face a time-intensive manual process: identifying which subscriptions and resources are actively using the retiring service across potentially hundreds of subscriptions.
 
-**Best for:** IT professionals, partners managing multiple customers, bulk assessments
+## The Solution
 
-```powershell
-# Navigate to the PowerShell script directory
-cd scripts/powershell
+A set of composable **AI Agent Skills** that automate the full assessment workflow:
 
-# Run a quick scan (all subscriptions, no metrics)
-.\acs-impact-assessment-tool.ps1
+1. **Scan** — discover all ACS resources across your subscriptions
+2. **Detect** — identify which retiring channels are in use (Email, SMS, Chat, Calling, Phone Numbers)
+3. **Analyze** — calculate severity and migration effort based on actual usage
+4. **Report** — export results to CSV, Markdown, and JSON with links to migration guides
 
-# Run with detailed usage metrics
-.\acs-impact-assessment-tool.ps1 -IncludeMetrics
+The `azure/` skills are a **reusable open pattern** for any Azure service retirement. The `acs/` skills are the first implementation, pre-configured for ACS.
+
+---
+
+## Getting Started
+
+### What You'll Need
+
+Before running the ACS assessment, you need four things installed on your computer:
+
+| Requirement | Why | Time to install |
+|-------------|-----|----------------|
+| [Git](#1-install-git) | Clone this repository | ~2 minutes |
+| [PowerShell](#2-install-powershell) | Run Azure commands | ~5 minutes |
+| [Azure PowerShell Module](#3-install-azure-powershell-module-az) | Connect to your Azure subscriptions | ~5 minutes |
+| [Claude Code](#4-install-claude-code) | Run the AI Agent Skills | ~3 minutes |
+
+> **Already have these?** Jump to [Clone the Repository](#5-clone-the-repository).
+
+---
+
+### 1. Install Git
+
+Git is used to download (clone) this project to your computer.
+
+**Windows:**
+1. Go to https://git-scm.com/download/win
+2. Download and run the installer
+3. Accept all default options
+4. Open a new Command Prompt or PowerShell window and verify: `git --version`
+
+**macOS:**
+```bash
+# If you have Homebrew installed:
+brew install git
+
+# Or install Xcode Command Line Tools (includes git):
+xcode-select --install
 ```
 
-**Features:**
-- ✅ Multi-subscription scanning
-- ✅ Detects all 5 retiring channels (Email, SMS, Chat, Calling, Phone Numbers)
-- ✅ Optional Azure Monitor metrics (90-day lookback)
-- ✅ Severity calculation (Critical/Warning/Info)
-- ✅ CSV export for planning and tracking
-
-[**Full PowerShell Documentation →**](scripts/powershell/README.md)
+**Linux:**
+```bash
+sudo apt-get install git        # Ubuntu/Debian
+sudo dnf install git            # Fedora/RHEL
+```
 
 ---
 
-### Option 2: Manual Migration Guides
+### 2. Install PowerShell
 
-**Best for:** Developers implementing migrations, understanding migration paths
+The skills use PowerShell to communicate with Azure. Windows users already have PowerShell installed. macOS and Linux users need to install PowerShell 7.
 
-**Available Now:**
-- **[Email Service → Microsoft 365 HVE](migration-guides/email/)** - Complete guide with code examples
+**Windows:** Already installed — skip this step.
 
-**Coming Soon:**
-- SMS API migration (alternative providers)
-- Chat SDK → Teams integration
-- Calling SDK → Teams Calling
-- Phone Numbers SDK → Azure Portal management
+**macOS:**
+```bash
+# Using Homebrew:
+brew install --cask powershell
 
-[**Browse All Migration Guides →**](migration-guides/README.md)
+# Verify installation:
+pwsh --version
+```
 
----
+**Linux (Ubuntu/Debian):**
+```bash
+# Add Microsoft repository and install:
+wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt-get update
+sudo apt-get install -y powershell
 
-### Option 3: AI-Powered Web Application (Future)
+# Verify installation:
+pwsh --version
+```
 
-**Best for:** Non-technical users, interactive exploration, team collaboration
-
-**Status:** Phase 2 development (planned for Q2 2026)
-
-**Planned Features:**
-- Interactive web UI with Azure AD authentication
-- Real-time subscription scanning
-- Embedded migration guidance
-- Multi-subscription dashboard
-- M365 license tracking
-
-[**Learn More About the AI Agent →**](ai-agent/README.md)
+For other Linux distributions, see: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-linux
 
 ---
 
-## The Problem We're Solving
+### 3. Install Azure PowerShell Module (Az)
 
-### Navigating Service Deprecation at Scale
+This module lets PowerShell connect to your Azure subscriptions.
 
-Azure Communication Services (ACS) is evolving from standalone SDKs and APIs toward integrated scenarios with Microsoft Teams. While this transition unlocks powerful new capabilities, it creates a complex migration challenge:
+**Open PowerShell** (search "PowerShell" in your Start menu on Windows, or type `pwsh` in your terminal on macOS/Linux) and run:
 
-**Customer Challenges:**
-- "Which retiring services am I using?"
-- "How heavily do I rely on each service?"
-- "What's my migration timeline and effort?"
-- "Where do I start?"
+```powershell
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+```
 
-**Partner Challenges:**
-- "Which of my customers are impacted?"
-- "How do I scope migration projects across my portfolio?"
-- "What's my service opportunity pipeline?"
+> **Note:** This may take 3–5 minutes to download. If prompted about an "untrusted repository," type `Y` and press Enter.
 
-**Microsoft Team Challenges:**
-- "How many customers are affected by each retirement?"
-- "Which services have the highest usage?"
-- "How do we track migration progress?"
+**Verify it installed:**
+```powershell
+Get-Module -Name Az.Accounts -ListAvailable | Select-Object Name, Version
+```
 
----
+You should see the Az.Accounts module listed with a version number.
 
-## The Solution: Multi-Tool Approach
-
-The ACS Transition Agent provides **three complementary tools** that work together:
-
-### 1. Assessment Scripts → Discovery
-**Purpose:** Find out what's retiring in your Azure subscriptions
-
-**Tools:**
-- PowerShell impact assessment tool (multi-subscription scanning)
-- Python scripts (planned - cross-platform support)
-- Azure CLI scripts (planned - alternative method)
-
-**Output:** CSV reports with detected resources, usage metrics, and severity ratings
+**If you see an error about execution policy** (Windows only):
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
 ---
 
-### 2. Migration Guides → Implementation
-**Purpose:** Step-by-step instructions for migrating each service
+### 4. Install Claude Code
 
-**Content:**
-- Executive summaries and prerequisites
-- Detailed migration paths
-- Code examples (TypeScript, C#, Python)
-- Testing strategies
-- FAQ and troubleshooting
+Claude Code is the AI agent that reads and runs the skills in this repository.
 
-**Coverage:** All 5 retiring services (Email, SMS, Chat, Calling, Phone Numbers)
+**Install via npm** (requires Node.js — see below if you don't have it):
+```bash
+npm install -g @anthropic-ai/claude-code
+```
 
----
+**If you don't have Node.js installed:**
+1. Go to https://nodejs.org
+2. Download and install the **LTS** version (the recommended one)
+3. Open a new terminal window and run: `npm install -g @anthropic-ai/claude-code`
 
-### 3. AI Agent Application → Guided Experience
-**Purpose:** Interactive, user-friendly interface for non-technical users
+**Verify Claude Code is installed:**
+```bash
+claude --version
+```
 
-**Capabilities:**
-- Visual subscription scanning
-- Real-time progress tracking
-- Embedded migration guidance
-- Team collaboration features
-- Historical tracking and reporting
+**First-time setup:**
+```bash
+claude
+```
+This will prompt you to log in with your Anthropic account. If you don't have one, create a free account at https://claude.ai.
 
-**Status:** Phase 2 (planned after validating scripts and guides)
-
----
-
-## Value Proposition by Persona
-
-### For Customers
-
-**Problem**: "I'm not sure if my application uses any retiring features, or how urgently I need to migrate."
-
-**Value Delivered**:
-- **Zero Manual Audit**: Automated discovery eliminates guesswork and manual code reviews
-- **Risk Clarity**: Understand exactly which features are at risk and when
-- **Effort Estimation**: Get realistic migration effort estimates before starting
-- **Prioritization**: Focus on critical items first with severity-based rankings
-- **Confidence**: Make informed decisions about migration timing and resource allocation
-
-**Example Scenario**:
-A healthcare SaaS company scans their Azure subscription with the PowerShell tool and discovers:
-- 3 ACS resources using multiple retiring channels:
-  - **Calling SDK**: 45,000 calls in last 3 months → Critical priority
-  - **Chat SDK**: 12,000 chat messages → Warning
-  - **SMS**: 3,500 messages → Info
-- They download 3 migration guides (Calling, Chat, SMS) and create a phased migration plan
+> **Alternative AI Agents:** The skills in `.agent/skills/` follow the open Agent Skills standard and work with GitHub Copilot, Cursor, Windsurf, Cline, and other compatible AI agents. See [Agent Skills compatibility](#agent-skills-compatibility) for details.
 
 ---
 
-### For Microsoft Partners
+### 5. Clone the Repository
 
-**Problem**: "We support dozens of customers using ACS. We need a systematic way to assess impact across our entire customer base."
+Open a terminal (Command Prompt, PowerShell, or Terminal) and run:
 
-**Value Delivered**:
-- **Portfolio Visibility**: Run PowerShell script across all customer tenants
-- **Customer Prioritization**: Identify which customers need immediate attention
-- **Scoped Engagements**: Present data-driven migration proposals with accurate effort estimates
-- **Proactive Service**: Contact customers before they experience service disruption
-- **Competitive Advantage**: Demonstrate expertise in Azure migration and modernization
-
-**Example Scenario**:
-A Microsoft partner runs the assessment tool for 20 enterprise customers and generates portfolio reports showing:
-- 12 of 20 customers are impacted across multiple channels
-- Email service most widely used (10 customers), followed by SMS (7 customers)
-- 4 customers have critical-severity issues (retirement within 6 months)
-- Total estimated migration effort: 240 hours across portfolio
-- They proactively reach out with scoped SOWs for each customer
+```bash
+git clone https://github.com/jameelaesa/ACS-Transition-Agent-v0.git
+cd ACS-Transition-Agent-v0
+```
 
 ---
 
-### For Microsoft (Support, Engineering, Product Teams)
+### 6. Connect to Azure
 
-**Problem**: "We need to understand customer impact, prioritize support resources, and track migration progress at scale."
+Before running the assessment, connect PowerShell to your Azure account.
 
-**Value Delivered**:
-- **Impact Metrics**: Aggregate data on how many customers are affected by each retiring feature
-- **Usage Patterns**: Understand which features are most actively used to inform deprecation timelines
-- **Early Warning System**: Identify customers at risk of service disruption
-- **Resource Allocation**: Direct support resources to customers with critical-severity impacts
-- **Migration Tracking**: Monitor adoption of integrated scenarios over time
+**Open PowerShell** and run:
+```powershell
+Connect-AzAccount
+```
 
-**Example Scenario**:
-The ACS product team aggregates assessment data across customers and discovers:
-- **Email**: 1,200 customers (most widely used), 85% have >1,000 emails/month
-- **SMS**: 950 customers, 60% moderate usage
-- **Calling**: 420 customers (mostly telehealth and customer support)
-- This data informs decisions to prioritize Email → M365 HVE migration support
+A browser window will open asking you to sign in with your Azure credentials. Sign in with the account that has access to the subscriptions you want to scan.
 
----
+**Verify you're connected:**
+```powershell
+Get-AzContext
+```
 
-## Key Differentiators
+You should see your account email, tenant ID, and current subscription.
 
-### 1. Multi-Channel Detection
-Unlike single-service scanners, the ACS Transition Agent detects **all 5 retiring channels** in a single scan:
-- Email Service
-- SMS API
-- Chat SDK
-- Calling SDK
-- Phone Numbers SDK
-
-### 2. Complete Tool Suite
-Provides multiple ways to assess and migrate:
-- **Scripts** for automation and bulk operations
-- **Guides** for implementation details
-- **AI Agent** (future) for interactive guidance
-
-### 3. Usage-Based Prioritization
-Not just "yes/no" detection - quantifies actual usage:
-- 90-day metrics from Azure Monitor
-- Severity ratings based on retirement timelines
-- Migration effort estimates (Low/Medium/High)
-
-### 4. Microsoft First-Party Only
-All migration paths use Microsoft solutions:
-- Email → Microsoft 365 High-Volume Email (HVE)
-- Chat/Calling → Teams integration
-- Policy compliant (no third-party marketplace partners)
+> **Permissions required:** You need at least **Reader** access on the subscriptions you want to scan. For usage metrics, you also need **Monitoring Reader** access.
 
 ---
 
-## Roadmap
+### 7. Run the ACS Assessment
 
-### Phase 1 - Current (Available Now)
-✅ **PowerShell assessment tool** with multi-subscription scanning
-✅ **Email migration guide** (comprehensive, M365 HVE only)
-🚧 **4 additional migration guides** (SMS, Chat, Calling, Phone Numbers) - In development
+Open Claude Code in the project directory:
 
-### Phase 2 - Scale (3-6 months)
-📅 **AI-powered web application** with interactive UI
-📅 **Enhanced reporting** and analytics
-📅 **Multi-subscription dashboard**
+```bash
+cd ACS-Transition-Agent-v0
+claude
+```
 
-### Phase 3 - Intelligence (6-12 months)
-📅 **M365 license tracking** integration
-📅 **Revenue attribution** (Email → M365 HVE conversions)
-📅 **Partner portal** for multi-tenant management
-📅 **Cost calculator** for migration alternatives
+Then run the full ACS assessment using one of these methods:
 
-### Phase 4 - AI-Powered (Vision)
-📅 **Automated code analysis** (GitHub integration)
-📅 **AI migration suggestions**
-📅 **Integrated testing environments**
-📅 **Expand to other Azure service deprecations** (reusable pattern)
+**Option A — Type a natural language request:**
+```
+Run an ACS deprecation scan
+```
+
+**Option B — Use the slash command:**
+```
+/0-acs-full-scan
+```
+
+Claude will guide you through the complete workflow interactively:
+
+```
+Step 1: Verify Azure authentication         ← checks you're logged in
+Step 2: Select subscription(s) to scan     ← choose default, all, or specific
+Step 3: Discover ACS resources             ← finds all CommunicationServices resources
+Step 4: Choose detection mode              ← fast (30 sec) or full (3-5 min with metrics)
+Step 5: Analyze impact                     ← severity + migration effort per resource
+Step 6: Generate reports                   ← saves CSV, Markdown, JSON to ./exports/
+```
+
+---
+
+### 8. Find Your Results
+
+After the scan completes, your reports are saved in the `exports/` folder:
+
+| File | Format | Best for |
+|------|--------|----------|
+| `YYYY-MM-DD_ACS_Impact_Assessment.csv` | CSV | Opening in Excel, filtering and sorting |
+| `YYYY-MM-DD_ACS_Impact_Assessment.md` | Markdown | Sharing with your team |
+| `YYYY-MM-DD_ACS_Impact_Assessment.json` | JSON | Automated processing |
+
+**To open the CSV in Excel:**
+1. Open File Explorer and navigate to the `exports/` folder
+2. Double-click the `.csv` file
+3. Excel will open it automatically
+
+---
+
+## Running Individual Steps
+
+You can also run each step of the workflow individually. This is useful if you want to re-run a specific step or customize the process.
+
+### Shared Steps (work with any Azure product)
+
+```
+/azure/1-azure-auth-check          Check if you're authenticated to Azure
+/azure/2-azure-subscription-select Choose which subscription(s) to scan
+```
+
+### ACS-Specific Steps
+
+```
+/acs/1-acs-resource-scan           Find all ACS resources in selected subscriptions
+/acs/2-acs-channel-detect          Fast check: Email + Phone Numbers only (~30 seconds)
+/acs/3-acs-metrics-collect         Full check: all 5 channels via Azure Monitor (~3-5 min)
+/acs/4-acs-impact-analyze          Calculate severity and migration effort
+/acs/5-acs-report-generate         Export results to CSV, Markdown, and JSON
+```
+
+**Example — run just the fast detection:**
+```
+/azure/1-azure-auth-check
+/azure/2-azure-subscription-select
+/acs/1-acs-resource-scan
+/acs/2-acs-channel-detect
+```
+
+---
+
+## What the Assessment Detects
+
+The full scan (`/acs/3-acs-metrics-collect`) checks for active usage of all 5 retiring ACS channels over the past 90 days:
+
+| Channel | What's Retiring | Detection |
+|---------|----------------|-----------|
+| Email Service | ACS standalone Email SDK | ✅ Full (metrics) |
+| SMS API | ACS standalone SMS API | ✅ Full (metrics) |
+| Chat SDK | ACS standalone Chat SDK | ✅ Full (metrics) |
+| Calling SDK | ACS standalone Calling SDK | ✅ Full (metrics) |
+| Phone Numbers SDK | ACS standalone Phone Numbers SDK | ✅ Full (metrics) |
+
+**Severity levels assigned:**
+
+| Severity | Meaning | Example |
+|----------|---------|---------|
+| 🔴 Critical | High usage — immediate action needed | Email >1,000 messages in period |
+| 🟡 Warning | Moderate usage — plan migration soon | Email >100 messages in period |
+| ℹ️ Info | Low usage detected | Any usage below Warning threshold |
+| ✅ None | No usage found | Zero activity in last 90 days |
+
+---
+
+## Migration Guides
+
+After your assessment, use these guides to plan your migration:
+
+| Retiring Service | Migration Guide | Status |
+|-----------------|----------------|--------|
+| Email Service | [migration-guides/email/email-service-migration.md](migration-guides/email/email-service-migration.md) | ✅ Available |
+| SMS API | Coming soon | 🚧 In progress |
+| Chat SDK | Coming soon | 🚧 In progress |
+| Calling SDK | Coming soon | 🚧 In progress |
+| Phone Numbers SDK | Coming soon | 🚧 In progress |
+
+All migration paths follow Microsoft first-party solutions only (Microsoft 365 HVE, Teams integration).
+
+---
+
+## Troubleshooting
+
+### "pwsh: command not found" or "powershell: command not found"
+- **Windows:** Search for "PowerShell" in your Start menu and open it from there
+- **macOS/Linux:** Install PowerShell 7 — see [Step 2](#2-install-powershell) above
+
+### "Get-AzContext: command not found" or "Az module not found"
+The Azure PowerShell module isn't installed or loaded. Run:
+```powershell
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+```
+
+### "Execution of scripts is disabled on this system" (Windows)
+Run this in PowerShell, then try again:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### "Connect-AzAccount" fails or browser doesn't open
+Try the device code login method:
+```powershell
+Connect-AzAccount -UseDeviceAuthentication
+```
+Copy the code shown, go to https://microsoft.com/devicelogin, and enter the code.
+
+### "No ACS resources found" but I know I have some
+- Make sure you selected the correct subscription
+- Verify your account has Reader access: check in the Azure Portal under **Subscriptions → Access control (IAM)**
+- Try specifying the subscription directly:
+  ```powershell
+  Set-AzContext -SubscriptionId "your-subscription-id"
+  ```
+
+### Metrics show 0 for all channels but I know we use ACS
+- Check that you have **Monitoring Reader** permissions on the subscription
+- Try extending the lookback period when prompted (up to 93 days maximum)
+- Some metrics may not be available if the resource is in a region that doesn't support Azure Monitor for that channel
+
+### Claude Code doesn't find the skills
+Make sure you opened Claude Code **inside the repository directory**:
+```bash
+cd ACS-Transition-Agent-v0
+claude
+```
+
+---
+
+## Agent Skills Compatibility
+
+The skills in `.agent/skills/` follow the [Agent Skills open standard](https://agentskills.dev) (Linux Foundation / AAIF) and are compatible with:
+
+| AI Agent | Compatible |
+|----------|-----------|
+| Claude Code | ✅ |
+| GitHub Copilot | ✅ |
+| Cursor | ✅ |
+| Windsurf | ✅ |
+| Cline | ✅ |
+| Gemini CLI | ✅ |
+| OpenCode | ✅ |
 
 ---
 
@@ -272,106 +372,72 @@ All migration paths use Microsoft solutions:
 
 ```
 ACS-Transition-Agent-v0/
-├── README.md                      # This file - project overview
-├── .gitignore
 │
-├── docs/                          # Project documentation
-│   ├── PRESENTATION-NOTES.md      # V-team talking points
-│   ├── MVP-SCOPE.md               # 12-week development plan
-│   ├── INTEGRATION-SUMMARY.md     # Technical integration details
-│   ├── CONVERSATION-NOTES.md      # Full project history
-│   └── claude.md                  # AI assistant context
+├── .agent/skills/                  ← AI Agent Skills (main feature)
+│   ├── azure/                      ← Generic skills (any Azure product)
+│   │   ├── 1-azure-auth-check/
+│   │   ├── 2-azure-subscription-select/
+│   │   ├── 3-azure-resource-scan/
+│   │   ├── 4-azure-channel-detect/
+│   │   ├── 5-azure-metrics-collect/
+│   │   ├── 6-azure-impact-analyze/
+│   │   └── 7-azure-report-generate/
+│   └── acs/                        ← ACS-specific skills
+│       ├── 0-acs-full-scan/        ← Start here
+│       ├── 1-acs-resource-scan/
+│       ├── 2-acs-channel-detect/
+│       ├── 3-acs-metrics-collect/
+│       ├── 4-acs-impact-analyze/
+│       └── 5-acs-report-generate/
 │
-├── scripts/                       # Assessment & automation scripts
-│   ├── README.md                  # Scripts index
-│   └── powershell/
-│       ├── README.md              # PowerShell tool documentation
-│       └── acs-impact-assessment-tool.ps1
+├── scripts/powershell/             ← Standalone PowerShell tool (alternative)
+│   └── acs-impact-assessment-tool.ps1
 │
-├── migration-guides/              # Step-by-step migration documentation
-│   ├── README.md                  # Guides index
+├── migration-guides/               ← Step-by-step migration documentation
 │   └── email/
-│       ├── email-service-migration.md
-│       └── email-service-migration.wiki.md
+│       └── email-service-migration.md
 │
-└── ai-agent/                      # AI-powered web application (future)
-    └── README.md                  # AI agent roadmap and features
+├── exports/                        ← Assessment reports saved here
+│
+└── docs/                           ← Project documentation
+    ├── STATUS-NOTES.md
+    ├── MVP-SCOPE.md
+    └── CONVERSATION-NOTES.md
 ```
 
 ---
 
-## Getting Started
+## Alternative: PowerShell Script (No AI Agent Required)
 
-### Prerequisites
+If you prefer not to use an AI agent, a standalone PowerShell script is also available:
 
-**For PowerShell Scripts:**
-- PowerShell 5.1 or later
-- Azure PowerShell module (`Az`)
-- Azure account with Reader permissions on subscriptions
+```powershell
+# Navigate to the scripts directory
+cd scripts/powershell
 
-**For Migration Guides:**
-- Access to Azure subscription
-- Understanding of current ACS implementation
-- Development environment for your language (TypeScript, C#, etc.)
+# Fast scan — Email and Phone Numbers only (~30 seconds)
+.\acs-impact-assessment-tool.ps1
 
-### Installation
+# Full scan — all 5 channels with 90-day usage metrics (~3-5 minutes)
+.\acs-impact-assessment-tool.ps1 -IncludeMetrics
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-org/ACS-Transition-Agent-v0.git
-   cd ACS-Transition-Agent-v0
-   ```
+# Scan a specific subscription
+.\acs-impact-assessment-tool.ps1 -IncludeMetrics -SubscriptionId "your-sub-id"
+```
 
-2. **Choose your starting point:**
-   - **Assessment:** [scripts/powershell/README.md](scripts/powershell/README.md)
-   - **Migration:** [migration-guides/README.md](migration-guides/README.md)
-
----
-
-## Documentation
-
-- **[Project Vision & Scope](docs/MVP-SCOPE.md)** - Detailed 12-week plan and rationale
-- **[Presentation Notes](docs/PRESENTATION-NOTES.md)** - V-team talking points
-- **[Technical Integration](docs/INTEGRATION-SUMMARY.md)** - Azure SDK integration details
-- **[Full Project History](docs/CONVERSATION-NOTES.md)** - Development decisions and change log
-
----
-
-## Success Metrics (Target: First 3 Months)
-
-- 100+ PowerShell scans performed
-- 50+ customers discover retiring service usage
-- Channel usage data collected (which services are most used?)
-- 20+ customers begin migration planning
-- <10 support tickets/month
-
----
-
-## Contributing
-
-We welcome feedback and contributions!
-
-1. Test the tools with your Azure subscriptions
-2. Review the migration guides
-3. Document any issues or missing steps
-4. Open an issue with details about your environment
-
----
-
-## License
-
-MIT License - See LICENSE file for details
+See [scripts/powershell/README.md](scripts/powershell/README.md) for full documentation.
 
 ---
 
 ## Support
 
-- **Technical questions:** Open an issue in this repository
+- **Questions or issues:** Open an issue in this repository
 - **Migration assistance:** Contact the ACS team or Microsoft FastTrack
-- **Partner support:** Reach out to your Microsoft account team
+- **ACS retirement details:** https://aka.ms/acs-retirement
+- **Migration guides:** https://aka.ms/acs-transition-guides
 
 ---
 
-**Last Updated:** 2026-01-28
-**Maintained By:** ACS Transition Agent Team
-**Current Phase:** Phase 1 - Scripts & Guides
+**Last Updated:** 2026-02-27
+**Maintained By:** Azure Transition Agent Team
+**Current Phase:** Phase 1 — Agent Skills + PowerShell Tool + Email Migration Guide
