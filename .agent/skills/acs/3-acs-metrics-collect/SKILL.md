@@ -19,9 +19,14 @@ Examples:
 
 > **⏱️ Performance Note:** This skill takes ~3-5 minutes per subscription but provides 100% channel coverage across all 5 retiring ACS services.
 
+## Knowledge References
+
+> Authoritative reference data for this skill — update these files when Microsoft changes metric names or query parameters:
+> - **Metric names & query parameters:** [docs/knowledge/acs-metric-names.md](../../../../docs/knowledge/acs-metric-names.md)
+
 ## ACS Metrics Configuration
 
-All metrics are pre-configured. No manual setup required.
+All metrics are pre-configured. No manual setup required. See [acs-metric-names.md](../../../../docs/knowledge/acs-metric-names.md) for the full reference including aggregation types and query parameters.
 
 | Channel | Metrics Collected |
 |---------|------------------|

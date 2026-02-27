@@ -224,9 +224,16 @@ MigrationEffortEstimate
 - JSON file for automated processing
 - Console summary with channel-level statistics
 
+## Knowledge References
+
+> Authoritative reference data for this skill — update these files when retirement dates or migration paths change:
+> - **Retirement dates:** [docs/knowledge/acs-retirement-dates.md](../../../../docs/knowledge/acs-retirement-dates.md)
+> - **Migration paths & guide links:** [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
+
 ## ACS Migration Resources
 - Email: [migration-guides/email/email-service-migration.md](../../../migration-guides/email/email-service-migration.md)
 - All channels: https://aka.ms/acs-transition-guides
+- Full migration paths reference: [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
 
 ## Related Skills
 - Use **4-acs-impact-analyze** before this skill for complete reports

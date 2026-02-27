@@ -126,6 +126,17 @@ After all steps complete:
 - JSON report (machine-readable)
 - Console summary with severity and channel breakdown
 
+## Knowledge Base
+
+Reference data used by this workflow lives in `docs/knowledge/`. Update these files when Microsoft publishes new retirement dates or migration guidance:
+
+| File | Used By |
+|------|---------|
+| [acs-retirement-dates.md](../../../../docs/knowledge/acs-retirement-dates.md) | Impact analysis urgency |
+| [acs-metric-names.md](../../../../docs/knowledge/acs-metric-names.md) | Metrics collection |
+| [acs-severity-thresholds.md](../../../../docs/knowledge/acs-severity-thresholds.md) | Severity + effort calculation |
+| [acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md) | Report links + next steps |
+
 ## ACS Migration Guides
 - 📧 Email: [migration-guides/email/email-service-migration.md](../../../migration-guides/email/email-service-migration.md)
 - All channels: https://aka.ms/acs-transition-guides

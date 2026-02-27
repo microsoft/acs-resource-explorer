@@ -17,6 +17,13 @@ Examples:
 - Channel detection complete (use **2-acs-channel-detect** OR **3-acs-metrics-collect**)
 - Session state contains ACS resource inventory with detection results
 
+## Knowledge References
+
+> Authoritative reference data for this skill — update these files when thresholds, dates, or migration paths change:
+> - **Severity thresholds & effort matrix:** [docs/knowledge/acs-severity-thresholds.md](../../../../docs/knowledge/acs-severity-thresholds.md)
+> - **Retirement dates & urgency tiers:** [docs/knowledge/acs-retirement-dates.md](../../../../docs/knowledge/acs-retirement-dates.md)
+> - **Migration paths & guide links:** [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
+
 ## ACS-Specific Severity Rules
 
 ### Usage-Based Severity
