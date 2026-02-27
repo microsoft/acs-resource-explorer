@@ -23,18 +23,19 @@ The `azure/` skills are a **reusable open pattern** for any Azure service retire
 
 ## Getting Started
 
-### What You'll Need
+### Choose Your Path
 
-Before running the ACS assessment, you need four things installed on your computer:
+There are three ways to run this assessment. Pick the one that fits your situation:
 
-| Requirement | Why | Time to install |
-|-------------|-----|----------------|
-| [Git](#1-install-git) | Clone this repository | ~2 minutes |
-| [PowerShell](#2-install-powershell) | Run Azure commands | ~5 minutes |
-| [Azure PowerShell Module](#3-install-azure-powershell-module-az) | Connect to your Azure subscriptions | ~5 minutes |
-| [Claude Code](#4-install-claude-code) | Run the AI Agent Skills | ~3 minutes |
+| Path | Cost | Best for |
+|------|------|----------|
+| [Option A — Claude Code](#option-a-claude-code-paid) | ~$20/month (Claude Pro) | Most seamless, fully guided experience |
+| [Option B — GitHub Copilot Free](#option-b-github-copilot-free) | Free | Users with a GitHub account who want no cost |
+| [Option C — PowerShell script only](#option-c-powershell-script-no-ai-agent) | Free | Users who don't want an AI agent at all |
 
-> **Already have these?** Jump to [Clone the Repository](#5-clone-the-repository).
+All three options require **Git**, **PowerShell**, and the **Azure PowerShell module** — covered in steps 1–3 below.
+
+> **Already have Git, PowerShell, and the Az module?** Jump to [Choose your AI Agent](#4-choose-your-ai-agent).
 
 ---
 
@@ -122,32 +123,74 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ---
 
-### 4. Install Claude Code
+### 4. Choose Your AI Agent
 
-Claude Code is the AI agent that reads and runs the skills in this repository.
+#### Option A: Claude Code (Paid)
 
-**Install via npm** (requires Node.js — see below if you don't have it):
+**Cost:** Requires a Claude Pro subscription (~$20/month) or Anthropic API credits.
+
+Claude Code is the most seamless option — it fully understands the Agent Skills format and guides you interactively through each step.
+
+**Step 1 — Install Node.js** (if you don't already have it):
+1. Go to https://nodejs.org
+2. Download and install the **LTS** version (the one labeled "Recommended for most users")
+3. Open a new terminal window to pick up the installation
+
+**Step 2 — Install Claude Code:**
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-**If you don't have Node.js installed:**
-1. Go to https://nodejs.org
-2. Download and install the **LTS** version (the recommended one)
-3. Open a new terminal window and run: `npm install -g @anthropic-ai/claude-code`
-
-**Verify Claude Code is installed:**
+**Step 3 — Verify installation:**
 ```bash
 claude --version
 ```
 
-**First-time setup:**
+**Step 4 — Sign in:**
 ```bash
 claude
 ```
-This will prompt you to log in with your Anthropic account. If you don't have one, create a free account at https://claude.ai.
+This opens your browser to sign in with your Anthropic account. If you don't have one, go to https://claude.ai and create an account, then subscribe to Claude Pro.
 
-> **Alternative AI Agents:** The skills in `.agent/skills/` follow the open Agent Skills standard and work with GitHub Copilot, Cursor, Windsurf, Cline, and other compatible AI agents. See [Agent Skills compatibility](#agent-skills-compatibility) for details.
+---
+
+#### Option B: GitHub Copilot Free
+
+**Cost:** Free with any GitHub personal account (no credit card required).
+
+GitHub Copilot Free gives you 50 AI chat messages per month — enough for occasional ACS scans. It runs inside **VS Code**.
+
+**Step 1 — Install VS Code** (if you don't already have it):
+1. Go to https://code.visualstudio.com
+2. Download and run the installer for your operating system
+
+**Step 2 — Install the GitHub Copilot extension:**
+1. Open VS Code
+2. Click the Extensions icon in the left sidebar (looks like four squares)
+3. Search for **GitHub Copilot**
+4. Click **Install**
+
+**Step 3 — Sign in to GitHub Copilot:**
+1. After installing, click the GitHub Copilot icon in the bottom status bar
+2. Click **Sign in to GitHub**
+3. Complete the browser sign-in with your GitHub account
+4. When asked about a plan, select **GitHub Copilot Free**
+
+**Step 4 — Open the project in VS Code:**
+```bash
+# After cloning the repo (Step 5 below), open it in VS Code:
+code ACS-Transition-Agent-v0
+```
+
+> **Note:** GitHub Copilot Free includes 50 chat messages per month. A full ACS scan typically uses 5–10 messages. If you run scans frequently, consider upgrading to GitHub Copilot Pro ($10/month).
+
+---
+
+#### Option C: PowerShell Script (No AI Agent)
+
+**Cost:** Free — no AI agent needed.
+
+If you prefer not to use an AI agent, the standalone PowerShell script performs the same assessment automatically. Skip to [Option C: PowerShell Script](#option-c-powershell-script-no-ai-agent-1) in the Run section below.
 
 ---
 
@@ -186,6 +229,8 @@ You should see your account email, tenant ID, and current subscription.
 
 ### 7. Run the ACS Assessment
 
+#### Option A: Claude Code (Paid)
+
 Open Claude Code in the project directory:
 
 ```bash
@@ -193,19 +238,17 @@ cd ACS-Transition-Agent-v0
 claude
 ```
 
-Then run the full ACS assessment using one of these methods:
+Then start the assessment using either method:
 
-**Option A — Type a natural language request:**
 ```
 Run an ACS deprecation scan
 ```
-
-**Option B — Use the slash command:**
+or:
 ```
 /0-acs-full-scan
 ```
 
-Claude will guide you through the complete workflow interactively:
+Claude guides you through the complete workflow interactively:
 
 ```
 Step 1: Verify Azure authentication         ← checks you're logged in
@@ -215,6 +258,43 @@ Step 4: Choose detection mode              ← fast (30 sec) or full (3-5 min wi
 Step 5: Analyze impact                     ← severity + migration effort per resource
 Step 6: Generate reports                   ← saves CSV, Markdown, JSON to ./exports/
 ```
+
+---
+
+#### Option B: GitHub Copilot Free
+
+Make sure you've opened the project folder in VS Code (`code ACS-Transition-Agent-v0`), then:
+
+1. Open the **Chat** panel: press `Ctrl+Shift+I` (Windows/Linux) or `Cmd+Shift+I` (macOS)
+2. In the chat input, type:
+   ```
+   Run an ACS deprecation scan
+   ```
+3. GitHub Copilot will read the skills from `.agent/skills/acs/0-acs-full-scan/SKILL.md` and guide you through the workflow
+
+> **Tip:** If Copilot doesn't automatically find the skill, point it directly:
+> ```
+> Follow the instructions in .agent/skills/acs/0-acs-full-scan/SKILL.md and run the ACS assessment
+> ```
+
+---
+
+#### Option C: PowerShell Script (No AI Agent)
+
+No AI agent or installation beyond PowerShell and the Az module is required.
+
+```powershell
+# Navigate to the scripts directory
+cd scripts/powershell
+
+# Full scan — all 5 channels with 90-day usage metrics (recommended)
+.\acs-impact-assessment-tool.ps1 -IncludeMetrics
+
+# Fast scan — Email and Phone Numbers only (~30 seconds)
+.\acs-impact-assessment-tool.ps1
+```
+
+Results are saved to `exports/ACS_Impact_Assessment.csv`. See [scripts/powershell/README.md](scripts/powershell/README.md) for all options.
 
 ---
 
@@ -404,28 +484,6 @@ ACS-Transition-Agent-v0/
     ├── MVP-SCOPE.md
     └── CONVERSATION-NOTES.md
 ```
-
----
-
-## Alternative: PowerShell Script (No AI Agent Required)
-
-If you prefer not to use an AI agent, a standalone PowerShell script is also available:
-
-```powershell
-# Navigate to the scripts directory
-cd scripts/powershell
-
-# Fast scan — Email and Phone Numbers only (~30 seconds)
-.\acs-impact-assessment-tool.ps1
-
-# Full scan — all 5 channels with 90-day usage metrics (~3-5 minutes)
-.\acs-impact-assessment-tool.ps1 -IncludeMetrics
-
-# Scan a specific subscription
-.\acs-impact-assessment-tool.ps1 -IncludeMetrics -SubscriptionId "your-sub-id"
-```
-
-See [scripts/powershell/README.md](scripts/powershell/README.md) for full documentation.
 
 ---
 
