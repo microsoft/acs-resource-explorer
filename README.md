@@ -9,7 +9,7 @@
 A set of composable **AI Agent Skills** that automate the full assessment workflow:
 
 1. **Scan** — discover all ACS resources across your subscriptions
-2. **Detect** — identify which retiring channels are in use (Email, SMS, Chat, Calling, Phone Numbers)
+2. **Detect** — identify which impacted channels are in use (4 retiring + 1 breaking change)
 3. **Analyze** — calculate severity and migration effort based on actual usage
 4. **Report** — export results to CSV, Markdown, and JSON with links to migration guides
 
@@ -427,15 +427,15 @@ cd scripts/powershell
 
 ## What the Assessment Detects
 
-The full scan (`/acs/3-acs-metrics-collect`) checks for active usage of all 5 retiring ACS channels over the past 90 days:
+The full scan (`/acs/3-acs-metrics-collect`) checks for active usage of all 5 impacted ACS channels over the past 90 days:
 
-| Channel | What's Retiring | Detection |
-|---------|----------------|-----------|
-| Email Service | ACS standalone Email SDK | ✅ Full (metrics) |
-| SMS API | ACS standalone SMS API | ✅ Full (metrics) |
-| Chat SDK | ACS standalone Chat SDK | ✅ Full (metrics) |
-| Calling SDK | ACS standalone Calling SDK | ✅ Full (metrics) |
-| Phone Numbers SDK | ACS standalone Phone Numbers SDK | ✅ Full (metrics) |
+| Channel | Status Type | Detection |
+|---------|------------|-----------|
+| Email Service | 🔴 Retirement | ✅ Full (metrics) |
+| SMS API | 🔴 Retirement | ✅ Full (metrics) |
+| Chat SDK | 🔴 Retirement | ✅ Full (metrics) |
+| Calling SDK | 🟡 Breaking Change — must integrate with Teams | ✅ Full (metrics) |
+| Phone Numbers SDK | 🔴 Retirement | ✅ Full (metrics) |
 
 **Severity levels assigned:**
 
@@ -448,19 +448,19 @@ The full scan (`/acs/3-acs-metrics-collect`) checks for active usage of all 5 re
 
 ---
 
-## Migration Guides
+## Channel Guides
 
-After your assessment, use these guides to plan your migration:
+After your assessment, use these guides to plan your next steps:
 
-| Retiring Service | Migration Guide | Status |
-|-----------------|----------------|--------|
-| Email Service | [migration-guides/email/email-service-migration.md](migration-guides/email/email-service-migration.md) | ✅ Available |
-| SMS API | Coming soon | 🚧 In progress |
-| Chat SDK | Coming soon | 🚧 In progress |
-| Calling SDK | Coming soon | 🚧 In progress |
-| Phone Numbers SDK | Coming soon | 🚧 In progress |
+| Channel | Status Type | Guide |
+|---------|------------|-------|
+| Email Service | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-email-migration) |
+| SMS API | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-sms-migration) |
+| Chat SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-chat-migration) |
+| Calling SDK | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-calling-migration) — must integrate with Teams |
+| Phone Numbers SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-phone-migration) |
 
-All migration paths follow Microsoft first-party solutions only (Microsoft 365 HVE, Teams integration).
+All channels effective **March 31, 2029**. Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 ---
 
@@ -560,9 +560,7 @@ ACS-Transition-Agent-v0/
 ├── scripts/powershell/             ← Standalone PowerShell tool (alternative)
 │   └── acs-impact-assessment-tool.ps1
 │
-├── migration-guides/               ← Step-by-step migration documentation
-│   └── email/
-│       └── email-service-migration.md
+├── migration-guides/               ← Migration guide placeholder (see aka.ms/acs-retirement-and-breaking-changes-guide)
 │
 └── exports/                        ← Assessment reports saved here (gitignored)
 ```
@@ -573,8 +571,8 @@ ACS-Transition-Agent-v0/
 
 - **Questions or issues:** Open an issue in this repository
 - **Migration assistance:** Contact the ACS team or Microsoft FastTrack
-- **ACS retirement details:** https://aka.ms/acs-retirement
-- **Migration guides:** https://aka.ms/acs-transition-guides
+- **ACS migration guidance:** https://aka.ms/acs-retirement-and-breaking-changes-guide
+- **Channel migration guides:** https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration
 
 ---
 

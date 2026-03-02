@@ -117,7 +117,7 @@ After all steps complete:
 💡 Next Steps:
 1. Prioritize 🔴 Critical resources first
 2. Review migration guides for each detected channel
-3. Visit https://aka.ms/acs-transition-guides
+3. Visit https://aka.ms/acs-retirement-and-breaking-changes-guide
 ```
 
 ## Output
@@ -137,9 +137,13 @@ Reference data used by this workflow lives in `docs/knowledge/`. Update these fi
 | [acs-severity-thresholds.md](../../../../docs/knowledge/acs-severity-thresholds.md) | Severity + effort calculation |
 | [acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md) | Report links + next steps |
 
-## ACS Migration Guides
-- 📧 Email: [migration-guides/email/email-service-migration.md](../../../migration-guides/email/email-service-migration.md)
-- All channels: https://aka.ms/acs-transition-guides
+## ACS Channel Guides
+- 📧 Email — Retirement Guide: https://aka.ms/acs-email-migration
+- 📱 SMS — Retirement Guide: https://aka.ms/acs-sms-migration
+- 💬 Chat — Retirement Guide: https://aka.ms/acs-chat-migration
+- 📞 Calling — Breaking Change Guide: https://aka.ms/acs-calling-migration
+- ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-phone-migration
+- All channels — Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 ## Related Skills (Individual Steps)
 Run these individually if you need to re-run a specific step:

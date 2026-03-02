@@ -1,87 +1,84 @@
-# Quick Start Guide
+# Quick Start — ACS Transition Agent
 
-Get the ACS Transition Agent running in 5 minutes!
+Run a full ACS deprecation impact assessment in under 5 minutes.
 
-## Step 1: Install Dependencies
+---
 
-```bash
-npm install
+## Prerequisites
+
+1. **PowerShell 7** — [Download](https://aka.ms/install-powershell-windows)
+2. **Azure PowerShell Az module:**
+   ```powershell
+   Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+   ```
+3. **Azure authentication:**
+   ```powershell
+   Connect-AzAccount
+   ```
+4. **Access level required:** Reader + Monitoring Reader on target subscription(s)
+
+---
+
+## Option A — GitHub Copilot (Recommended)
+
+1. Open this repo in VS Code
+2. Open Copilot Chat: **Ctrl+Alt+I** (Windows/Linux) or **Ctrl+Cmd+I** (macOS)
+3. Type:
+   ```
+   Run an ACS deprecation scan
+   ```
+4. Follow the interactive prompts — the agent guides you through all 6 steps
+
+---
+
+## Option B — Claude Code
+
+1. Open this repo in VS Code (with Claude Code extension installed)
+2. Open Claude chat and type:
+   ```
+   Run an ACS deprecation scan
+   ```
+3. Follow the interactive prompts
+
+---
+
+## Option C — PowerShell Script (No AI agent required)
+
+```powershell
+# Navigate to the scripts directory
+cd scripts/powershell
+
+# Fast scan (resource detection only, ~30 seconds)
+.\acs-impact-assessment-tool.ps1
+
+# Full scan with Azure Monitor metrics (~3-5 minutes)
+.\acs-impact-assessment-tool.ps1 -IncludeMetrics
+
+# Scan a specific subscription
+.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-subscription-id" -IncludeMetrics
 ```
 
-## Step 2: Set Up Azure AD App
+Reports are saved to `./exports/` in CSV format.
 
-1. Go to [Azure Portal](https://portal.azure.com)
-2. Navigate to **Azure Active Directory** → **App registrations**
-3. Click **New registration**
-4. Fill in:
-   - Name: `ACS Transition Agent`
-   - Redirect URI: `http://localhost:3000`
-5. Click **Register**
-6. Note your **Application (client) ID** and **Directory (tenant) ID**
+---
 
-## Step 3: Configure API Permissions
+## What the Scan Detects
 
-1. In your app registration, go to **API permissions**
-2. Click **Add a permission**
-3. Select **Azure Service Management**
-4. Check **user_impersonation**
-5. Click **Add permissions**
-6. Click **Grant admin consent** (requires admin)
+Five impacted ACS channels across all your subscriptions (effective **March 31, 2029**):
 
-## Step 4: Create Environment File
+| Channel | Status Type | Effective Date |
+|---------|------------|---------------|
+| Email Service | 🔴 Retirement | 2029-03-31 |
+| SMS API | 🔴 Retirement | 2029-03-31 |
+| Chat SDK | 🔴 Retirement | 2029-03-31 |
+| Calling SDK | 🟡 Breaking Change — must integrate with Teams | 2029-03-31 |
+| Phone Numbers SDK | 🔴 Retirement | 2029-03-31 |
 
-Copy the example environment file:
+---
 
-```bash
-cp .env.local.example .env.local
-```
+## After the Scan
 
-Edit `.env.local` and add your values:
-
-```
-AZURE_CLIENT_ID=your-client-id-from-step-2
-AZURE_TENANT_ID=your-tenant-id-from-step-2
-NEXT_PUBLIC_REDIRECT_URI=http://localhost:3000
-```
-
-## Step 5: Run the App
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Step 6: Use the Tool
-
-1. Click **Sign In with Microsoft**
-2. Grant permissions when prompted
-3. Click **Start Scan** to scan your subscriptions
-4. View the results and export reports
-
-## Troubleshooting
-
-### "Access token is required" error
-- Make sure you've granted API permissions and admin consent in Step 3
-
-### "No resources found"
-- Ensure you have Azure Communication Services resources in your subscription
-- Check that you have at least Reader access to the subscription
-
-### Authentication popup blocked
-- Allow popups for localhost:3000 in your browser
-
-### CORS errors
-- Make sure you're running on localhost:3000 (not 127.0.0.1)
-- Update your Azure AD app redirect URI if needed
-
-## Next Steps
-
-- Customize retiring features in [src/config/retiring-features.ts](src/config/retiring-features.ts)
-- Deploy to Azure Static Web Apps or App Service
-- Add more metrics or SDK detection criteria
-- Integrate with your CI/CD pipeline
-
-## Need Help?
-
-See the full [README.md](README.md) for detailed documentation and architecture information.
+- Review the severity summary (Critical → Warning → Info)
+- Prioritize Critical resources first
+- Retirement & Breaking Changes guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+- Channel-specific guides: https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration

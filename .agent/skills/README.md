@@ -81,15 +81,15 @@ These skills are pre-configured for the [retiring ACS standalone SDKs and APIs](
 | [4-acs-impact-analyze](acs/4-acs-impact-analyze/SKILL.md) | ACS severity rules, retirement dates, migration guide links |
 | [5-acs-report-generate](acs/5-acs-report-generate/SKILL.md) | ACS-specific CSV (19 columns), Markdown with guide links, JSON |
 
-### Retiring ACS Channels Covered
+### ACS Channels Covered
 
-| Channel | Fast Detection | Full Detection | Retirement |
-|---------|---------------|----------------|------------|
-| Email Service | ✅ | ✅ | 2027-12-31 |
-| Phone Numbers SDK | ✅ | ✅ | TBD |
-| SMS API | ❌ | ✅ | TBD |
-| Chat SDK | ❌ | ✅ | TBD |
-| Calling SDK | ❌ | ✅ | TBD |
+| Channel | Fast Detection | Full Detection | Status Type | Effective Date |
+|---------|---------------|----------------|------------|----------------|
+| Email Service | ✅ | ✅ | 🔴 Retirement | 2029-03-31 |
+| Phone Numbers SDK | ✅ | ✅ | 🔴 Retirement | 2029-03-31 |
+| SMS API | ❌ | ✅ | 🔴 Retirement | 2029-03-31 |
+| Chat SDK | ❌ | ✅ | 🔴 Retirement | 2029-03-31 |
+| Calling SDK | ❌ | ✅ | 🟡 Breaking Change | 2029-03-31 |
 
 ---
 
@@ -159,12 +159,15 @@ To create a skill set for another retiring Azure product, use the `azure/` skill
 
 | Channel | Guide |
 |---------|-------|
-| Email Service | [migration-guides/email/email-service-migration.md](../../migration-guides/email/email-service-migration.md) |
-| SMS, Chat, Calling, Phone Numbers | https://aka.ms/acs-transition-guides |
+| Email Service | https://aka.ms/acs-email-migration |
+| SMS API | https://aka.ms/acs-sms-migration |
+| Chat SDK | https://aka.ms/acs-chat-migration |
+| Calling SDK | https://aka.ms/acs-calling-migration |
+| Phone Numbers SDK | https://aka.ms/acs-phone-migration |
+| Retirement & Breaking Changes | https://aka.ms/acs-retirement-and-breaking-changes-guide |
 
 ---
 
 ## References
 - [Agent Skills Open Standard](https://agentskills.dev)
-- [ACS Retirement Announcements](https://aka.ms/acs-retirement)
-- [ACS Transition Guides](https://aka.ms/acs-transition-guides)
+- [ACS Retirement & Breaking Changes Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide)

@@ -49,6 +49,11 @@ MigrationEffortEstimate
 
 ## Workflow
 
+### 0) **Load Knowledge References**
+   Read the following knowledge files before generating the report:
+   - Read `docs/knowledge/acs-retirement-dates.md` — channel status types and effective dates for report headers
+   - Read `docs/knowledge/acs-migration-paths.md` — migration paths and guide links for per-resource recommendations
+
 ### 1) **Load ACS Resource Inventory**
    - Retrieve complete inventory from session state
    - Display data availability check:
@@ -125,9 +130,10 @@ MigrationEffortEstimate
    - **Channels Impacted:** Email, Chat, Phone Numbers
    - **Usage:** Email: 1,250 | Chat: 543 | Phone Numbers: 15
    - **Migration Effort:** High
-   - **Migration Guides:**
-     - 📧 [Email Service Migration](migration-guides/email/email-service-migration.md)
-     - 💬 [Chat SDK Migration](https://aka.ms/acs-chat-migration) *(coming soon)*
+   - **Guides:**
+     - 📧 [Email Retirement Guide](https://aka.ms/acs-email-migration)
+     - 💬 [Chat Retirement Guide](https://aka.ms/acs-chat-migration)
+     - 📞 [Calling Breaking Change Guide](https://aka.ms/acs-calling-migration) *(if Calling detected)*
    - **Next Steps:**
      1. Schedule migration planning meeting
      2. Review Email migration guide
@@ -135,12 +141,12 @@ MigrationEffortEstimate
 
    [Repeat for each resource...]
 
-   ## ACS Migration Resources
-   - 📧 Email Service: [migration-guides/email/email-service-migration.md](../migration-guides/email/email-service-migration.md)
-   - 💬 Chat SDK: https://aka.ms/acs-chat-migration
-   - 📞 Calling SDK: https://aka.ms/acs-calling-migration
-   - 📱 SMS API: https://aka.ms/acs-sms-migration
-   - ☎️ Phone Numbers: https://aka.ms/acs-phone-migration
+   ## ACS Channel Guides
+   - 📧 Email — Retirement Guide: https://aka.ms/acs-email-migration
+   - 📱 SMS — Retirement Guide: https://aka.ms/acs-sms-migration
+   - 💬 Chat — Retirement Guide: https://aka.ms/acs-chat-migration
+   - 📞 Calling — Breaking Change Guide: https://aka.ms/acs-calling-migration
+   - ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-phone-migration
 
    ## Next Steps
    1. Prioritize Critical resources for immediate migration planning
@@ -207,7 +213,7 @@ MigrationEffortEstimate
    💡 Next Steps:
    1. Review exported reports in: ./exports/
    2. Read migration guides for impacted channels
-   3. Visit https://aka.ms/acs-transition-guides for additional resources
+   3. Visit https://aka.ms/acs-retirement-and-breaking-changes-guide for migration guidance
    ```
 
 ### 8) **Display Report Access Information**
@@ -231,8 +237,12 @@ MigrationEffortEstimate
 > - **Migration paths & guide links:** [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
 
 ## ACS Migration Resources
-- Email: [migration-guides/email/email-service-migration.md](../../../migration-guides/email/email-service-migration.md)
-- All channels: https://aka.ms/acs-transition-guides
+- 📧 Email: https://aka.ms/acs-email-migration
+- 📱 SMS: https://aka.ms/acs-sms-migration
+- 💬 Chat: https://aka.ms/acs-chat-migration
+- 📞 Calling: https://aka.ms/acs-calling-migration
+- ☎️ Phone Numbers: https://aka.ms/acs-phone-migration
+- Retirement & Breaking Changes: https://aka.ms/acs-retirement-and-breaking-changes-guide
 - Full migration paths reference: [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
 
 ## Related Skills

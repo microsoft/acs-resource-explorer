@@ -44,17 +44,17 @@ Examples:
 | < 90 days | Escalate severity by one level |
 | < 180 days | Add urgency flag |
 
-### ACS Service Retirement Dates
+### ACS Service Status and Effective Dates
 
-| Channel | Retirement Status |
-|---------|-----------------|
-| Email Service (standalone) | 2027-12-31 |
-| SMS API (standalone) | TBD — monitor ACS retirement announcements |
-| Chat SDK (standalone) | TBD — monitor ACS retirement announcements |
-| Calling SDK (standalone) | TBD — monitor ACS retirement announcements |
-| Phone Numbers SDK (standalone) | TBD — monitor ACS retirement announcements |
+| Channel | Status Type | Effective Date |
+|---------|------------|---------------|
+| Email Service (standalone) | 🔴 Retirement | **2029-03-31** |
+| SMS API (standalone) | 🔴 Retirement | **2029-03-31** |
+| Chat SDK (standalone) | 🔴 Retirement | **2029-03-31** |
+| Calling SDK (standalone) | 🟡 Breaking Change | **2029-03-31** — must integrate with Teams |
+| Phone Numbers SDK (standalone) | 🔴 Retirement | **2029-03-31** ⚠️ New customers cannot acquire numbers after 2026-03-18 |
 
-> Always verify current retirement dates at: https://aka.ms/acs-retirement
+> Always verify current retirement dates at: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 ## ACS Migration Effort Estimation
 
@@ -82,6 +82,12 @@ Examples:
 | <1,000 operations | No change |
 
 ## Workflow
+
+### 0) **Load Knowledge References**
+   Read the following knowledge files before beginning analysis:
+   - Read `docs/knowledge/acs-severity-thresholds.md` — severity thresholds and migration effort matrix
+   - Read `docs/knowledge/acs-retirement-dates.md` — channel status types, effective dates, and urgency tiers
+   - Read `docs/knowledge/acs-migration-paths.md` — migration paths and guide links per channel
 
 ### 1) **Load ACS Resource Inventory**
    - Retrieve inventory with detection results from session state
@@ -147,13 +153,13 @@ Examples:
 
    | Channel | Migration Guide |
    |---------|----------------|
-   | Email | `migration-guides/email/email-service-migration.md` |
-   | SMS | `migration-guides/sms/sms-migration.md` *(pending)* |
-   | Chat | `migration-guides/chat/chat-sdk-migration.md` *(pending)* |
-   | Calling | `migration-guides/calling/calling-sdk-migration.md` *(pending)* |
-   | Phone Numbers | `migration-guides/phone-numbers/phone-numbers-migration.md` *(pending)* |
+   | Email | Retirement Guide | https://aka.ms/acs-email-migration |
+   | SMS | Retirement Guide | https://aka.ms/acs-sms-migration |
+   | Chat | Retirement Guide | https://aka.ms/acs-chat-migration |
+   | Calling | Breaking Change Guide | https://aka.ms/acs-calling-migration |
+   | Phone Numbers | Retirement Guide | https://aka.ms/acs-phone-migration |
 
-   > Reference: https://aka.ms/acs-transition-guides
+   > Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 ### 6) **Calculate Priority Score**
    ```

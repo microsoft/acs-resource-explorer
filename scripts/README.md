@@ -51,8 +51,7 @@ Additional scripts will be added to this folder as the ACS Transition Agent suit
 
 ## Related Resources
 
-- [Migration Guides](../migration-guides/) - Step-by-step migration documentation
-- [AI Agent](../ai-agent/) - Interactive web application (future)
+- [Migration Guides](../migration-guides/) - Migration guide references
 - [Project Documentation](../docs/) - Full project details
 
 ---

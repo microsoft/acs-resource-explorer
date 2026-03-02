@@ -517,9 +517,12 @@ This PowerShell script provides an alternative assessment method that complement
    - Plan multi-channel migrations (High effort) early
 
 3. **Access Migration Guides**
-   - Email Service → Microsoft 365 HVE: See `email-service-migration.md`
-   - SMS API → Alternative providers (guide in development)
-   - Chat/Calling → Teams integration (guides in development)
+   - Email Service → Microsoft 365 HVE: https://aka.ms/acs-email-migration
+   - SMS API: https://aka.ms/acs-sms-migration
+   - Chat SDK: https://aka.ms/acs-chat-migration
+   - Calling SDK: https://aka.ms/acs-calling-migration
+   - Phone Numbers SDK: https://aka.ms/acs-phone-migration
+   - Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 4. **Create Migration Timeline**
    - Check retirement dates for each service
@@ -581,9 +584,13 @@ MIT License - See LICENSE file for details
 
 ## Related Resources
 
-- **Web-based ACS Transition Agent:** See `README.md` in project root
-- **Email Migration Guide:** `migration-guides/email-service-migration.md`
-- **MVP Scope:** `MVP-SCOPE.md`
+- **ACS Transition Agent:** See `README.md` in project root
+- **Email Migration Guide:** https://aka.ms/acs-email-migration
+- **SMS Migration Guide:** https://aka.ms/acs-sms-migration
+- **Chat Migration Guide:** https://aka.ms/acs-chat-migration
+- **Calling Migration Guide:** https://aka.ms/acs-calling-migration
+- **Phone Numbers Migration Guide:** https://aka.ms/acs-phone-migration
+- **Retirement & Breaking Changes:** https://aka.ms/acs-retirement-and-breaking-changes-guide
 - **Azure Monitor Metrics:** [Microsoft Docs](https://docs.microsoft.com/azure/communication-services/concepts/metrics)
 
 ---

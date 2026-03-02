@@ -1,45 +1,52 @@
 # ACS Migration Paths
 
 **Policy:** Microsoft first-party solutions only. No third-party or marketplace partners (e.g., SendGrid, Twilio).
-**Source:** https://aka.ms/acs-transition-guides
+**Source:** https://aka.ms/acs-retirement-and-breaking-changes-guide
 **Last Verified:** 2026-02-27
-**Update This File When:** Migration guides are published for SMS, Chat, Calling, or Phone Numbers.
+**Update This File When:** Microsoft publishes updated migration guidance.
 
 ---
 
-## Migration Target by Channel
+## Action Required by Channel
 
-| Channel | Retiring | Replace With | Base Effort | Guide Status |
-|---------|----------|-------------|-------------|-------------|
-| **Email Service** | ACS standalone Email SDK | Microsoft 365 High-Volume Email (HVE) | Medium | [Available](../../migration-guides/email/email-service-migration.md) |
-| **SMS API** | ACS standalone SMS API | Azure Communication Services SMS (new API) | Low | Pending — https://aka.ms/acs-sms-migration |
-| **Chat SDK** | ACS standalone Chat SDK | Microsoft Teams Chat integration | Medium | Pending — https://aka.ms/acs-chat-migration |
-| **Calling SDK** | ACS standalone Calling SDK | Microsoft Teams Calling / Azure Communication Services Calling (new API) | High | Pending — https://aka.ms/acs-calling-migration |
-| **Phone Numbers SDK** | ACS standalone Phone Numbers SDK | Azure Communication Services Phone Numbers (new API) | Low | Pending — https://aka.ms/acs-phone-migration |
+| Channel | Status Type | Action Required | Replace With / Integrate With | Effort | Guide |
+|---------|------------|----------------|------------------------------|--------|-------|
+| **Email Service** | 🔴 Retirement | Migrate before 2029-03-31 | Evaluate Azure Marketplace alternatives (no direct Microsoft replacement) | Medium | https://aka.ms/acs-email-migration |
+| **SMS API** | 🔴 Retirement | Migrate before 2029-03-31; port numbers now if needed | Azure Marketplace SMS providers | Low | https://aka.ms/acs-sms-migration |
+| **Chat SDK** | 🔴 Retirement | Migrate before 2029-03-31; export chat history | Microsoft Graph APIs + Microsoft Teams Chat | Medium | https://aka.ms/acs-chat-migration |
+| **Calling SDK** | 🟡 Breaking Change | Integrate with Teams before 2029-03-31 | Microsoft Teams Phone Extensibility, Teams Meeting Interop, or Teams Click-2-Call | High | https://aka.ms/acs-calling-migration |
+| **Phone Numbers (Direct Offer)** | 🔴 Retirement | Port numbers before 2029-03-31 | Teams Phone Extensibility (port via support ticket) or third-party provider | Low | https://aka.ms/acs-phone-migration |
 
 ---
 
-## Channel Effort Rationale
+## Effort Rationale
 
 | Channel | Why That Effort | Key Migration Challenge |
 |---------|----------------|------------------------|
-| Email | Medium | Template migration, delivery tracking, SPF/DKIM/DMARC setup for M365 HVE |
-| SMS | Low | Simple send/receive API swap; minimal business logic |
-| Chat | Medium | Thread history, participant management, UI integration |
-| Calling | High | Real-time communications architecture, PSTN routing, SIP trunks |
-| Phone Numbers | Low | Number porting and routing configuration only |
+| Email | Medium | No direct Microsoft replacement; evaluate alternatives; SPF/DKIM/DMARC changes |
+| SMS | Low | Port numbers to new provider; re-verification required; LOA process |
+| Chat | Medium | Export chat history; update to Graph API; thread/participant model differences |
+| Calling | High | Teams integration architecture; PSTN routing; new major-version SDK required |
+| Phone Numbers | Low | Number porting and routing reconfiguration; submit support ticket for Teams port |
+
+---
+
+## Calling SDK — Breaking Change Detail
+
+The Calling SDK is a **Breaking Change**, not a retirement. The service continues but standalone use (without Teams) loses support after March 31, 2029.
+
+**Supported paths to continue receiving support:**
+1. Microsoft Teams Phone Extensibility (TPE) — recommended for PSTN/Call Automation scenarios
+2. Microsoft Teams Meeting Interoperability — recommended for meeting/conferencing scenarios
+3. Microsoft Teams Click-2-Call for Teams Voice Apps
+
+A new major-version SDK will be provided. Customers have until March 31, 2029 to migrate to the new SDK.
 
 ---
 
 ## Local Migration Guides
 
-| Channel | Local Guide | Status |
-|---------|------------|--------|
-| Email | [migration-guides/email/email-service-migration.md](../../migration-guides/email/email-service-migration.md) | Complete |
-| SMS | migration-guides/sms/sms-migration.md | Not yet created |
-| Chat | migration-guides/chat/chat-sdk-migration.md | Not yet created |
-| Calling | migration-guides/calling/calling-sdk-migration.md | Not yet created |
-| Phone Numbers | migration-guides/phone-numbers/phone-numbers-migration.md | Not yet created |
+No local migration guides are present in this repository. All guides are available via Microsoft's official resources below.
 
 ---
 
@@ -47,10 +54,10 @@
 
 | Resource | URL |
 |----------|-----|
-| ACS Retirement overview | https://aka.ms/acs-retirement |
-| All transition guides | https://aka.ms/acs-transition-guides |
-| Email → M365 HVE | https://aka.ms/acs-email-migration |
-| SMS migration | https://aka.ms/acs-sms-migration |
-| Chat SDK migration | https://aka.ms/acs-chat-migration |
-| Calling SDK migration | https://aka.ms/acs-calling-migration |
-| Phone Numbers migration | https://aka.ms/acs-phone-migration |
+| Retirement & Breaking Changes (comprehensive) | https://aka.ms/acs-retirement-and-breaking-changes-guide |
+| Email Retirement Guide | https://aka.ms/acs-email-migration |
+| SMS Retirement Guide | https://aka.ms/acs-sms-migration |
+| Chat Retirement Guide | https://aka.ms/acs-chat-migration |
+| Calling SDK Breaking Change Guide | https://aka.ms/acs-calling-migration |
+| Phone Numbers Retirement Guide | https://aka.ms/acs-phone-migration |
+| Dynamics 365 customers | https://aka.ms/D365ACSDeprecationGuide |

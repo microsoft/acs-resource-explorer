@@ -44,5 +44,9 @@ Reports are saved to `./exports/` in CSV, Markdown, and JSON formats.
 
 ## Migration Guides
 
-- Email → Microsoft 365 HVE: see `migration-guides/email/email-service-migration.md`
-- All channels: https://aka.ms/acs-transition-guides
+- Email: https://aka.ms/acs-email-migration
+- SMS: https://aka.ms/acs-sms-migration
+- Chat: https://aka.ms/acs-chat-migration
+- Calling: https://aka.ms/acs-calling-migration
+- Phone Numbers: https://aka.ms/acs-phone-migration
+- Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement-and-breaking-changes-guide

@@ -38,6 +38,10 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
 
 ## Workflow
 
+### 0) **Load Knowledge References**
+   Read the following knowledge file before collecting metrics:
+   - Read `docs/knowledge/acs-metric-names.md` — metric names, aggregation types, and query parameters for all 5 ACS channels
+
 ### 1) **Load ACS Resource Inventory**
    - Retrieve ACS resources from session state (saved by **1-acs-resource-scan**)
    - If no resources: Exit with "No ACS resources to analyze"
