@@ -36,7 +36,7 @@ All agent skills are in `.agent/skills/`:
 
 ## Knowledge Base
 
-Reference data (retirement dates, metric names, severity thresholds, migration paths) lives in `docs/knowledge/`. When Microsoft publishes updated retirement dates or migration guidance, update these files — the skills read from them.
+Reference data (retirement dates, metric names, migration paths) lives in `docs/knowledge/`. When Microsoft publishes updated retirement dates or migration guidance, update these files — the skills read from them.
 
 ## Output
 

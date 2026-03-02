@@ -24,14 +24,14 @@
 
 ---
 
-## Urgency Tiers (for impact analysis)
+## Urgency Tiers
 
-| Days Until Effective Date | Urgency | Effect on Severity |
-|--------------------------|---------|-------------------|
-| < 30 days | IMMEDIATE | Override to Critical regardless of usage |
-| < 90 days | HIGH | Escalate severity one level |
-| < 180 days | ELEVATED | Add urgency flag to report |
-| > 180 days | NORMAL | Standard severity thresholds apply |
+| Days Until Effective Date | Urgency |
+|--------------------------|---------|
+| < 30 days | IMMEDIATE |
+| < 90 days | HIGH |
+| < 180 days | ELEVATED |
+| > 180 days | NORMAL |
 
 ---
 

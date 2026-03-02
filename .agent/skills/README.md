@@ -61,7 +61,7 @@ These skills work with **any Azure product** — ACS, Storage, SQL, Compute, etc
 | [3-azure-resource-scan](azure/3-azure-resource-scan/SKILL.md) | Discover resources of any type across subscriptions |
 | [4-azure-channel-detect](azure/4-azure-channel-detect/SKILL.md) | Fast feature detection via child resources (~30 sec) |
 | [5-azure-metrics-collect](azure/5-azure-metrics-collect/SKILL.md) | Comprehensive usage detection via Azure Monitor (1-93 days) |
-| [6-azure-impact-analyze](azure/6-azure-impact-analyze/SKILL.md) | Calculate severity and migration effort with custom thresholds |
+| [6-azure-impact-analyze](azure/6-azure-impact-analyze/SKILL.md) | Analyze migration impact with configurable thresholds |
 | [7-azure-report-generate](azure/7-azure-report-generate/SKILL.md) | Export to CSV, Markdown, or JSON |
 
 **Use these skills when:** Analyzing deprecation impact for Azure services other than ACS, or when you need full control over each step with custom configuration.
@@ -150,7 +150,7 @@ To create a skill set for another retiring Azure product, use the `azure/` skill
 1. Use `azure/1-azure-auth-check` + `azure/2-azure-subscription-select` as-is
 2. Run `azure/3-azure-resource-scan` with your product's resource type
 3. Configure `azure/5-azure-metrics-collect` with your product's metric names
-4. Configure `azure/6-azure-impact-analyze` with your product's severity rules
+4. Configure `azure/6-azure-impact-analyze` with your product's impact rules
 5. Use `azure/7-azure-report-generate` for export
 
 ---

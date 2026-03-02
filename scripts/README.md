@@ -11,7 +11,6 @@ This folder contains automated scripts for scanning Azure subscriptions and asse
 - **[acs-impact-assessment-tool.ps1](powershell/acs-impact-assessment-tool.ps1)** - Multi-subscription scanner for ACS resources
   - Detects all retiring channels (Email, SMS, Chat, Calling, Phone Numbers)
   - Optional metrics retrieval from Azure Monitor
-  - Severity and migration effort calculation
   - CSV export for planning and tracking
   - **[Full Documentation](powershell/README.md)**
 

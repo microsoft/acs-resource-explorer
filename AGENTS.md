@@ -19,7 +19,7 @@
 | `azure/3-azure-resource-scan` | "Scan for [product] resources" | Discover any Azure resource type across subscriptions |
 | `azure/4-azure-channel-detect` | "Quick feature check" | Fast detection via child resources (~30 sec) |
 | `azure/5-azure-metrics-collect` | "Collect usage metrics" | Full detection via Azure Monitor (1–93 day lookback) |
-| `azure/6-azure-impact-analyze` | "Analyze migration impact" | Severity + effort calculation with configurable thresholds |
+| `azure/6-azure-impact-analyze` | "Analyze migration impact" | Impact analysis with configurable thresholds |
 | `azure/7-azure-report-generate` | "Generate a report" | Export to CSV, Markdown, or JSON |
 
 ### `acs/` — ACS-Specific Skills
@@ -30,8 +30,8 @@
 | `acs/1-acs-resource-scan` | "Find my ACS resources" | Scan for `Microsoft.Communication/CommunicationServices` |
 | `acs/2-acs-channel-detect` | "Quick ACS channel check" | Fast: Email + Phone Numbers via child resources |
 | `acs/3-acs-metrics-collect` | "Collect ACS metrics" | Full: all 5 channels — Email, SMS, Chat, Calling, Phone Numbers |
-| `acs/4-acs-impact-analyze` | "Analyze ACS impact" | ACS severity rules, retirement dates, migration guide links |
-| `acs/5-acs-report-generate` | "Generate ACS report" | 19-column CSV, Markdown with guide links, JSON |
+| `acs/4-acs-impact-analyze` | "Analyze ACS impact" | ACS retirement dates, channel detection, migration guide links |
+| `acs/5-acs-report-generate` | "Generate ACS report" | 17-column CSV, Markdown with guide links, JSON |
 
 ---
 
@@ -44,7 +44,7 @@
 - Calling SDK (ACS standalone)
 - Phone Numbers SDK (ACS standalone)
 
-Outputs: severity rating (Critical/Warning/Info/None), migration effort (High/Medium/Low), and links to migration guides.
+Outputs: detected channels per resource and links to the appropriate Retirement Guide or Breaking Change Guide.
 
 ---
 

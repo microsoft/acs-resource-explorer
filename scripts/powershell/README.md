@@ -11,7 +11,6 @@ The **ACS Impact Assessment Tool** is a PowerShell script that automatically sca
 ✅ **Multi-Subscription Scanning** - Scan all accessible subscriptions or target specific ones
 ✅ **All Channel Detection** - Detects Email, SMS, Chat, Calling, and Phone Numbers usage
 ✅ **Usage Metrics** - Optionally retrieves 90-day usage data from Azure Monitor
-✅ **Severity Calculation** - Automatic Critical/Warning/Info classification
 ✅ **Migration Effort Estimation** - Calculates Low/Medium/High effort based on impacted channels
 ✅ **CSV Export** - Generates detailed CSV report for planning and tracking
 ✅ **Color-Coded Console Output** - Easy-to-read results with visual indicators
@@ -215,7 +214,7 @@ Choose the command that best fits your needs:
 The script provides color-coded output:
 - 🟢 **Green** - Successful operations, connection status
 - 🟡 **Yellow** - Detection of retiring services, warnings
-- 🔴 **Red** - Critical severity items
+- 🔴 **Red** - Critical items
 - ⚪ **Gray** - Informational messages
 
 ### CSV Report Columns
@@ -238,28 +237,10 @@ The script provides color-coded output:
 | `PhoneNumbersDetected` | True/False - Phone Numbers SDK usage detected |
 | `PhoneNumbersUsageCount` | Usage count (if `-IncludeMetrics` used) |
 | `TotalChannelsImpacted` | Count of retiring channels used by this resource |
-| `HighestSeverity` | Critical/Warning/Info |
+| `HighestSeverity` | Impact level (Critical/Warning/Info) — produced by script |
 | `MigrationEffortEstimate` | Low/Medium/High |
 
 ---
-
-## Severity Classification
-
-The script automatically calculates severity based on usage patterns:
-
-### Critical
-- Email usage > 1,000 messages in 90 days
-- Calling usage > 500 calls in 90 days
-- Multiple high-usage channels
-
-### Warning
-- Email usage > 100 messages in 90 days
-- SMS usage > 50 messages in 90 days
-- Moderate usage detected
-
-### Info
-- Low usage detected
-- Resource exists but minimal activity
 
 ---
 
@@ -317,10 +298,6 @@ Retiring Services Detected:
   - Email Service: 1 resource(s)
   - SMS API: 1 resource(s)
   - Calling SDK: 1 resource(s)
-
-Severity Breakdown:
-  - Critical: 1 resource(s)
-  - Warning: 1 resource(s)
 
 Exporting results to: .\exports\ACS_Impact_Assessment.csv
   Created output directory: .\exports
@@ -508,11 +485,11 @@ This PowerShell script provides an alternative assessment method that complement
 
 1. **Review the CSV Report**
    - Open in Excel or Power BI
-   - Filter by `HighestSeverity = Critical`
+   - Filter by `TotalChannelsImpacted > 0` to focus on impacted resources
    - Group by `SubscriptionName` for organizational planning
 
 2. **Prioritize Resources**
-   - Focus on Critical severity first
+   - Start with resources using the most channels
    - Address resources with high usage counts
    - Plan multi-channel migrations (High effort) early
 
@@ -571,7 +548,6 @@ If you find issues or have suggestions for improvements:
 - Multi-subscription scanning
 - All 5 ACS channel detection
 - Optional metrics retrieval
-- Severity and effort calculation
 - CSV export
 
 ---

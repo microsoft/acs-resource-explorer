@@ -10,7 +10,7 @@ A set of composable **AI Agent Skills** that automate the full assessment workfl
 
 1. **Scan** — discover all ACS resources across your subscriptions
 2. **Detect** — identify which impacted channels are in use (4 retiring + 1 breaking change)
-3. **Analyze** — calculate severity and migration effort based on actual usage
+3. **Analyze** — map detected channels to migration guides based on actual usage
 4. **Report** — export results to CSV, Markdown, and JSON with links to migration guides
 
 The `azure/` skills are a **reusable open pattern** for any Azure service retirement. The `acs/` skills are the first implementation, pre-configured for ACS.
@@ -276,7 +276,7 @@ Step 1: Verify Azure authentication         ← checks you're logged in
 Step 2: Select subscription(s) to scan     ← choose default, all, or specific
 Step 3: Discover ACS resources             ← finds all CommunicationServices resources
 Step 4: Choose detection mode              ← fast (30 sec) or full (3-5 min with metrics)
-Step 5: Analyze impact                     ← severity + migration effort per resource
+Step 5: Analyze impact                     ← map channels to migration guides
 Step 6: Generate reports                   ← saves CSV, Markdown, JSON to ./exports/
 ```
 
@@ -437,15 +437,6 @@ The full scan (`/acs/3-acs-metrics-collect`) checks for active usage of all 5 im
 | Calling SDK | 🟡 Breaking Change — must integrate with Teams | ✅ Full (metrics) |
 | Phone Numbers SDK | 🔴 Retirement | ✅ Full (metrics) |
 
-**Severity levels assigned:**
-
-| Severity | Meaning | Example |
-|----------|---------|---------|
-| 🔴 Critical | High usage — immediate action needed | Email >1,000 messages in period |
-| 🟡 Warning | Moderate usage — plan migration soon | Email >100 messages in period |
-| ℹ️ Info | Low usage detected | Any usage below Warning threshold |
-| ✅ None | No usage found | Zero activity in last 90 days |
-
 ---
 
 ## Channel Guides
@@ -553,7 +544,7 @@ ACS-Transition-Agent-v0/
 │   ├── knowledge/                  ← Reference data for skills (update when dates change)
 │   │   ├── acs-retirement-dates.md
 │   │   ├── acs-metric-names.md
-│   │   ├── acs-severity-thresholds.md
+│   │   ├── acs-channel-status.md
 │   │   └── acs-migration-paths.md
 │   └── ...                         ← Project documentation
 │

@@ -158,7 +158,7 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
      ⚪ Calling:        0 resource(s) with usage
      ✅ Phone Numbers:  [N] resource(s) with usage
 
-   💡 Next: Run 4-acs-impact-analyze to calculate severity and migration effort
+   💡 Next: Run 4-acs-impact-analyze to map detected channels to migration guides
    ```
 
 ## Output

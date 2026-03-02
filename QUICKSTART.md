@@ -78,7 +78,7 @@ Five impacted ACS channels across all your subscriptions (effective **March 31, 
 
 ## After the Scan
 
-- Review the severity summary (Critical → Warning → Info)
-- Prioritize Critical resources first
+- Review detected channels per resource
+- Start with resources using the most channels
 - Retirement & Breaking Changes guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 - Channel-specific guides: https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration
