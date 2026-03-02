@@ -78,7 +78,7 @@ These skills are pre-configured for the [retiring ACS standalone SDKs and APIs](
 | [1-acs-resource-scan](acs/1-acs-resource-scan/SKILL.md) | Scan for `Microsoft.Communication/CommunicationServices` resources |
 | [2-acs-channel-detect](acs/2-acs-channel-detect/SKILL.md) | Fast: Email + Phone Numbers via child resources (~30 sec) |
 | [3-acs-metrics-collect](acs/3-acs-metrics-collect/SKILL.md) | Full: All 5 channels via Azure Monitor metrics (~3-5 min) |
-| [4-acs-impact-analyze](acs/4-acs-impact-analyze/SKILL.md) | ACS severity rules, retirement dates, migration guide links |
+| [4-acs-impact-analyze](acs/4-acs-impact-analyze/SKILL.md) | Map detected ACS channels to Retirement Guide or Breaking Change Guide |
 | [5-acs-report-generate](acs/5-acs-report-generate/SKILL.md) | ACS-specific CSV (19 columns), Markdown with guide links, JSON |
 
 ### ACS Channels Covered
@@ -136,8 +136,8 @@ The ACS skills are **specialized implementations** of the generic Azure skills:
 | `acs/1-acs-resource-scan` | `azure/3-azure-resource-scan` | ResourceType = `Microsoft.Communication/CommunicationServices` |
 | `acs/2-acs-channel-detect` | `azure/4-azure-channel-detect` | Email, Phone Numbers child resource types |
 | `acs/3-acs-metrics-collect` | `azure/5-azure-metrics-collect` | All 5 ACS channel metric names |
-| `acs/4-acs-impact-analyze` | `azure/6-azure-impact-analyze` | ACS severity thresholds, retirement dates, guide links |
-| `acs/5-acs-report-generate` | `azure/7-azure-report-generate` | 19-column ACS CSV, ACS migration guide links |
+| `acs/4-acs-impact-analyze` | `azure/6-azure-impact-analyze` | ACS retirement dates, channel guide links |
+| `acs/5-acs-report-generate` | `azure/7-azure-report-generate` | 17-column ACS CSV, ACS migration guide links |
 
 Auth and subscription selection are **shared** — both workflows use `azure/1-azure-auth-check` and `azure/2-azure-subscription-select`.
 

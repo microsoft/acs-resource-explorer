@@ -23,7 +23,7 @@ azure/2-azure-subscription-select  → Choose subscription(s) to scan
 acs/1-acs-resource-scan            → Discover all ACS resources
 acs/2-acs-channel-detect           → Fast: Email + Phone Numbers (optional)
 acs/3-acs-metrics-collect          → Full: All 5 channels via Azure Monitor
-acs/4-acs-impact-analyze           → Severity, effort, priority ranking
+acs/4-acs-impact-analyze           → Map channels to migration guides
 acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
 ```
 
@@ -76,12 +76,10 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
    - Ask for lookback period (default: 90 days, max: 93 days)
    - Collects usage data for all 5 channels
 
-### Step 5: Impact Analysis
+### Step 5: Channel Analysis
    - Run **4-acs-impact-analyze**
-   - Apply ACS-specific severity thresholds
-   - Calculate migration effort per channel
-   - Generate priority ranking
-   - Link to ACS migration guides
+   - Map each detected channel to its migration guide
+   - Link to Retirement Guide or Breaking Change Guide per channel
 
 ### Step 6: Report Generation
    - Run **5-acs-report-generate**
@@ -106,25 +104,19 @@ After all steps complete:
 ║   Calling:       [N] resources ([Usage])         ║
 ║   Phone Numbers: [N] resources ([Usage])         ║
 ╠══════════════════════════════════════════════════╣
-║ 🔴 Critical: [N] resource(s)                    ║
-║ 🟡 Warning:  [N] resource(s)                    ║
-║ ℹ️  Info:     [N] resource(s)                    ║
-║ ✅ None:      [N] resource(s)                    ║
-╠══════════════════════════════════════════════════╣
 ║ Reports saved to: ./exports/                     ║
 ╚══════════════════════════════════════════════════╝
 
 💡 Next Steps:
-1. Prioritize 🔴 Critical resources first
-2. Review migration guides for each detected channel
-3. Visit https://aka.ms/acs-retirement-and-breaking-changes-guide
+1. Review migration guides for each detected channel
+2. Visit https://aka.ms/acs-retirement-and-breaking-changes-guide
 ```
 
 ## Output
-- CSV report (Excel-compatible, 19 columns)
+- CSV report (Excel-compatible, 17 columns)
 - Markdown report (human-readable with migration guide links)
 - JSON report (machine-readable)
-- Console summary with severity and channel breakdown
+- Console summary with channel detection breakdown
 
 ## Knowledge Base
 
@@ -132,10 +124,10 @@ Reference data used by this workflow lives in `docs/knowledge/`. Update these fi
 
 | File | Used By |
 |------|---------|
-| [acs-retirement-dates.md](../../../../docs/knowledge/acs-retirement-dates.md) | Impact analysis urgency |
+| [acs-retirement-dates.md](../../../../docs/knowledge/acs-retirement-dates.md) | Channel status types and effective dates |
 | [acs-metric-names.md](../../../../docs/knowledge/acs-metric-names.md) | Metrics collection |
-| [acs-severity-thresholds.md](../../../../docs/knowledge/acs-severity-thresholds.md) | Severity + effort calculation |
-| [acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md) | Report links + next steps |
+| [acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md) | Migration paths and guide links |
+| [acs-channel-status.md](../../../../docs/knowledge/acs-channel-status.md) | Full Breaking Change vs Retirement detail |
 
 ## ACS Channel Guides
 - 📧 Email — Retirement Guide: https://aka.ms/acs-email-migration
@@ -152,5 +144,5 @@ Run these individually if you need to re-run a specific step:
 - **1-acs-resource-scan** — Re-run resource discovery
 - **2-acs-channel-detect** — Fast channel check
 - **3-acs-metrics-collect** — Collect usage metrics
-- **4-acs-impact-analyze** — Re-analyze with different thresholds
+- **4-acs-impact-analyze** — Re-map channels to guides
 - **5-acs-report-generate** — Re-export in different format

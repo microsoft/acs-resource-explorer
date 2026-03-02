@@ -29,7 +29,7 @@ Examples:
 
 Default output location: `./exports/`
 
-## ACS CSV Columns (19 total)
+## ACS CSV Columns (17 total)
 Pre-configured CSV structure matching the PowerShell tool output:
 ```
 SubscriptionName, SubscriptionId,
@@ -40,9 +40,7 @@ SMSDetected, SMSUsageCount,
 ChatDetected, ChatUsageCount,
 CallingDetected, CallingUsageCount,
 PhoneNumbersDetected, PhoneNumbersUsageCount,
-TotalChannelsImpacted,
-HighestSeverity,
-MigrationEffortEstimate
+TotalChannelsImpacted
 ```
 
 > This matches the output of `scripts/powershell/acs-impact-assessment-tool.ps1` for cross-tool compatibility.
@@ -106,38 +104,27 @@ MigrationEffortEstimate
    - Resources Using Retiring Services: [M]
    - Subscriptions Analyzed: [X]
 
-   ## Retiring ACS Services Detected
+   ## ACS Channel Detection Results
 
-   | Channel | Resources Impacted | Usage (last [N] days) |
-   |---------|--------------------|----------------------|
-   | Email   | [N] | [Usage count] messages |
-   | SMS     | [N] | [Usage count] messages |
-   | Chat    | [N] | [Usage count] messages |
-   | Calling | [N] | [Usage count] calls |
-   | Phone Numbers | [N] | [Usage count] operations |
+   | Channel | Resources Impacted | Usage (last [N] days) | Status Type |
+   |---------|--------------------|-----------------------|-------------|
+   | Email   | [N] | [Usage count] messages | 🔴 Retirement |
+   | SMS     | [N] | [Usage count] messages | 🔴 Retirement |
+   | Chat    | [N] | [Usage count] messages | 🔴 Retirement |
+   | Calling | [N] | [Usage count] calls    | 🟡 Breaking Change |
+   | Phone Numbers | [N] | [Usage count] operations | 🔴 Retirement |
 
-   ## Severity Breakdown
-   - 🔴 Critical: [N] resource(s) — Immediate action required
-   - 🟡 Warning:  [N] resource(s) — Plan migration soon
-   - ℹ️ Info:     [N] resource(s) — Low priority
-   - ✅ None:     [N] resource(s) — No migration needed
+   ## Resource Impact Summary
 
-   ## Priority Migration Plan
-
-   ### Priority 1: [Resource Name] 🔴 Critical
+   ### [Resource Name]
    - **Subscription:** [Name]
    - **Resource Group:** [Name]
-   - **Channels Impacted:** Email, Chat, Phone Numbers
+   - **Channels Detected:** Email, Chat, Phone Numbers
    - **Usage:** Email: 1,250 | Chat: 543 | Phone Numbers: 15
-   - **Migration Effort:** High
    - **Guides:**
      - 📧 [Email Retirement Guide](https://aka.ms/acs-email-migration)
      - 💬 [Chat Retirement Guide](https://aka.ms/acs-chat-migration)
      - 📞 [Calling Breaking Change Guide](https://aka.ms/acs-calling-migration) *(if Calling detected)*
-   - **Next Steps:**
-     1. Schedule migration planning meeting
-     2. Review Email migration guide
-     3. Plan Chat SDK migration
 
    [Repeat for each resource...]
 
@@ -149,10 +136,9 @@ MigrationEffortEstimate
    - ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-phone-migration
 
    ## Next Steps
-   1. Prioritize Critical resources for immediate migration planning
-   2. Review migration guides for each impacted channel
-   3. Engage ACS support for complex multi-channel migrations
-   4. Track progress using the exported CSV
+   1. Review migration guides for each detected channel
+   2. Engage ACS support for complex multi-channel migrations
+   3. Track progress using the exported CSV
 
    ## Confidence & Limitations
    - **High confidence:** Channels detected via Azure Monitor metrics
@@ -199,21 +185,16 @@ MigrationEffortEstimate
    Subscriptions Scanned: [N]
 
    📡 Channel Detection Results:
-     Email:         [N] resource(s) — [Total Usage] messages
-     SMS:           [N] resource(s) — [Total Usage] messages
-     Chat:          [N] resource(s) — [Total Usage] messages
-     Calling:       [N] resource(s) — [Total Usage] calls
-     Phone Numbers: [N] resource(s) — [Total Usage] operations
-
-   🎯 Migration Priority:
-     🔴 Critical: [N] resource(s) — Immediate action required
-     🟡 Warning:  [N] resource(s) — Plan within 30 days
-     ℹ️ Info:     [N] resource(s) — Low priority
+     📧 Email:         [N] resource(s) — [Total Usage] messages (Retirement)
+     📱 SMS:           [N] resource(s) — [Total Usage] messages (Retirement)
+     💬 Chat:          [N] resource(s) — [Total Usage] messages (Retirement)
+     📞 Calling:       [N] resource(s) — [Total Usage] calls (Breaking Change — Teams required)
+     ☎️ Phone Numbers: [N] resource(s) — [Total Usage] operations (Retirement)
 
    💡 Next Steps:
    1. Review exported reports in: ./exports/
-   2. Read migration guides for impacted channels
-   3. Visit https://aka.ms/acs-retirement-and-breaking-changes-guide for migration guidance
+   2. Read the guide for each detected channel
+   3. Visit https://aka.ms/acs-retirement-and-breaking-changes-guide for complete migration guidance
    ```
 
 ### 8) **Display Report Access Information**
