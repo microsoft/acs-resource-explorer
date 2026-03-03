@@ -82,7 +82,7 @@ TotalChannelsImpacted
 
 ### 4) **Generate CSV Report (if selected)**
    - Include ALL scanned resources (even those with zero usage — for complete inventory)
-   - Use the pre-configured 19-column structure
+   - Use the pre-configured 17-column structure
    - Export:
      ```powershell
      $inventory | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
