@@ -13,33 +13,34 @@ Examples:
   - "Am I connected to the right Azure account?"
 
 ## Preconditions
-- PowerShell Az module installed (`Install-Module -Name Az`)
-- User has Azure credentials (will prompt for authentication if needed)
-
-> Note: On macOS/Linux use `pwsh` (PowerShell 7). On Windows you can use `pwsh` or Windows PowerShell.
+- Azure CLI installed (`az` command available)
+- Installation: https://aka.ms/installazurecli (Windows, macOS, Linux)
 
 ## Workflow
 
-### 1) **Check Az Module Installation**
-   - Verify `Az.Accounts` module is available
-   - If not installed, provide installation instructions:
-     ```powershell
-     Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+### 1) **Check Azure CLI Installation**
+   - Verify `az` is available:
+     ```bash
+     az version
      ```
-   - Exit with clear error if module unavailable
+   - If not installed, provide installation instructions:
+     ```
+     Install Azure CLI: https://aka.ms/installazurecli
+     ```
+   - Exit with clear error if CLI unavailable
 
 ### 2) **Check Existing Azure Context**
-   - Run `Get-AzContext` to check for existing authenticated session
+   - Run `az account show` to check for an existing authenticated session
    - If context exists:
      - Extract tenant ID, account ID, and current subscription
      - Display connection status: ✅ "Already authenticated"
-   - If no context exists:
+   - If no context exists (error or "Please run 'az login'"):
      - Display: ⚠️ "Not authenticated to Azure"
 
 ### 3) **Authenticate if Needed**
    - If no existing context:
      - Prompt user: "Would you like to connect now? (Y/N)"
-     - If Yes: Run `Connect-AzAccount`
+     - If Yes: Run `az login`
      - If No: Exit with message "Authentication required to continue"
    - Handle authentication errors gracefully
 
@@ -54,14 +55,14 @@ Examples:
      ```
 
 ### 5) **Provide Multi-Tenant Guidance (if applicable)**
-   - If user has access to multiple tenants, inform them:
+   - If the user needs to connect to a different tenant, inform them:
      ```
      Note: To connect to a different tenant, use:
-     Connect-AzAccount -TenantId 'your-tenant-id'
+     az login --tenant 'your-tenant-id'
      ```
 
 ### 6) **Save Context for Subsequent Skills**
-   - Store authentication context in session variable or state file:
+   - Store authentication context in session state:
      - Tenant ID
      - Account ID
      - Current subscription (if any)
@@ -81,13 +82,10 @@ Examples:
 ## Example Invocation
 ```
 User: "Check my Azure authentication"
-Agent: [Runs 1-1-azure-auth-check skill]
+Agent: [Runs 1-azure-auth-check skill]
 Output:
   ✅ Connected to Azure
   Account: john.doe@contoso.com
   Tenant ID: abc123...
   Current Subscription: Production (sub-123...)
 ```
-
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 60-96 for example implementation of this workflow.

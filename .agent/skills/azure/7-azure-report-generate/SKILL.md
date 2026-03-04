@@ -77,10 +77,9 @@ Examples:
      - Escape special characters in text fields
      - Add row to CSV
 
-   - Export using:
-     ```powershell
-     $inventory | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
-     ```
+   - Build CSV content by constructing a header row followed by one data row per resource,
+     with all values comma-separated and quoted where necessary
+   - Write the CSV content directly to the output file using the Write tool
 
    - Display: "✅ CSV report saved: [Path]"
    - Display row count: "[N] resources exported"
@@ -161,10 +160,7 @@ Examples:
    - Add links to migration guides
    - Include methodology appendix
 
-   - Write to file:
-     ```powershell
-     $markdownContent | Out-File -FilePath $mdPath -Encoding UTF8
-     ```
+   - Write the assembled Markdown content directly to the output file using the Write tool
 
    - Display: "✅ Markdown report saved: [Path]"
 
@@ -233,10 +229,8 @@ Examples:
    - Build structured object with metadata, summary, and resource details
    - Ensure proper data types (numbers, booleans, strings)
    - Format dates as ISO 8601
-   - Convert inventory to JSON:
-     ```powershell
-     $jsonData | ConvertTo-Json -Depth 10 | Out-File -FilePath $jsonPath -Encoding UTF8
-     ```
+   - Serialize the structured object to a JSON string and write it directly to the output file
+     using the Write tool
 
    - Display: "✅ JSON report saved: [Path]"
 
@@ -404,6 +398,3 @@ Output:
 
   [Displays console summary...]
 ```
-
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 395-469 for example implementation of this workflow.

@@ -19,14 +19,15 @@ https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 ---
 
-## Policy
+## Migration Targets
 
-All recommended migration targets are Microsoft first-party solutions only:
-
-- Email → Microsoft 365 High-Volume Email (HVE)
-- Chat → Microsoft Teams Chat
-- Calling → Microsoft Teams Calling
-- SMS / Phone Numbers → Azure Communication Services (new API)
+| Channel | Recommended Path |
+|---------|-----------------|
+| Email | Microsoft 365 High-Volume Email (HVE) |
+| Chat | Microsoft Teams Chat (via Microsoft Graph APIs) |
+| Calling | Microsoft Teams (Phone Extensibility, Meeting Interop, or Click-2-Call) |
+| SMS | Port numbers to a third-party SMS provider |
+| Phone Numbers | Port to Teams Phone Extensibility or a third-party provider |
 
 ---
 

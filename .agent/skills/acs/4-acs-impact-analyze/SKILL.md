@@ -84,5 +84,3 @@ Examples:
 - Requires **1-acs-resource-scan** + either **2-acs-channel-detect** or **3-acs-metrics-collect**
 - Use **5-acs-report-generate** after this skill to export results
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 366-384 for example implementation.

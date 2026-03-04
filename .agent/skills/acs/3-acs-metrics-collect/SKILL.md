@@ -79,19 +79,19 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
 
 ### 5) **Collect Metrics for Each Channel**
 
-   For each channel, query Azure Monitor:
-   ```powershell
-   Get-AzMetric -ResourceId $resourceId `
-                -MetricName $metricName `
-                -StartTime $startTime `
-                -EndTime $endTime `
-                -TimeGrain 01:00:00 `
-                -AggregationType Total `
-                -ErrorAction SilentlyContinue `
-                -WarningAction SilentlyContinue
+   For each channel, query Azure Monitor via the Azure CLI:
+   ```bash
+   az monitor metrics list \
+     --resource <resource-id> \
+     --metric <metric-name> \
+     --start-time <start-time-UTC> \
+     --end-time <end-time-UTC> \
+     --interval PT1H \
+     --aggregation Total \
+     --output json
    ```
 
-   Sum returned values: `($metrics.Data | Measure-Object -Property Total -Sum).Sum`
+   Sum returned values by iterating `value[0].timeseries[].data[].total` and summing all non-null entries.
 
    **Email (3 metrics):**
    - Query: `EmailMessagesSent`, `EmailDeliveryAttempts`, `EmailOperations`
@@ -182,5 +182,3 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
 - Can be combined with **2-acs-channel-detect** for fast pre-check
 - Use **4-acs-impact-analyze** after this skill
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 268-363 for example implementation.

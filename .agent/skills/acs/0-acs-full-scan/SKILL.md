@@ -28,7 +28,7 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
 ```
 
 ## Preconditions
-- PowerShell Az module installed (`Install-Module -Name Az`)
+- Azure CLI installed (`az` command available) — https://aka.ms/installazurecli
 - Reader access (minimum) to target Azure subscription(s)
 - Monitoring Reader access for metrics collection
 
@@ -85,7 +85,6 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
    - Run **5-acs-report-generate**
    - Default: Generate all formats (CSV + Markdown + JSON)
    - Output to `./exports/` directory
-   - CSV format is compatible with `acs-impact-assessment-tool.ps1` output
 
 ## Quick Summary Display
 After all steps complete:

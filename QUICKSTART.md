@@ -6,20 +6,32 @@ Run a full ACS deprecation impact assessment in under 5 minutes.
 
 ## Prerequisites
 
-1. **PowerShell 7** — [Download](https://aka.ms/install-powershell-windows)
-2. **Azure PowerShell Az module:**
-   ```powershell
-   Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
-   ```
-3. **Azure authentication:**
-   ```powershell
-   Connect-AzAccount
-   ```
-4. **Access level required:** Reader + Monitoring Reader on target subscription(s)
+- **Git** — [Download](https://git-scm.com/downloads)
+- **Azure CLI** — [Download](https://aka.ms/installazurecli)
+- **An AI agent** — GitHub Copilot (free) or Claude Code
+- **Azure access** — Reader + Monitoring Reader on target subscription(s)
 
 ---
 
-## Option A — GitHub Copilot (Recommended)
+## Setup (first time only)
+
+**1. Install the Azure CLI** (if not already installed):
+- Download from https://aka.ms/installazurecli and follow the installer for your OS
+
+**2. Sign in to Azure:**
+```bash
+az login
+```
+
+**3. Clone this repository:**
+```bash
+git clone https://github.com/jameelaesa/ACS-Transition-Agent-v0.git
+cd ACS-Transition-Agent-v0
+```
+
+---
+
+## Option A — GitHub Copilot (Free)
 
 1. Open this repo in VS Code
 2. Open Copilot Chat: **Ctrl+Alt+I** (Windows/Linux) or **Ctrl+Cmd+I** (macOS)
@@ -33,32 +45,16 @@ Run a full ACS deprecation impact assessment in under 5 minutes.
 
 ## Option B — Claude Code
 
-1. Open this repo in VS Code (with Claude Code extension installed)
-2. Open Claude chat and type:
+1. Open this repo in VS Code (with Claude Code extension) or in a terminal:
+   ```bash
+   cd ACS-Transition-Agent-v0
+   claude
+   ```
+2. Type:
    ```
    Run an ACS deprecation scan
    ```
 3. Follow the interactive prompts
-
----
-
-## Option C — PowerShell Script (No AI agent required)
-
-```powershell
-# Navigate to the scripts directory
-cd scripts/powershell
-
-# Fast scan (resource detection only, ~30 seconds)
-.\acs-impact-assessment-tool.ps1
-
-# Full scan with Azure Monitor metrics (~3-5 minutes)
-.\acs-impact-assessment-tool.ps1 -IncludeMetrics
-
-# Scan a specific subscription
-.\acs-impact-assessment-tool.ps1 -SubscriptionId "your-subscription-id" -IncludeMetrics
-```
-
-Reports are saved to `./exports/` in CSV format.
 
 ---
 
@@ -78,7 +74,9 @@ Five impacted ACS channels across all your subscriptions (effective **March 31, 
 
 ## After the Scan
 
+Reports are saved to `./exports/` in CSV, Markdown, and JSON formats.
+
 - Review detected channels per resource
 - Start with resources using the most channels
 - Retirement & Breaking Changes guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-- Channel-specific guides: https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration
+- Channel guides: https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration

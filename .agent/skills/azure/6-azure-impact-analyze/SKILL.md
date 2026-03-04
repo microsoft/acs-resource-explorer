@@ -338,5 +338,3 @@ Output:
   🎯 Priority 1: ACSProd - Immediate action required
 ```
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 366-384 for example implementation of this workflow.

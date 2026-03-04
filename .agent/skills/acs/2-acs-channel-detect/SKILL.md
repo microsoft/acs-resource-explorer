@@ -56,10 +56,11 @@ Examples:
 
 ### 3) **Detect Email Service**
    - Query for Email domain resources in the resource group:
-     ```powershell
-     Get-AzResource -ResourceGroupName $rgName `
-                    -ResourceType "Microsoft.Communication/EmailServices/Domains" `
-                    -ErrorAction SilentlyContinue
+     ```bash
+     az resource list \
+       --resource-group <resource-group> \
+       --resource-type "Microsoft.Communication/EmailServices/Domains" \
+       --output json
      ```
    - **If domains found:**
      - Set EmailDetected = true
@@ -71,10 +72,11 @@ Examples:
 
 ### 4) **Detect Phone Numbers**
    - Query for phone number resources:
-     ```powershell
-     Get-AzResource -ResourceGroupName $rgName `
-                    -ResourceType "Microsoft.Communication/CommunicationServices/phoneNumbers" `
-                    -ErrorAction SilentlyContinue
+     ```bash
+     az resource list \
+       --resource-group <resource-group> \
+       --resource-type "Microsoft.Communication/CommunicationServices/phoneNumbers" \
+       --output json
      ```
    - **If found:**
      - Set PhoneNumbersDetected = true
@@ -90,9 +92,9 @@ Examples:
 
    ✅ Email Service:   Detected (2 domains)
    ⚪ Phone Numbers:   Not detected
-   ⚠️ SMS:             Requires -IncludeMetrics (use 3-acs-metrics-collect)
-   ⚠️ Chat:            Requires -IncludeMetrics (use 3-acs-metrics-collect)
-   ⚠️ Calling:         Requires -IncludeMetrics (use 3-acs-metrics-collect)
+   ⚠️ SMS:             Requires metrics (use 3-acs-metrics-collect)
+   ⚠️ Chat:            Requires metrics (use 3-acs-metrics-collect)
+   ⚠️ Calling:         Requires metrics (use 3-acs-metrics-collect)
 
    Channels detected via resources: 1 out of 2 detectable (Email, Phone Numbers)
    Channels requiring metrics: 3 (SMS, Chat, Calling)
@@ -132,5 +134,3 @@ Use **3-acs-metrics-collect** if you need:
 - Use **3-acs-metrics-collect** for complete detection
 - Use **4-acs-impact-analyze** after detection
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 234-266 for example implementation.

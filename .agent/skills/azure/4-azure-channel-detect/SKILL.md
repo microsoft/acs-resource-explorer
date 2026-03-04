@@ -71,10 +71,11 @@ Examples:
 ### 4) **Detect Features via Child Resources**
    - For each feature/channel to detect:
      - Build query for related child resources:
-       ```powershell
-       Get-AzResource -ResourceGroupName $rgName `
-                      -ResourceType $childResourceType `
-                      -ErrorAction SilentlyContinue
+       ```bash
+       az resource list \
+         --resource-group <resource-group> \
+         --resource-type <child-resource-type> \
+         --output json
        ```
      - Filter for resources related to parent resource
 
@@ -91,8 +92,8 @@ Examples:
 ### 5) **Detect Features via Resource Properties**
    - Alternative detection method: Check resource properties
    - Query resource details:
-     ```powershell
-     Get-AzResource -ResourceId $resourceId -ExpandProperties
+     ```bash
+     az resource show --ids <resource-id> --output json
      ```
    - Check for specific property values indicating feature enablement
    - Example: `properties.enabledFeatures`, `properties.capabilities`
@@ -171,5 +172,3 @@ Output:
   💡 For complete detection, run: 5-azure-metrics-collect
 ```
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 234-266 and 357-363 for example implementation of this workflow.

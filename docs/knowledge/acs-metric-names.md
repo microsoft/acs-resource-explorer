@@ -54,19 +54,20 @@ If Total > 0 → Channel detected = true
 
 ---
 
-## PowerShell Query Pattern
+## Azure CLI Query Pattern
 
-```powershell
-Get-AzMetric -ResourceId $resourceId `
-             -MetricName "EmailMessagesSent" `
-             -StartTime $startTime `
-             -EndTime $endTime `
-             -TimeGrain 01:00:00 `
-             -AggregationType Total `
-             -ErrorAction SilentlyContinue
+```bash
+az monitor metrics list \
+  --resource <resourceId> \
+  --metric "EmailMessagesSent" \
+  --start-time <startTime> \
+  --end-time <endTime> \
+  --interval PT1H \
+  --aggregation Total \
+  --output json
 
-# Sum the results:
-$sum = ($metrics.Data | Where-Object { $_.Total -ne $null } | Measure-Object -Property Total -Sum).Sum
+# Sum the results (jq):
+# .value[0].timeseries[].data[].total | select(. != null) | add
 ```
 
 ---
