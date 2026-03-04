@@ -28,7 +28,7 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
 ```
 
 ## Preconditions
-- Azure CLI installed (`az` command available) — https://aka.ms/installazurecli
+- Azure CLI installed (`az` command available) — https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
 - Reader access (minimum) to target Azure subscription(s)
 - Monitoring Reader access for metrics collection
 

@@ -7,7 +7,7 @@ Run a full ACS deprecation impact assessment in under 5 minutes.
 ## Prerequisites
 
 - **Git** — [Download](https://git-scm.com/downloads)
-- **Azure CLI** — [Download](https://aka.ms/installazurecli)
+- **Azure CLI** — [Download](https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)
 - **An AI agent** — GitHub Copilot (free) or Claude Code
 - **Azure access** — Reader + Monitoring Reader on target subscription(s)
 
@@ -16,7 +16,7 @@ Run a full ACS deprecation impact assessment in under 5 minutes.
 ## Setup (first time only)
 
 **1. Install the Azure CLI** (if not already installed):
-- Download from https://aka.ms/installazurecli and follow the installer for your OS
+- Download from https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest and follow the installer for your OS
 
 **2. Sign in to Azure:**
 ```bash

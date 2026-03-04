@@ -24,7 +24,7 @@ This triggers the `0-acs-full-scan` skill, which runs the complete 6-step workfl
 
 ## Prerequisites (user must have these before running)
 
-- Azure CLI installed (`az` command available) — https://aka.ms/installazurecli
+- Azure CLI installed (`az` command available) — https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
 - Azure authentication completed (`az login`)
 - Reader + Monitoring Reader access on target subscriptions
 

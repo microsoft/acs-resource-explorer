@@ -14,7 +14,7 @@ Examples:
 
 ## Preconditions
 - Azure CLI installed (`az` command available)
-- Installation: https://aka.ms/installazurecli (Windows, macOS, Linux)
+- Installation: https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest (Windows, macOS, Linux)
 
 ## Workflow
 
@@ -25,7 +25,7 @@ Examples:
      ```
    - If not installed, provide installation instructions:
      ```
-     Install Azure CLI: https://aka.ms/installazurecli
+     Install Azure CLI: https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
      ```
    - Exit with clear error if CLI unavailable
 

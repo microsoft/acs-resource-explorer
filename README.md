@@ -67,7 +67,7 @@ sudo dnf install git            # Fedora/RHEL
 The Azure CLI (`az`) is used to connect to your Azure subscriptions and collect resource and usage data. It works on Windows, macOS, and Linux — no additional modules required.
 
 **Windows:**
-1. Go to https://aka.ms/installazurecli
+1. Go to https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
 2. Download and run the MSI installer
 3. Open a new terminal window and verify: `az version`
 
@@ -369,7 +369,7 @@ All channels effective **March 31, 2029**. Full guide: https://aka.ms/acs-retire
 ## Troubleshooting
 
 ### "az: command not found" or Azure CLI not recognized
-Install the Azure CLI from https://aka.ms/installazurecli, then restart your terminal.
+Install the Azure CLI from https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest, then restart your terminal.
 
 ### "az login" fails or browser doesn't open
 Try the device code login method:
