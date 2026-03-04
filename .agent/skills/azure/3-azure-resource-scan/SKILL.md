@@ -37,7 +37,7 @@ Examples:
    - Validate resource type format: `Microsoft.Provider/ResourceType`
 
    **Non-Interactive Mode:**
-   - Accept resource type as parameter: `-ResourceType "Microsoft.Communication/CommunicationServices"`
+   - Accept resource type as parameter: `--resource-type "Microsoft.Communication/CommunicationServices"`
 
 ### 2) **Optional: Resource Filtering**
    - Ask user: "Do you want to filter by resource name, location, or tags? (Y/N)"
@@ -50,18 +50,21 @@ Examples:
 
 ### 3) **Scan Each Selected Subscription**
    - For each subscription in selection (from **2-azure-subscription-select**):
-     - Set Azure context: `Set-AzContext -SubscriptionId $subId`
+     - Set Azure subscription context:
+       ```bash
+       az account set --subscription <subscription-id>
+       ```
      - Display: "📋 Scanning subscription: [Subscription Name]"
 
 ### 4) **Query Resources**
    - Build query:
-     ```powershell
-     Get-AzResource -ResourceType $resourceType -ErrorAction SilentlyContinue
+     ```bash
+     az resource list --resource-type <resource-type> --output json
      ```
    - Apply filters if specified:
-     - Name filter: `-Name $namePattern`
-     - Location filter: Where-Object filtering
-     - Tag filter: Where-Object filtering
+     - Name filter: `--query "[?contains(name, '<pattern>')]"`
+     - Location filter: `--location <location>`
+     - Tag filter: `--tag <key>=<value>`
 
 ### 5) **Process Query Results**
    - **If NO resources found:**
@@ -162,5 +165,3 @@ Output:
   - Production: 2 resources (ACSProd, ACSDevAndTest)
 ```
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 180-196 for example implementation of this workflow.

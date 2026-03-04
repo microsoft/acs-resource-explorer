@@ -26,19 +26,24 @@ No interactive product selection is needed — this is pre-configured for ACS.
 
 ### 1) **Scan Each Selected Subscription**
    - For each subscription in selection (from **azure/2-azure-subscription-select**):
-     - Set Azure context: `Set-AzContext -SubscriptionId $subId`
+     - Set Azure subscription context:
+       ```bash
+       az account set --subscription <subscription-id>
+       ```
      - Display: "📋 Scanning subscription: [Subscription Name]"
 
 ### 2) **Query ACS Resources**
-   ```powershell
-   Get-AzResource -ResourceType "Microsoft.Communication/CommunicationServices" -ErrorAction SilentlyContinue
+   ```bash
+   az resource list \
+     --resource-type "Microsoft.Communication/CommunicationServices" \
+     --output json
    ```
 
 ### 3) **Optional: Filter Resources**
    - Ask user: "Do you want to filter by resource name, location, or tags? (Y/N)"
    - If YES:
      - Prompt for filter criteria (name pattern, location, tags)
-     - Apply Where-Object filtering
+     - Apply using `--query` JMESPath filters or `--tag` flags
 
 ### 4) **Process Results**
    - **If NO resources found:**
@@ -106,5 +111,3 @@ No interactive product selection is needed — this is pre-configured for ACS.
 - Use **2-acs-channel-detect** after this (fast detection)
 - Use **3-acs-metrics-collect** after this (complete detection)
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 180-196 for example implementation.

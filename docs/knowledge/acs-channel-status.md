@@ -5,8 +5,6 @@
 **Effective Date:** March 31, 2029
 **Last Verified:** 2026-02-27
 
-> This document is based on Microsoft Confidential pre-release guidance staged for internal approval.
-
 ---
 
 ## Project Channel Status (5 channels in scope)

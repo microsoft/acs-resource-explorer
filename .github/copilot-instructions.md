@@ -7,7 +7,7 @@ This repository contains AI Agent Skills for assessing retiring Azure Communicat
 Scans Azure subscriptions for ACS resources that use retiring standalone SDKs and APIs, measures actual usage over 90 days, calculates migration urgency, and generates reports with migration guidance.
 
 **Five retiring ACS channels detected:**
-- Email Service (standalone ACS SDK) — retires 2027-12-31
+- Email Service (standalone ACS SDK) — retires 2029-03-31
 - SMS API (standalone ACS SDK)
 - Chat SDK (standalone ACS SDK)
 - Calling SDK (standalone ACS SDK)
@@ -24,8 +24,8 @@ This triggers the `0-acs-full-scan` skill, which runs the complete 6-step workfl
 
 ## Prerequisites (user must have these before running)
 
-- PowerShell with the Az module installed (`Install-Module -Name Az`)
-- Azure authentication completed (`Connect-AzAccount` in PowerShell)
+- Azure CLI installed (`az` command available) — https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
+- Azure authentication completed (`az login`)
 - Reader + Monitoring Reader access on target subscriptions
 
 ## Agent Skills Location

@@ -30,7 +30,7 @@ Examples:
 Default output location: `./exports/`
 
 ## ACS CSV Columns (17 total)
-Pre-configured CSV structure matching the PowerShell tool output:
+Pre-configured CSV structure:
 ```
 SubscriptionName, SubscriptionId,
 ResourceGroup, ResourceName, Location,
@@ -42,8 +42,6 @@ CallingDetected, CallingUsageCount,
 PhoneNumbersDetected, PhoneNumbersUsageCount,
 TotalChannelsImpacted
 ```
-
-> This matches the output of `scripts/powershell/acs-impact-assessment-tool.ps1` for cross-tool compatibility.
 
 ## Workflow
 
@@ -68,7 +66,7 @@ TotalChannelsImpacted
 ### 2) **Configure Report Options**
    - Ask user: "What report format(s) would you like?"
      ```
-     1. CSV (Excel-compatible, matches PowerShell tool output)
+     1. CSV (Excel-compatible)
      2. Markdown (Human-readable, suitable for sharing)
      3. JSON (Machine-readable, for integration)
      4. All formats
@@ -83,10 +81,9 @@ TotalChannelsImpacted
 ### 4) **Generate CSV Report (if selected)**
    - Include ALL scanned resources (even those with zero usage — for complete inventory)
    - Use the pre-configured 17-column structure
-   - Export:
-     ```powershell
-     $inventory | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
-     ```
+   - Build CSV content by constructing a header row followed by one data row per resource,
+     with all values comma-separated and quoted where necessary
+   - Write the CSV content directly to the output file using the Write tool
    - Display: "✅ CSV saved: [Path] ([N] resources)"
 
 ### 5) **Generate Markdown Report (if selected)**
@@ -206,7 +203,7 @@ TotalChannelsImpacted
    ```
 
 ## Output
-- CSV file compatible with `acs-impact-assessment-tool.ps1` output format
+- CSV file with complete ACS channel data (17 columns)
 - Markdown report with ACS migration guide links
 - JSON file for automated processing
 - Console summary with channel-level statistics
@@ -229,6 +226,3 @@ TotalChannelsImpacted
 ## Related Skills
 - Use **4-acs-impact-analyze** before this skill for complete reports
 - This is the final skill in the ACS workflow
-
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 395-469 for example implementation.

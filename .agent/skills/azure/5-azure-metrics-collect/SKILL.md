@@ -36,7 +36,7 @@ Examples:
    - Validate: Must be between 1-93 days (Azure Monitor retention limit)
 
    **Non-Interactive Mode:**
-   - Accept parameter: `-LookbackDays 90`
+   - Accept parameter: `--lookback-days 90`
    - Default: 90 days if not specified
 
 ### 3) **Determine Metrics to Collect**
@@ -119,20 +119,20 @@ Examples:
    - Initialize usage counter = 0
 
    **For each metric in feature's metric list:**
-   - Query Azure Monitor:
-     ```powershell
-     Get-AzMetric -ResourceId $resourceId `
-                  -MetricName $metricName `
-                  -StartTime $startTime `
-                  -EndTime $endTime `
-                  -TimeGrain 01:00:00 `
-                  -AggregationType Total `
-                  -ErrorAction SilentlyContinue `
-                  -WarningAction SilentlyContinue
+   - Query Azure Monitor via the Azure CLI:
+     ```bash
+     az monitor metrics list \
+       --resource <resource-id> \
+       --metric <metric-name> \
+       --start-time <start-time-UTC> \
+       --end-time <end-time-UTC> \
+       --interval PT1H \
+       --aggregation Total \
+       --output json
      ```
 
    - If metrics returned with data:
-     - Sum all metric values: `($metrics.Data | Measure-Object -Property Total -Sum).Sum`
+     - Sum all values by iterating `value[0].timeseries[].data[].total` and summing all non-null entries
      - Add to feature usage counter
 
    - If metrics unavailable:
@@ -168,7 +168,7 @@ Examples:
 
 ### 9) **Provide Lookback Period Guidance**
    - If lookback < 93 days:
-     - Display: "💡 Want more historical data? Re-run with -LookbackDays 93 (maximum)"
+     - Display: "💡 Want more historical data? Re-run with lookback set to 93 days (maximum)"
 
    - If lookback = 93 days:
      - Display: "ℹ️ 93 days is the maximum Azure Monitor retention period for 1-hour granularity"
@@ -244,5 +244,3 @@ Output:
   Features with Usage: 3 out of 5
 ```
 
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 268-363 for example implementation of this workflow.

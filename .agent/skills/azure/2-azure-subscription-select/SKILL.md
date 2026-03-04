@@ -22,16 +22,25 @@ Examples:
    - Ask user: "Do you have a specific subscription ID to scan?"
    - If YES:
      - Prompt for subscription ID
-     - Validate subscription exists and is accessible
+     - Validate subscription exists and is accessible:
+       ```bash
+       az account show --subscription <subscription-id>
+       ```
      - If invalid: Show list of available subscriptions
      - If valid: Use that subscription only
    - If NO: Continue to step 2
 
 ### 2) **Detect Default Subscription**
-   - Get current Azure context: `(Get-AzContext).Subscription`
+   - Get current Azure context:
+     ```bash
+     az account show
+     ```
    - If default subscription exists:
      - Display default subscription name and ID
-     - Show count of all accessible subscriptions
+     - Show count of all accessible subscriptions:
+       ```bash
+       az account list --query "length(@)"
+       ```
    - If no default: Continue to step 3
 
 ### 3) **Present Selection Options**
@@ -50,14 +59,17 @@ Examples:
      - Display: ✅ "Scanning: [Subscription Name]"
 
    - **Option 2 (All subscriptions):**
-     - Get all accessible subscriptions: `Get-AzSubscription`
+     - Get all accessible subscriptions:
+       ```bash
+       az account list --output json
+       ```
      - Display count
      - Confirm: "This will scan [N] subscriptions. Continue? (Y/N)"
      - If confirmed: Use all subscriptions
 
    - **Option 3 (Specific ID):**
      - Prompt for subscription ID
-     - Validate with `Get-AzSubscription -SubscriptionId $id`
+     - Validate with `az account show --subscription <id>`
      - If valid: Use that subscription
      - If invalid: Return to step 3
 
@@ -81,7 +93,7 @@ Examples:
 - Session state updated with selection
 
 ## Interactive Behavior
-- **Non-interactive mode:** If `-SubscriptionId` parameter provided, skip prompts
+- **Non-interactive mode:** If subscription ID provided directly, skip prompts
 - **Interactive mode:** Guide user through selection process with clear options
 - **Validation:** Always verify subscription access before proceeding
 
@@ -92,7 +104,7 @@ Examples:
 ## Example Invocation
 ```
 User: "Let me select which subscriptions to scan"
-Agent: [Runs 2-2-azure-subscription-select skill]
+Agent: [Runs 2-azure-subscription-select skill]
 Output:
   Default subscription detected: Production (abc-123...)
   Options:
@@ -103,6 +115,3 @@ Output:
 
   ✅ Selected: Production (abc-123...)
 ```
-
-## Reference Implementation
-See [scripts/powershell/acs-impact-assessment-tool.ps1](../../../../scripts/powershell/acs-impact-assessment-tool.ps1) lines 98-165 for example implementation of this workflow.

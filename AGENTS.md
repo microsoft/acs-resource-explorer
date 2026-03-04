@@ -50,7 +50,7 @@ Outputs: detected channels per resource and links to the appropriate Retirement 
 
 ## Authentication
 
-- Azure authentication via PowerShell Az module (`Connect-AzAccount`)
+- Azure authentication via the Azure CLI (`az login`)
 - Uses delegated user identity — no stored credentials
 - Requires Reader + Monitoring Reader permissions on target subscriptions
 
@@ -66,5 +66,4 @@ Outputs: detected channels per resource and links to the appropriate Retirement 
 
 ## Execution
 
-Primary: AI Agent Skills via `.agent/skills/` (Claude Code, GitHub Copilot, Cursor, etc.)
-Alternative: Standalone PowerShell script at `scripts/powershell/acs-impact-assessment-tool.ps1`
+AI Agent Skills via `.agent/skills/` — compatible with Claude Code, GitHub Copilot, Cursor, Windsurf, Cline, and any agent that supports the Agent Skills standard.
