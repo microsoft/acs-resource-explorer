@@ -41,7 +41,8 @@ next-env.d.ts
 .agent/*
 !.agent/skills/
 
-# PowerShell script output and exports
-exports/
-ACS_*.csv
-*Impact_Assessment*.csv
+# Scan output files (generated at runtime — not committed)
+exports/acs-impact-*.csv
+exports/acs-impact-*.json
+exports/acs-impact-*.md
+exports/ACS_*.csv
