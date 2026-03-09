@@ -41,8 +41,5 @@ next-env.d.ts
 .agent/*
 !.agent/skills/
 
-# Scan output files (generated at runtime — not committed)
-exports/acs-impact-*.csv
-exports/acs-impact-*.json
-exports/acs-impact-*.md
-exports/ACS_*.csv
+# Exports (generated at runtime — not committed)
+exports/
