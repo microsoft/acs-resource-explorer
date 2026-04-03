@@ -7,7 +7,7 @@ This repository contains AI Agent Skills for assessing retiring Azure Communicat
 Scans Azure subscriptions for ACS resources that use retiring standalone SDKs and APIs, measures actual usage over 90 days, calculates migration urgency, and generates reports with migration guidance.
 
 **Five retiring ACS channels detected:**
-- Email Service (standalone ACS SDK) — retires 2029-03-31
+- Email Service (standalone ACS SDK) — retires 2028-07-31
 - SMS API (standalone ACS SDK)
 - Chat SDK (standalone ACS SDK)
 - Calling SDK (standalone ACS SDK)

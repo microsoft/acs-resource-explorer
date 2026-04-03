@@ -1,7 +1,7 @@
 # ACS Retirement Dates
 
 **Source:** https://aka.ms/acs-retirement-and-breaking-changes-guide
-**Announcement Date:** 2026-03-18
+**Planned Announcement Date:** 2026-07-15
 **Last Verified:** 2026-02-27
 **Update This File When:** Microsoft publishes updates to the retirement guide.
 
@@ -11,11 +11,11 @@
 
 | Channel | Status Type | Effective Date | Notes |
 |---------|------------|---------------|-------|
-| Email Service | 🔴 Retirement | **2029-03-31** | Confirmed |
-| SMS API | 🔴 Retirement | **2029-03-31** | ⚠️ New number acquisition restricted for new ACS resources after 2026-03-18 |
-| Chat SDK | 🔴 Retirement | **2029-03-31** | Confirmed |
-| Calling SDK | 🟡 Breaking Change | **2029-03-31** | Service continues — standalone use unsupported; must integrate with Teams |
-| Phone Numbers (Direct Offer) | 🔴 Retirement | **2029-03-31** | ⚠️ New customers cannot acquire numbers after 2026-03-18 |
+| Email Service | 🔴 Retirement | **2028-07-31** | Updated 2026-04-02 |
+| SMS API | 🔴 Retirement | **2028-07-31** | ⚠️ New number acquisition restricted for new ACS resources after 2026-07-15 |
+| Chat SDK | 🔴 Retirement | **2028-07-31** | Confirmed |
+| Calling SDK | 🟡 Breaking Change | **2028-07-31** | Service continues — standalone use unsupported; must integrate with Teams |
+| Phone Numbers (Direct Offer) | 🔴 Retirement | **2028-07-31** | ⚠️ New customers cannot acquire numbers after 2026-07-15 |
 
 > **Retirement** = service completely removed, operations will fail after effective date.
 > **Breaking Change** = service continues but standalone use loses support; Teams integration required.

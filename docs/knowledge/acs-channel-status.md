@@ -1,8 +1,8 @@
 # ACS Channel Status — Retirement vs. Breaking Change
 
 **Source:** https://aka.ms/acs-retirement-and-breaking-changes-guide
-**Announcement Date:** March 18, 2026
-**Effective Date:** March 31, 2029
+**Planned Announcement Date:** July 15, 2026
+**Effective Date:** July 31, 2028
 **Last Verified:** 2026-02-27
 
 ---
@@ -11,17 +11,17 @@
 
 | Channel | Status Type | Effective Date | What Happens | Guide |
 |---------|------------|---------------|-------------|-------|
-| **Email Service** | 🔴 Retirement | 2029-03-31 | Service completely removed. Must migrate before retirement date. | https://aka.ms/acs-email-migration |
-| **SMS API** | 🔴 Retirement | 2029-03-31 | Service completely removed. Port numbers to another provider. | https://aka.ms/acs-sms-migration |
-| **Chat SDK** | 🔴 Retirement | 2029-03-31 | Service completely removed. Migrate to Microsoft Graph APIs + Teams Chat. | https://aka.ms/acs-chat-migration |
-| **Calling SDK** | 🟡 Breaking Change | 2029-03-31 | Service continues but standalone use unsupported. Must integrate with Teams. | https://aka.ms/acs-calling-migration |
-| **Phone Numbers (Direct Offer)** | 🔴 Retirement | 2029-03-31 | Service completely removed. ⚠️ New customers cannot acquire numbers after March 18, 2026. | https://aka.ms/acs-phone-migration |
+| **Email Service** | 🔴 Retirement | 2028-07-31 | Service completely removed. Must migrate before retirement date. | https://aka.ms/acs-email-migration |
+| **SMS API** | 🔴 Retirement | 2028-07-31 | Service completely removed. Port numbers to another provider. | https://aka.ms/acs-sms-migration |
+| **Chat SDK** | 🔴 Retirement | 2028-07-31 | Service completely removed. Migrate to Microsoft Graph APIs + Teams Chat. | https://aka.ms/acs-chat-migration |
+| **Calling SDK** | 🟡 Breaking Change | 2028-07-31 | Service continues but standalone use unsupported. Must integrate with Teams. | https://aka.ms/acs-calling-migration |
+| **Phone Numbers (Direct Offer)** | 🔴 Retirement | 2028-07-31 | Service completely removed. ⚠️ New customers cannot acquire numbers after July 15, 2026. | https://aka.ms/acs-phone-migration |
 
 ---
 
 ## Definitions
 
-**🔴 Retirement** — The service is permanently discontinued. After March 31, 2029, operations will no longer be permitted and APIs/SDKs will return errors. Customers must migrate to a replacement before the retirement date.
+**🔴 Retirement** — The service is permanently discontinued. After July 31, 2028, operations will no longer be permitted and APIs/SDKs will return errors. Customers must migrate to a replacement before the retirement date.
 
 **🟡 Breaking Change** — The service continues but standalone use (human-to-human or application-to-human without Teams) will no longer be supported. A new major-version SDK will be provided. Customers must integrate with one of the following Teams-aligned services:
 - Microsoft Teams Phone Extensibility
@@ -32,7 +32,7 @@
 
 ## Full ACS Impacted Services (all channels, not just project scope)
 
-### Retired after March 31, 2029
+### Retired after July 31, 2028
 - ACS Email
 - ACS SMS
 - ACS Advanced Messaging w/ WhatsApp
@@ -63,21 +63,21 @@
 - SMTP follows the same retirement timeline as Email
 
 ### SMS — Retirement
-- Existing customers with phone numbers before March 18, 2026 can acquire additional numbers
-- New ACS resources after March 18, 2026 cannot acquire new numbers
+- Existing customers with phone numbers before July 15, 2026 can acquire additional numbers
+- New ACS resources after July 15, 2026 cannot acquire new numbers
 - Port existing numbers to another provider (LOA required; short codes can also be ported)
 
 ### Chat — Retirement
-- Chat history maintained per storage policies until March 31, 2029 — export before retirement
+- Chat history maintained per storage policies until July 31, 2028 — export before retirement
 - Recommended path: Microsoft Graph APIs with Microsoft Teams
 
 ### Calling SDK — Breaking Change
-- No immediate changes; all deployed calling scenarios continue until March 31, 2029
+- No immediate changes; all deployed calling scenarios continue until July 31, 2028
 - New major-version SDK will be provided for Teams-aligned integration
 - Supported paths: Teams Phone Extensibility, Teams Meeting Interop, Teams Click-2-Call
 
 ### Phone Numbers (Direct Offer) — Retirement
-- **Immediate impact (March 18, 2026):** New customers creating ACS resources after announcement cannot acquire phone numbers
+- **Immediate impact (July 15, 2026):** New customers creating ACS resources after the planned announcement cannot acquire phone numbers
 - Existing customers with pre-existing ACS resources and phone numbers can continue acquiring numbers up to quota
 - Can port numbers to Teams Phone Extensibility (submit Azure Support ticket)
 - Can port numbers to third-party providers
@@ -94,6 +94,6 @@ https://aka.ms/D365ACSDeprecationGuide
 
 | Date | Event |
 |------|-------|
-| March 18, 2026 | Microsoft notification date — retirement period begins |
-| March 18, 2026 | **Immediate:** New customers cannot acquire phone numbers or short codes |
-| March 31, 2029 | All retired services decommissioned; breaking change enforcement begins |
+| July 15, 2026 | Microsoft notification date — retirement period begins |
+| July 15, 2026 | **Immediate:** New customers cannot acquire phone numbers or short codes |
+| July 31, 2028 | All retired services decommissioned; breaking change enforcement begins |

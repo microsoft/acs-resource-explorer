@@ -85,11 +85,11 @@ These skills are pre-configured for the [retiring ACS standalone SDKs and APIs](
 
 | Channel | Fast Detection | Full Detection | Status Type | Effective Date |
 |---------|---------------|----------------|------------|----------------|
-| Email Service | ✅ | ✅ | 🔴 Retirement | 2029-03-31 |
-| Phone Numbers SDK | ✅ | ✅ | 🔴 Retirement | 2029-03-31 |
-| SMS API | ❌ | ✅ | 🔴 Retirement | 2029-03-31 |
-| Chat SDK | ❌ | ✅ | 🔴 Retirement | 2029-03-31 |
-| Calling SDK | ❌ | ✅ | 🟡 Breaking Change | 2029-03-31 |
+| Email Service | ✅ | ✅ | 🔴 Retirement | 2028-07-31 |
+| Phone Numbers SDK | ✅ | ✅ | 🔴 Retirement | 2028-07-31 |
+| SMS API | ❌ | ✅ | 🔴 Retirement | 2028-07-31 |
+| Chat SDK | ❌ | ✅ | 🔴 Retirement | 2028-07-31 |
+| Calling SDK | ❌ | ✅ | 🟡 Breaking Change | 2028-07-31 |
 
 ---
 

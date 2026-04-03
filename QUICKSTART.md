@@ -60,15 +60,15 @@ cd ACS-Transition-Agent-v0
 
 ## What the Scan Detects
 
-Five impacted ACS channels across all your subscriptions (effective **March 31, 2029**):
+Five impacted ACS channels across all your subscriptions (effective **July 31, 2028**):
 
 | Channel | Status Type | Effective Date |
 |---------|------------|---------------|
-| Email Service | 🔴 Retirement | 2029-03-31 |
-| SMS API | 🔴 Retirement | 2029-03-31 |
-| Chat SDK | 🔴 Retirement | 2029-03-31 |
-| Calling SDK | 🟡 Breaking Change — must integrate with Teams | 2029-03-31 |
-| Phone Numbers SDK | 🔴 Retirement | 2029-03-31 |
+| Email Service | 🔴 Retirement | 2028-07-31 |
+| SMS API | 🔴 Retirement | 2028-07-31 |
+| Chat SDK | 🔴 Retirement | 2028-07-31 |
+| Calling SDK | 🟡 Breaking Change — must integrate with Teams | 2028-07-31 |
+| Phone Numbers SDK | 🔴 Retirement | 2028-07-31 |
 
 ---
 

@@ -11,11 +11,11 @@
 
 | Channel | Status Type | Action Required | Replace With / Integrate With | Effort | Guide |
 |---------|------------|----------------|------------------------------|--------|-------|
-| **Email Service** | 🔴 Retirement | Migrate before 2029-03-31 | Evaluate Azure Marketplace alternatives (no direct Microsoft replacement) | Medium | https://aka.ms/acs-email-migration |
-| **SMS API** | 🔴 Retirement | Migrate before 2029-03-31; port numbers now if needed | Azure Marketplace SMS providers | Low | https://aka.ms/acs-sms-migration |
-| **Chat SDK** | 🔴 Retirement | Migrate before 2029-03-31; export chat history | Microsoft Graph APIs + Microsoft Teams Chat | Medium | https://aka.ms/acs-chat-migration |
-| **Calling SDK** | 🟡 Breaking Change | Integrate with Teams before 2029-03-31 | Microsoft Teams Phone Extensibility, Teams Meeting Interop, or Teams Click-2-Call | High | https://aka.ms/acs-calling-migration |
-| **Phone Numbers (Direct Offer)** | 🔴 Retirement | Port numbers before 2029-03-31 | Teams Phone Extensibility (port via support ticket) or third-party provider | Low | https://aka.ms/acs-phone-migration |
+| **Email Service** | 🔴 Retirement | Migrate before 2028-07-31 | Evaluate Azure Marketplace alternatives (no direct Microsoft replacement) | Medium | https://aka.ms/acs-email-migration |
+| **SMS API** | 🔴 Retirement | Migrate before 2028-07-31; port numbers now if needed | Azure Marketplace SMS providers | Low | https://aka.ms/acs-sms-migration |
+| **Chat SDK** | 🔴 Retirement | Migrate before 2028-07-31; export chat history | Microsoft Graph APIs + Microsoft Teams Chat | Medium | https://aka.ms/acs-chat-migration |
+| **Calling SDK** | 🟡 Breaking Change | Integrate with Teams before 2028-07-31 | Microsoft Teams Phone Extensibility, Teams Meeting Interop, or Teams Click-2-Call | High | https://aka.ms/acs-calling-migration |
+| **Phone Numbers (Direct Offer)** | 🔴 Retirement | Port numbers before 2028-07-31 | Teams Phone Extensibility (port via support ticket) or third-party provider | Low | https://aka.ms/acs-phone-migration |
 
 ---
 
@@ -33,14 +33,14 @@
 
 ## Calling SDK — Breaking Change Detail
 
-The Calling SDK is a **Breaking Change**, not a retirement. The service continues but standalone use (without Teams) loses support after March 31, 2029.
+The Calling SDK is a **Breaking Change**, not a retirement. The service continues but standalone use (without Teams) loses support after July 31, 2028.
 
 **Supported paths to continue receiving support:**
 1. Microsoft Teams Phone Extensibility (TPE) — recommended for PSTN/Call Automation scenarios
 2. Microsoft Teams Meeting Interoperability — recommended for meeting/conferencing scenarios
 3. Microsoft Teams Click-2-Call for Teams Voice Apps
 
-A new major-version SDK will be provided. Customers have until March 31, 2029 to migrate to the new SDK.
+A new major-version SDK will be provided. Customers have until July 31, 2028 to migrate to the new SDK.
 
 ---
 

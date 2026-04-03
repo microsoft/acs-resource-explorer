@@ -362,7 +362,7 @@ After your assessment, use these guides to plan your next steps:
 | Calling SDK | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-calling-migration) — must integrate with Teams |
 | Phone Numbers SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-phone-migration) |
 
-All channels effective **March 31, 2029**. Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+All channels effective **July 31, 2028**. Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 ---
 
