@@ -228,6 +228,67 @@ Step 6: Generate reports                   ← saves CSV, Markdown, JSON to ./ex
 
 ---
 
+### Example Output
+
+```
+Step 1: Checking Azure authentication...
+✅ Authenticated — user@contoso.com (Contoso Corp)
+
+Step 2: Subscription selection...
+✅ Scanning 2 subscription(s): Contoso-Prod, Contoso-Dev
+
+Step 3: Discovering ACS resources...
+✅ Found 3 ACS resource(s) across 2 subscription(s)
+   • ContosoComms       (rg-communications, Contoso-Prod)
+   • ContosoSupportBot  (rg-support, Contoso-Prod)
+   • ContosoDevTest     (rg-dev, Contoso-Dev)
+
+Step 4: Collecting usage metrics (90-day lookback)...
+   ⏳ Analyzing ContosoComms...
+   ⏳ Analyzing ContosoSupportBot...
+   ⏳ Analyzing ContosoDevTest...
+✅ Metrics collected
+
+Step 5: Analyzing impact...
+Step 6: Generating reports...
+✅ Reports saved to ./exports/
+```
+
+```
+╔══════════════════════════════════════════════════╗
+║        ACS Impact Assessment Complete            ║
+╠══════════════════════════════════════════════════╣
+║ Subscriptions Scanned:  2                        ║
+║ ACS Resources Found:    3                        ║
+║ Detection Mode: Full (90-day lookback)           ║
+╠══════════════════════════════════════════════════╣
+║ Retiring Services Detected:                      ║
+║   📧 Email:         2 resource(s) — 48,201 msgs  ║
+║   📱 SMS:           1 resource(s) — 3,847 msgs   ║
+║   💬 Chat:          1 resource(s) — 12,093 msgs  ║
+║   📞 Calling:       2 resource(s) — 9,412 calls  ║
+║   ☎️  Phone Numbers: 1 resource(s) — 204 ops     ║
+╠══════════════════════════════════════════════════╣
+║ Reports saved to: ./exports/                     ║
+╚══════════════════════════════════════════════════╝
+
+💡 Next Steps:
+   📧 Email (2 resources) — Retirement Guide:
+      https://aka.ms/acs-email-migration
+   📱 SMS (1 resource) — Retirement Guide:
+      https://aka.ms/acs-sms-migration
+   💬 Chat (1 resource) — Retirement Guide:
+      https://aka.ms/acs-chat-migration
+   📞 Calling (2 resources) — Breaking Change Guide:
+      https://aka.ms/acs-calling-migration
+   ☎️  Phone Numbers (1 resource) — Retirement Guide:
+      https://aka.ms/acs-phone-migration
+
+   Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+```
+
+---
+
 ### 7. Find Your Results
 
 After the scan completes, your reports are saved in the `exports/` folder:
