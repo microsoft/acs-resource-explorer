@@ -11,13 +11,13 @@
 
 | Service | Status Type | Effective Date | What Happens | Guide |
 |---------|------------|---------------|-------------|-------|
-| **ACS Email** | 🔴 Retirement | 2028-07-31 | Service completely removed. No direct Microsoft replacement — evaluate Azure Marketplace. | https://aka.ms/acs-email-migration |
-| **ACS SMS** | 🔴 Retirement | 2028-07-31 | Service completely removed. Port numbers to another provider. ⚠️ New number acquisition restricted after July 22, 2026. | https://aka.ms/acs-sms-migration |
+| **ACS Email** | 🔴 Retirement | 2028-07-31 | Service completely removed. No direct Microsoft replacement — evaluate Azure Marketplace. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
+| **ACS SMS** | 🔴 Retirement | 2028-07-31 | Service completely removed. Port numbers to another provider. ⚠️ New number acquisition restricted after July 22, 2026. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
 | **ACS Advanced Messaging (WhatsApp)** | 🔴 Retirement | 2028-07-31 | Service completely removed. Migrate to Dynamics 365, Copilot Studio, or another BSP. | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| **ACS Chat** | 🔴 Retirement | 2028-07-31 | Service completely removed. Migrate to Microsoft Graph APIs + Teams Chat. Export chat history before retirement. | https://aka.ms/acs-chat-migration |
-| **ACS Chat for Teams Meeting Interop** | 🔴 Retirement | 2028-07-31 | Service completely removed. Migrate to Microsoft Graph Chat APIs. | https://aka.ms/acs-chat-migration |
+| **ACS Chat** | 🔴 Retirement | 2028-07-31 | Service completely removed. Migrate to Microsoft Graph APIs + Teams Chat. Export chat history before retirement. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
+| **ACS Chat for Teams Meeting Interop** | 🔴 Retirement | 2028-07-31 | Service completely removed. Migrate to Microsoft Graph Chat APIs. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
 | **ACS Rooms** | 🔴 Retirement | 2028-07-31 | Service completely removed. Migrate to Teams Meetings via Microsoft Graph API. | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| **ACS Number Management (Direct Offer)** | 🔴 Retirement | 2028-07-31 | Service completely removed. ⚠️ New customers cannot acquire numbers after July 22, 2026. Port to Teams Phone Extensibility or third-party provider. | https://aka.ms/acs-phone-migration |
+| **ACS Number Management (Direct Offer)** | 🔴 Retirement | 2028-07-31 | Service completely removed. ⚠️ New customers cannot acquire numbers after July 22, 2026. Port to Teams Phone Extensibility or third-party provider. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
 | **ACS Job Router** | 🔴 Retirement | 2028-07-31 | Service completely removed. Evaluate Azure Marketplace alternatives. | https://aka.ms/acs-retirement-and-breaking-changes-guide |
 
 ---
@@ -26,12 +26,12 @@
 
 | Service | Status Type | Effective Date | What Happens | Guide |
 |---------|------------|---------------|-------------|-------|
-| **ACS Voice/Video Calling SDK** | 🟡 Breaking Change | 2028-07-31 | Standalone use unsupported. Must integrate with Teams Phone Extensibility, Teams Meeting Interop, or Teams Click-2-Call. | https://aka.ms/acs-calling-migration |
-| **ACS Call Diagnostics** | 🟡 Breaking Change | 2028-07-31 | Must use in conjunction with a supported Teams-aligned service. | https://aka.ms/acs-calling-migration |
-| **ACS Call Automation** | 🟡 Breaking Change | 2028-07-31 | Must integrate with Teams Phone Extensibility or Teams Meeting Interop. New major-version SDK provided. | https://aka.ms/acs-calling-migration |
-| **ACS Audio Streaming** | 🟡 Breaking Change | 2028-07-31 | Must use with a supported Teams-aligned service. No standalone replacement in Microsoft Marketplace. | https://aka.ms/acs-calling-migration |
-| **ACS Call Recording** | 🟡 Breaking Change | 2028-07-31 | Must use with a supported Teams-aligned service. Export existing recordings before retirement. | https://aka.ms/acs-calling-migration |
-| **ACS Closed Captions** | 🟡 Breaking Change | 2028-07-31 | Must use with a supported Teams-aligned service. | https://aka.ms/acs-calling-migration |
+| **ACS Voice/Video Calling SDK** | 🟡 Breaking Change | 2028-07-31 | Standalone use unsupported. Must integrate with Teams Phone Extensibility, Teams Meeting Interop, or Teams Click-2-Call. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| **ACS Call Diagnostics** | 🟡 Breaking Change | 2028-07-31 | Must use in conjunction with a supported Teams-aligned service. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| **ACS Call Automation** | 🟡 Breaking Change | 2028-07-31 | Must integrate with Teams Phone Extensibility or Teams Meeting Interop. New major-version SDK provided. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| **ACS Audio Streaming** | 🟡 Breaking Change | 2028-07-31 | Must use with a supported Teams-aligned service. No standalone replacement in Microsoft Marketplace. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| **ACS Call Recording** | 🟡 Breaking Change | 2028-07-31 | Must use with a supported Teams-aligned service. Export existing recordings before retirement. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| **ACS Closed Captions** | 🟡 Breaking Change | 2028-07-31 | Must use with a supported Teams-aligned service. | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
 | **ACS Web UI Library SDK** | 🟡 Breaking Change | 2028-07-31 | Open source; remains available during retirement period. No new features — break/fix only. Customers may fork independently. | https://aka.ms/acs-retirement-and-breaking-changes-guide |
 | **ACS Mobile UI Library SDK** | 🟡 Breaking Change | 2028-07-31 | Open source; remains available during retirement period. No new features — break/fix only. Customers may fork independently. | https://aka.ms/acs-retirement-and-breaking-changes-guide |
 

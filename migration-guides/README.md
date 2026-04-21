@@ -11,11 +11,11 @@ https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 | Channel | Guide |
 |---------|-------|
-| Email Service → M365 HVE | https://aka.ms/acs-email-migration |
-| SMS API | https://aka.ms/acs-sms-migration |
-| Chat SDK | https://aka.ms/acs-chat-migration |
-| Calling SDK | https://aka.ms/acs-calling-migration |
-| Phone Numbers SDK | https://aka.ms/acs-phone-migration |
+| Email Service | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
+| SMS API | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
+| Chat SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
+| Calling SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| Phone Numbers SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
 
 ---
 
@@ -23,10 +23,10 @@ https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 | Channel | Recommended Path |
 |---------|-----------------|
-| Email | Microsoft 365 High-Volume Email (HVE) |
+| Email | Evaluate Azure Marketplace alternatives (Exchange / HVE is NOT a replacement) |
 | Chat | Microsoft Teams Chat (via Microsoft Graph APIs) |
 | Calling | Microsoft Teams (Phone Extensibility, Meeting Interop, or Click-2-Call) |
-| SMS | Port numbers to a third-party SMS provider |
+| SMS | Port numbers to a third-party SMS provider via LOA |
 | Phone Numbers | Port to Teams Phone Extensibility or a third-party provider |
 
 ---

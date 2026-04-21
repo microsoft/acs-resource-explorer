@@ -274,15 +274,15 @@ Step 6: Generating reports...
 
 💡 Next Steps:
    📧 Email (2 resources) — Retirement Guide:
-      https://aka.ms/acs-email-migration
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
    📱 SMS (1 resource) — Retirement Guide:
-      https://aka.ms/acs-sms-migration
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
    💬 Chat (1 resource) — Retirement Guide:
-      https://aka.ms/acs-chat-migration
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
    📞 Calling (2 resources) — Breaking Change Guide:
-      https://aka.ms/acs-calling-migration
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
    ☎️  Phone Numbers (1 resource) — Retirement Guide:
-      https://aka.ms/acs-phone-migration
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 
    Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 ```
@@ -417,11 +417,11 @@ After your assessment, use these guides to plan your next steps:
 
 | Channel | Status Type | Guide |
 |---------|------------|-------|
-| Email Service | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-email-migration) |
-| SMS API | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-sms-migration) |
-| Chat SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-chat-migration) |
-| Calling SDK | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-calling-migration) — must integrate with Teams |
-| Phone Numbers SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-phone-migration) |
+| Email Service | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email) |
+| SMS API | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms) |
+| Chat SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat) |
+| Calling SDK | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk) — must integrate with Teams |
+| Phone Numbers SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer) |
 
 All channels effective **July 31, 2028**. Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
@@ -525,7 +525,7 @@ ACS-Transition-Agent-v0/
 
 - **Questions or issues:** Open an issue in this repository
 - **ACS migration guidance:** https://aka.ms/acs-retirement-and-breaking-changes-guide
-- **Channel guides:** https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration
+- **Channel guides:** https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 
 ---
 

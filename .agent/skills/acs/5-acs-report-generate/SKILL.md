@@ -119,18 +119,18 @@ TotalChannelsImpacted
    - **Channels Detected:** Email, Chat, Phone Numbers
    - **Usage:** Email: 1,250 | Chat: 543 | Phone Numbers: 15
    - **Guides:**
-     - 📧 [Email Retirement Guide](https://aka.ms/acs-email-migration)
-     - 💬 [Chat Retirement Guide](https://aka.ms/acs-chat-migration)
-     - 📞 [Calling Breaking Change Guide](https://aka.ms/acs-calling-migration) *(if Calling detected)*
+     - 📧 [Email Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email)
+     - 💬 [Chat Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat)
+     - 📞 [Calling Breaking Change Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk) *(if Calling detected)*
 
    [Repeat for each resource...]
 
    ## ACS Channel Guides
-   - 📧 Email — Retirement Guide: https://aka.ms/acs-email-migration
-   - 📱 SMS — Retirement Guide: https://aka.ms/acs-sms-migration
-   - 💬 Chat — Retirement Guide: https://aka.ms/acs-chat-migration
-   - 📞 Calling — Breaking Change Guide: https://aka.ms/acs-calling-migration
-   - ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-phone-migration
+   - 📧 Email — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
+   - 📱 SMS — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
+   - 💬 Chat — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
+   - 📞 Calling — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+   - ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 
    ## Next Steps
    1. Review migration guides for each detected channel
@@ -215,11 +215,11 @@ TotalChannelsImpacted
 > - **Migration paths & guide links:** [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
 
 ## ACS Migration Resources
-- 📧 Email: https://aka.ms/acs-email-migration
-- 📱 SMS: https://aka.ms/acs-sms-migration
-- 💬 Chat: https://aka.ms/acs-chat-migration
-- 📞 Calling: https://aka.ms/acs-calling-migration
-- ☎️ Phone Numbers: https://aka.ms/acs-phone-migration
+- 📧 Email: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
+- 📱 SMS: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
+- 💬 Chat: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
+- 📞 Calling: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- ☎️ Phone Numbers: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 - Retirement & Breaking Changes: https://aka.ms/acs-retirement-and-breaking-changes-guide
 - Full migration paths reference: [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
 

@@ -79,4 +79,4 @@ Reports are saved to `./exports/` in CSV, Markdown, and JSON formats.
 - Review detected channels per resource
 - Start with resources using the most channels
 - Retirement & Breaking Changes guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-- Channel guides: https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration
+- Channel guides: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer

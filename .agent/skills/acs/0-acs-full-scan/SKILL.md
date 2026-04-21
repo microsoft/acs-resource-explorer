@@ -129,11 +129,11 @@ Reference data used by this workflow lives in `docs/knowledge/`. Update these fi
 | [acs-channel-status.md](../../../../docs/knowledge/acs-channel-status.md) | Full Breaking Change vs Retirement detail |
 
 ## ACS Channel Guides
-- 📧 Email — Retirement Guide: https://aka.ms/acs-email-migration
-- 📱 SMS — Retirement Guide: https://aka.ms/acs-sms-migration
-- 💬 Chat — Retirement Guide: https://aka.ms/acs-chat-migration
-- 📞 Calling — Breaking Change Guide: https://aka.ms/acs-calling-migration
-- ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-phone-migration
+- 📧 Email — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
+- 📱 SMS — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
+- 💬 Chat — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
+- 📞 Calling — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 - All channels — Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 ## Related Skills (Individual Steps)

@@ -69,9 +69,9 @@
 ## Key Links
 
 - Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement-and-breaking-changes-guide
-- Email: https://aka.ms/acs-email-migration
-- SMS: https://aka.ms/acs-sms-migration
-- Chat: https://aka.ms/acs-chat-migration
-- Calling (Breaking Change): https://aka.ms/acs-calling-migration
-- Phone Numbers: https://aka.ms/acs-phone-migration
+- Email: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
+- SMS: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
+- Chat: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
+- Calling (Breaking Change): https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- Phone Numbers: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 - Dynamics 365 customers: https://aka.ms/D365ACSDeprecationGuide
