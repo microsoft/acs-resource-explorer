@@ -228,6 +228,67 @@ Step 6: Generate reports                   ← saves CSV, Markdown, JSON to ./ex
 
 ---
 
+### Example Output
+
+```
+Step 1: Checking Azure authentication...
+✅ Authenticated — user@contoso.com (Contoso Corp)
+
+Step 2: Subscription selection...
+✅ Scanning 2 subscription(s): Contoso-Prod, Contoso-Dev
+
+Step 3: Discovering ACS resources...
+✅ Found 3 ACS resource(s) across 2 subscription(s)
+   • ContosoComms       (rg-communications, Contoso-Prod)
+   • ContosoSupportBot  (rg-support, Contoso-Prod)
+   • ContosoDevTest     (rg-dev, Contoso-Dev)
+
+Step 4: Collecting usage metrics (90-day lookback)...
+   ⏳ Analyzing ContosoComms...
+   ⏳ Analyzing ContosoSupportBot...
+   ⏳ Analyzing ContosoDevTest...
+✅ Metrics collected
+
+Step 5: Analyzing impact...
+Step 6: Generating reports...
+✅ Reports saved to ./exports/
+```
+
+```
+╔══════════════════════════════════════════════════╗
+║        ACS Impact Assessment Complete            ║
+╠══════════════════════════════════════════════════╣
+║ Subscriptions Scanned:  2                        ║
+║ ACS Resources Found:    3                        ║
+║ Detection Mode: Full (90-day lookback)           ║
+╠══════════════════════════════════════════════════╣
+║ Retiring Services Detected:                      ║
+║   📧 Email:         2 resource(s) — 48,201 msgs  ║
+║   📱 SMS:           1 resource(s) — 3,847 msgs   ║
+║   💬 Chat:          1 resource(s) — 12,093 msgs  ║
+║   📞 Calling:       2 resource(s) — 9,412 calls  ║
+║   ☎️  Phone Numbers: 1 resource(s) — 204 ops     ║
+╠══════════════════════════════════════════════════╣
+║ Reports saved to: ./exports/                     ║
+╚══════════════════════════════════════════════════╝
+
+💡 Next Steps:
+   📧 Email (2 resources) — Retirement Guide:
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
+   📱 SMS (1 resource) — Retirement Guide:
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
+   💬 Chat (1 resource) — Retirement Guide:
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
+   📞 Calling (2 resources) — Breaking Change Guide:
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+   ☎️  Phone Numbers (1 resource) — Retirement Guide:
+      https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
+
+   Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+```
+
+---
+
 ### 7. Find Your Results
 
 After the scan completes, your reports are saved in the `exports/` folder:
@@ -356,11 +417,11 @@ After your assessment, use these guides to plan your next steps:
 
 | Channel | Status Type | Guide |
 |---------|------------|-------|
-| Email Service | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-email-migration) |
-| SMS API | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-sms-migration) |
-| Chat SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-chat-migration) |
-| Calling SDK | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-calling-migration) — must integrate with Teams |
-| Phone Numbers SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-phone-migration) |
+| Email Service | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email) |
+| SMS API | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms) |
+| Chat SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat) |
+| Calling SDK | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk) — must integrate with Teams |
+| Phone Numbers SDK | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer) |
 
 All channels effective **July 31, 2028**. Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
@@ -464,7 +525,7 @@ ACS-Transition-Agent-v0/
 
 - **Questions or issues:** Open an issue in this repository
 - **ACS migration guidance:** https://aka.ms/acs-retirement-and-breaking-changes-guide
-- **Channel guides:** https://aka.ms/acs-email-migration | https://aka.ms/acs-sms-migration | https://aka.ms/acs-chat-migration | https://aka.ms/acs-calling-migration | https://aka.ms/acs-phone-migration
+- **Channel guides:** https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 
 ---
 

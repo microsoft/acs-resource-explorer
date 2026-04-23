@@ -6,7 +6,9 @@ This repository contains AI Agent Skills for assessing retiring Azure Communicat
 
 Scans Azure subscriptions for ACS resources that use retiring standalone SDKs and APIs, measures actual usage over 90 days, calculates migration urgency, and generates reports with migration guidance.
 
-**Five retiring ACS channels detected:**
+**Impacted ACS services (planned announcement July 22, 2026 · retirement July 31, 2028):
+
+Retired after July 31, 2028:**
 - Email Service (standalone ACS SDK) — retires 2028-07-31
 - SMS API (standalone ACS SDK)
 - Chat SDK (standalone ACS SDK)
@@ -44,9 +46,9 @@ Reports are saved to `./exports/` in CSV, Markdown, and JSON formats.
 
 ## Migration Guides
 
-- Email: https://aka.ms/acs-email-migration
-- SMS: https://aka.ms/acs-sms-migration
-- Chat: https://aka.ms/acs-chat-migration
-- Calling: https://aka.ms/acs-calling-migration
-- Phone Numbers: https://aka.ms/acs-phone-migration
+- Email: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
+- SMS: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
+- Chat: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
+- Calling: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- Phone Numbers: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 - Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement-and-breaking-changes-guide

@@ -26,11 +26,11 @@ Examples:
 
 | Channel | Status Type | Guide |
 |---------|------------|-------|
-| Email Service | 🔴 Retirement | https://aka.ms/acs-email-migration |
-| SMS API | 🔴 Retirement | https://aka.ms/acs-sms-migration |
-| Chat SDK | 🔴 Retirement | https://aka.ms/acs-chat-migration |
-| Calling SDK | 🟡 Breaking Change | https://aka.ms/acs-calling-migration |
-| Phone Numbers SDK | 🔴 Retirement | https://aka.ms/acs-phone-migration |
+| Email Service | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
+| SMS API | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
+| Chat SDK | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
+| Calling SDK | 🟡 Breaking Change | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| Phone Numbers SDK | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
 
 > Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 
@@ -63,11 +63,11 @@ Examples:
    └──────────────────┴──────────────────────────────┴───────────────┘
 
    Channel Totals Across All Resources:
-     📧 Email:         [N] resource(s) — Retirement Guide: https://aka.ms/acs-email-migration
-     📱 SMS:           [N] resource(s) — Retirement Guide: https://aka.ms/acs-sms-migration
-     💬 Chat:          [N] resource(s) — Retirement Guide: https://aka.ms/acs-chat-migration
-     📞 Calling:       [N] resource(s) — Breaking Change Guide: https://aka.ms/acs-calling-migration
-     ☎️ Phone Numbers: [N] resource(s) — Retirement Guide: https://aka.ms/acs-phone-migration
+     📧 Email:         [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
+     📱 SMS:           [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
+     💬 Chat:          [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
+     📞 Calling:       [N] resource(s) — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+     ☎️ Phone Numbers: [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 
    📘 Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
    ```

@@ -159,11 +159,11 @@ To create a skill set for another retiring Azure product, use the `azure/` skill
 
 | Channel | Guide |
 |---------|-------|
-| Email Service | https://aka.ms/acs-email-migration |
-| SMS API | https://aka.ms/acs-sms-migration |
-| Chat SDK | https://aka.ms/acs-chat-migration |
-| Calling SDK | https://aka.ms/acs-calling-migration |
-| Phone Numbers SDK | https://aka.ms/acs-phone-migration |
+| Email Service | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
+| SMS API | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
+| Chat SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
+| Calling SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
+| Phone Numbers SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
 | Retirement & Breaking Changes | https://aka.ms/acs-retirement-and-breaking-changes-guide |
 
 ---
