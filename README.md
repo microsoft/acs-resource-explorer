@@ -112,7 +112,7 @@ GitHub Copilot Free gives you 50 AI chat messages per month — enough for occas
 **Step 4 — Open the project in VS Code:**
 ```bash
 # After cloning the repo (Step 4 below), open it in VS Code:
-code ACS-Transition-Agent-v0
+code acs-transition-agent
 ```
 
 > **Note:** GitHub Copilot Free includes 50 chat messages per month. A full ACS scan typically uses 5–10 messages. If you run scans frequently, consider upgrading to GitHub Copilot Pro ($10/month).
@@ -153,8 +153,8 @@ This opens your browser to sign in with your Anthropic account. If you don't hav
 Open a terminal (Command Prompt, PowerShell, or Terminal) and run:
 
 ```bash
-git clone https://github.com/jameelaesa/ACS-Transition-Agent-v0.git
-cd ACS-Transition-Agent-v0
+git clone https://github.com/microsoft/acs-transition-agent.git
+cd acs-transition-agent
 ```
 
 ---
@@ -184,7 +184,7 @@ You should see your account email, subscription name, and tenant ID.
 
 #### Option A: GitHub Copilot
 
-Make sure you've opened the project folder in VS Code (`code ACS-Transition-Agent-v0`), then:
+Make sure you've opened the project folder in VS Code (`code acs-transition-agent`), then:
 
 1. Open the **Chat** panel: press `Ctrl+Alt+I` (Windows/Linux) or `Ctrl+Cmd+I` (macOS)
 2. In the chat input, type:
@@ -205,7 +205,7 @@ Make sure you've opened the project folder in VS Code (`code ACS-Transition-Agen
 Open Claude Code in the project directory:
 
 ```bash
-cd ACS-Transition-Agent-v0
+cd acs-transition-agent
 claude
 ```
 
@@ -455,7 +455,7 @@ Copy the code shown, go to https://microsoft.com/devicelogin, and enter the code
 ### Claude Code doesn't find the skills
 Make sure you opened Claude Code **inside the repository directory**:
 ```bash
-cd ACS-Transition-Agent-v0
+cd acs-transition-agent
 claude
 ```
 
@@ -489,7 +489,7 @@ The skills in `.agent/skills/` follow the [Agent Skills open standard](https://a
 ## Project Structure
 
 ```
-ACS-Transition-Agent-v0/
+acs-transition-agent/
 │
 ├── .agent/skills/                  ← AI Agent Skills (main feature)
 │   ├── azure/                      ← Generic skills (reusable for any Azure product)
