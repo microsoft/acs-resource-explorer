@@ -1,84 +1,114 @@
-# ACS Azure Monitor Metric Names
+# ACS Azure Monitor Metric Names & Channel Detection
 
-**Source:** Azure Monitor metrics for Microsoft.Communication/CommunicationServices
-**Last Verified:** 2026-02-27
-**Update This File When:** Microsoft adds, renames, or deprecates metric names for ACS resources.
-
----
-
-## Metrics by Channel
-
-| Channel | Metric Name | Aggregation | Unit | Notes |
-|---------|-------------|-------------|------|-------|
-| **Email** | `EmailMessagesSent` | Total | Count | Messages successfully sent |
-| **Email** | `EmailDeliveryAttempts` | Total | Count | Delivery attempts (including retries) |
-| **Email** | `EmailOperations` | Total | Count | All email API operations |
-| **SMS** | `SMSMessagesSent` | Total | Count | Outbound SMS messages |
-| **SMS** | `SMSMessagesReceived` | Total | Count | Inbound SMS messages |
-| **Chat** | `ChatMessageCount` | Total | Count | Messages sent in chat threads |
-| **Chat** | `ChatThreadCount` | Total | Count | Chat threads created |
-| **Chat** | `ActiveChatUsers` | Total | Count | Unique active chat participants |
-| **Calling** | `CallDuration` | Total | Seconds | Total call duration across all calls |
-| **Calling** | `CallCount` | Total | Count | Number of calls initiated |
-| **Calling** | `ParticipantCount` | Total | Count | Unique call participants |
-| **Phone Numbers** | `PhoneNumberOperations` | Total | Count | Phone number provisioning/management operations |
+**Source:** Azure Monitor `az monitor metrics list-definitions` (live query) + https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/microsoft-communication_communicationservices
+**Last Verified:** 2026-04-22
+**Update This File When:** Microsoft adds, renames, or deprecates metric names or log tables for ACS resources.
 
 ---
 
-## Detection Logic
-
-A channel is considered **in use** when the **sum of all its metrics** over the lookback period is **greater than zero**.
-
-```
-EmailTotal    = EmailMessagesSent + EmailDeliveryAttempts + EmailOperations
-SMSTotal      = SMSMessagesSent + SMSMessagesReceived
-ChatTotal     = ChatMessageCount + ChatThreadCount + ActiveChatUsers
-CallingTotal  = CallDuration + CallCount + ParticipantCount
-PhoneTotal    = PhoneNumberOperations
-
-If Total > 0 → Channel detected = true
-```
+## Rules
+- Every metric name and table name in this file has been verified against a live resource or authoritative Microsoft documentation.
+- Do not add names that have not been verified. Mark anything unverified explicitly.
 
 ---
 
-## Azure Monitor Query Parameters
+## Platform Metrics
+Verified via `az monitor metrics list-definitions` on a live `Microsoft.Communication/CommunicationServices` resource.
+Queryable via `az monitor metrics list` with Reader + Monitoring Reader access. No Diagnostic Settings required.
 
-| Parameter | Value | Notes |
-|-----------|-------|-------|
-| TimeGrain | `01:00:00` (hourly) | Required for max lookback coverage |
-| AggregationType | `Total` | Sum all data points in the period |
-| Min Lookback | 1 day | — |
-| Max Lookback | **93 days** | Azure Monitor hourly retention limit |
-| Default Lookback | 90 days | Recommended |
-| ResourceType | `Microsoft.Communication/CommunicationServices` | — |
+| Metric Name | Display Name | Channel | Aggregation |
+|-------------|-------------|---------|-------------|
+| `ApiRequests` | Email Service API Requests | Email | Count |
+| `DeliveryStatusUpdate` | Email Service Delivery Status Updates | Email | Count |
+| `UserEngagement` | Email Service User Engagement | Email | Count |
+| `APIRequestSMS` | SMS API Requests | SMS | Count |
+| `APIRequestChat` | Chat API Requests | Chat | Count |
+| `APIRequestsAdvancedMessaging` | Advanced Messaging API Requests | Advanced Messaging / WhatsApp | Count |
+| `ApiRequestRooms` | Rooms API Requests | Rooms | Count |
+| `ApiRequestRouter` | Job Router API Requests | Job Router | Count |
+| `APIRequestCallAutomation` | Call Automation API Requests | Call Automation | Count |
+| `AcsCallAutomationCallbackEvent` | Call Automation Callback Event | Call Automation | Count |
+| `APIRequestCallRecording` | Call Recording API Requests | Call Recording | Count |
+| `APIRequestAuthentication` | Authentication API Requests | Identity (not retiring) | Count |
 
 ---
 
-## Azure CLI Query Pattern
+## Log Analytics Tables
+Verified via https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/microsoft-communication_communicationservices
+Requires Diagnostic Settings enabled and a Log Analytics workspace configured on the ACS resource.
+
+| Table | Description | Channel |
+|-------|-------------|---------|
+| `ACSEmailSendMailOperational` | Email send operations | Email |
+| `ACSEmailStatusUpdateOperational` | Email delivery status updates | Email |
+| `ACSEmailUserEngagementOperational` | Email open/click engagement | Email |
+| `ACSSMSIncomingOperations` | SMS API operations | SMS |
+| `ACSOptOutManagementOperations` | SMS opt-out management | SMS |
+| `ACSChatIncomingOperations` | Chat API operations | Chat |
+| `ACSAdvancedMessagingOperations` | Advanced Messaging (WhatsApp) operations | Advanced Messaging / WhatsApp |
+| `ACSRoomsIncomingOperations` | Rooms API operations | Rooms |
+| `ACSJobRouterIncomingOperations` | Job Router API operations | Job Router |
+| `ACSCallAutomationIncomingOperations` | Call Automation API operations (CreateCall, Play, Recognize, etc.) | Call Automation |
+| `ACSCallAutomationMediaSummary` | Call Automation media operations summary | Call Automation |
+| `ACSCallAutomationStreamingUsage` | Audio streaming session usage (start/stop, duration, participantId) | Audio Streaming |
+| `ACSCallRecordingIncomingOperations` | Call Recording API operations (Start/Stop/Pause/Resume) | Call Recording |
+| `ACSCallRecordingSummary` | Recording summary (duration, format, content type) | Call Recording |
+| `ACSCallSummary` | Per-participant call summary (VoIP, PSTN, SDK version, OS) | Voice/Video Calling |
+| `ACSCallSummaryUpdates` | Near-real-time call summary updates | Voice/Video Calling |
+| `ACSCallDiagnostics` | Per-stream media diagnostics | Voice/Video Calling |
+| `ACSCallDiagnosticsUpdates` | Near-real-time media stream diagnostics | Voice/Video Calling |
+| `ACSCallClientOperations` | Calling SDK client events (state changes, createView, startAudio) | Voice/Video Calling |
+| `ACSCallClientMediaStatsTimeSeries` | Granular media quality timeseries (bitrate, jitter, codec) | Voice/Video Calling |
+| `ACSCallClientServiceRequestAndOutcome` | Service-side call join/hangup with HTTP payloads | Voice/Video Calling |
+| `ACSCallingMetrics` | Aggregated calling metrics in daily bins (SDK API reliability, UFDs) | Voice/Video Calling |
+| `ACSCallSurvey` | End-of-call quality surveys | Voice/Video Calling |
+| `ACSCallClosedCaptionsSummary` | Closed captions sessions (duration, language, end reason) | Closed Captions |
+| `ACSAuthIncomingOperations` | Auth/identity API operations | Identity (not retiring) |
+| `ACSBillingUsage` | Usage records across all ACS modes — covers every channel | All channels |
+| `AzureMetrics` | Platform metrics routed to Log Analytics | All channels |
+| `AzureActivity` | Azure subscription-level activity log | General |
+
+---
+
+## Phone Number Detection
+Phone numbers in ACS are data-plane resources, not ARM child resources.
+Detection requires the ACS data plane API authenticated with an Entra token (Reader access on the subscription is sufficient).
 
 ```bash
-az monitor metrics list \
-  --resource <resourceId> \
-  --metric "EmailMessagesSent" \
-  --start-time <startTime> \
-  --end-time <endTime> \
-  --interval PT1H \
-  --aggregation Total \
-  --output json
+# Step 1 — get ACS resource hostname
+HOSTNAME=$(az resource show \
+  --name <resource-name> \
+  --resource-group <resource-group> \
+  --resource-type "Microsoft.Communication/CommunicationServices" \
+  --query "properties.hostName" -o tsv)
 
-# Sum the results (jq):
-# .value[0].timeseries[].data[].total | select(. != null) | add
+# Step 2 — get Entra token for ACS data plane
+TOKEN=$(az account get-access-token \
+  --resource "https://communication.azure.com" \
+  --query accessToken -o tsv)
+
+# Step 3 — list phone numbers
+curl -s -H "Authorization: Bearer $TOKEN" \
+  "https://$HOSTNAME/phoneNumbers?api-version=2022-12-01"
 ```
+
+If `phoneNumbers` array is non-empty → phone numbers detected.
 
 ---
 
-## Fast Detection (no metrics required)
+## Full Channel Detection Map
 
-For Email and Phone Numbers only, child resource existence can be used as a proxy:
-
-| Channel | Child Resource Type |
-|---------|-------------------|
-| Email | `Microsoft.Communication/EmailServices/Domains` |
-| Phone Numbers | `Microsoft.Communication/CommunicationServices/phoneNumbers` |
-
-> SMS, Chat, and Calling have no child resource type and **require Azure Monitor metrics** for detection.
+| Channel | Status | Platform Metric | Log Analytics Table | Phone Number API |
+|---------|--------|----------------|-------------------|-----------------|
+| Email | Retirement | `ApiRequests`, `DeliveryStatusUpdate`, `UserEngagement` | `ACSEmailSendMailOperational`, `ACSEmailStatusUpdateOperational`, `ACSEmailUserEngagementOperational` | — |
+| SMS | Retirement | `APIRequestSMS` | `ACSSMSIncomingOperations`, `ACSOptOutManagementOperations` | — |
+| Chat | Retirement | `APIRequestChat` | `ACSChatIncomingOperations` | — |
+| Advanced Messaging / WhatsApp | Retirement | `APIRequestsAdvancedMessaging` | `ACSAdvancedMessagingOperations` | — |
+| Rooms | Retirement | `ApiRequestRooms` | `ACSRoomsIncomingOperations` | — |
+| Job Router | Retirement | `ApiRequestRouter` | `ACSJobRouterIncomingOperations` | — |
+| Phone Numbers | Retirement | — | — | Data plane API: `GET /phoneNumbers?api-version=2022-12-01` |
+| Call Automation | Breaking Change | `APIRequestCallAutomation`, `AcsCallAutomationCallbackEvent` | `ACSCallAutomationIncomingOperations`, `ACSCallAutomationMediaSummary` | — |
+| Audio Streaming | Breaking Change | — | `ACSCallAutomationStreamingUsage` | — |
+| Call Recording | Breaking Change | `APIRequestCallRecording` | `ACSCallRecordingIncomingOperations`, `ACSCallRecordingSummary` | — |
+| Voice/Video Calling | Breaking Change | — | `ACSCallSummary`, `ACSCallSummaryUpdates`, `ACSCallDiagnostics`, `ACSCallingMetrics` | — |
+| Closed Captions | Breaking Change | — | `ACSCallClosedCaptionsSummary` | — |
