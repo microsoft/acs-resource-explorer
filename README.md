@@ -64,7 +64,7 @@ sudo dnf install git            # Fedora/RHEL
 
 ### 2. Install the Azure CLI
 
-The Azure CLI (`az`) is used to connect to your Azure subscriptions and collect resource and usage data. It works on Windows, macOS, and Linux — no additional modules required.
+The Azure CLI (`az`) is used to connect to your Azure subscriptions and collect resource and usage data. It works on Windows, macOS, and Linux.
 
 **Windows:**
 1. Go to https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
@@ -82,6 +82,25 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
 For other Linux distributions and package managers, see: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+
+### 3. Install the Azure Communication extension 
+The `az communication` extension is required to detect purchased phone numbers. Taking into consideration that `Disable Access Keys Authentication` option under `Settings` should be unchecked:
+
+```bash
+az extension add --name communication
+```
+
+If already installed, update it:
+
+```bash
+az extension update --name communication
+```
+
+Verify the extension commands are available:
+
+```bash
+az communication -h
+```
 
 ---
 
