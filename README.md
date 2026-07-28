@@ -117,10 +117,10 @@ code ACS-Transition-Agent-v0
 
 **Step 5 — Install required VS Code extensions:**
 
-To run the tool in VS Code, install the **PowerShell** and **Rainbow CSV** extensions. To install the extensions repeat the following steps for each one:
+To run the tool in VS Code, install the **PowerShell** and **Rainbow CSV** extensions. To install the extensions, repeat the following steps for each extension:
 1. Open VS Code
 2. Click the Extensions icon in the left sidebar (looks like four squares)
-3. Search for **PowerShell** or **Rainbow CSV**
+3. Search for the extension name (e.g., **PowerShell** or **Rainbow CSV**)
 4. Click **Install**
 
 **Step 5 — Install Python:**
