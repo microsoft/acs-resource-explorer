@@ -229,6 +229,7 @@ foreach ($subscription in $subscriptions) {
                 CallingUsageCount = 0
                 PhoneNumbersDetected = $false
                 PhoneNumbersUsageCount = 0
+                AccessKeysAuthDisabled = $false
 
                 # Overall impact
                 TotalChannelsImpacted = 0
@@ -242,30 +243,34 @@ foreach ($subscription in $subscriptions) {
             if ($emailDomains) {
                 $resourceImpact.EmailDetected = $true
                 $resourceImpact.TotalChannelsImpacted++
+                $resourceImpact.EmailUsageCount = [int]$emailDomains.Count
                 Write-Host "      [+] Email service detected ($($emailDomains.Count) domain(s))" -ForegroundColor Yellow
             }
 
-            # Check for Phone Numbers (resource-based detection)
-            try {
-                $phoneNumbers = Get-AzResource -ResourceGroupName $resource.ResourceGroupName `
-                                               -ResourceType "Microsoft.Communication/CommunicationServices/phoneNumbers" `
-                                               -ErrorAction SilentlyContinue
+            # Read expanded properties to detect whether key-based auth is disabled.
+            $resourceDetails = Get-AzResource -ResourceId $resource.ResourceId -ExpandProperties -ErrorAction SilentlyContinue
+            $resourceImpact.AccessKeysAuthDisabled = [bool]$resourceDetails.Properties.disableLocalAuth
 
-                if (-not $phoneNumbers) {
-                    # Try alternate resource type
-                    $phoneNumbers = Get-AzResource | Where-Object {
-                        $_.ResourceGroupName -eq $resource.ResourceGroupName -and
-                        $_.Name -match "^\+\d+"
+            # Check for Phone Numbers via connection-string data-plane API.
+            if ($resourceImpact.AccessKeysAuthDisabled) {
+                Write-Host "      [!] Access key auth disabled — skipping phone number detection." -ForegroundColor DarkYellow
+            } else {
+                $connectionString = az communication list-key `
+                    -g $resource.ResourceGroupName -n $resource.Name `
+                    --query primaryConnectionString -o tsv --only-show-errors 2>$null
+
+                if ($connectionString) {
+                    $phoneNumberRaw = az communication phonenumber list `
+                        --connection-string $connectionString -o json --only-show-errors 2>$null
+                    $phoneNumberCount = if ($phoneNumberRaw) { @($phoneNumberRaw | ConvertFrom-Json).Count } else { 0 }
+
+                    if ($phoneNumberCount -gt 0) {
+                        $resourceImpact.PhoneNumbersDetected = $true
+                        $resourceImpact.PhoneNumbersUsageCount = $phoneNumberCount
+                        $resourceImpact.TotalChannelsImpacted++
+                        Write-Host "      [+] Phone Numbers detected ($phoneNumberCount number(s))" -ForegroundColor Yellow
                     }
                 }
-
-                if ($phoneNumbers) {
-                    $resourceImpact.PhoneNumbersDetected = $true
-                    $resourceImpact.TotalChannelsImpacted++
-                    Write-Host "      [+] Phone Numbers detected ($($phoneNumbers.Count) number(s))" -ForegroundColor Yellow
-                }
-            } catch {
-                # Phone number detection failed, will rely on metrics if available
             }
 
             # If IncludeMetrics is specified, get usage metrics for all channels
@@ -348,6 +353,7 @@ foreach ($subscription in $subscriptions) {
                 Write-Host "        Chat:          $($resourceImpact.ChatUsageCount) messages $(if ($resourceImpact.ChatUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.ChatDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Calling:       $($resourceImpact.CallingUsageCount) calls $(if ($resourceImpact.CallingUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.CallingDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Phone Numbers: $($resourceImpact.PhoneNumbersUsageCount) operations $(if ($resourceImpact.PhoneNumbersUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Access Key Auth: $(if ($resourceImpact.AccessKeysAuthDisabled) { 'Disabled' } else { 'Enabled' })" -ForegroundColor $(if ($resourceImpact.AccessKeysAuthDisabled) { "DarkYellow" } else { "Gray" })
 
                 if ($LookbackDays -lt 93) {
                     Write-Host "`n      Want to check further back? Re-run with '-LookbackDays 93' (max: 93 days)" -ForegroundColor DarkYellow
@@ -361,6 +367,7 @@ foreach ($subscription in $subscriptions) {
                 Write-Host "        Chat:          Requires -IncludeMetrics flag" -ForegroundColor Gray
                 Write-Host "        Calling:       Requires -IncludeMetrics flag" -ForegroundColor Gray
                 Write-Host "        Phone Numbers: $(if ($resourceImpact.PhoneNumbersDetected) { 'Detected' } else { 'Not detected' })" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Access Key Auth: $(if ($resourceImpact.AccessKeysAuthDisabled) { 'Disabled' } else { 'Enabled' })" -ForegroundColor $(if ($resourceImpact.AccessKeysAuthDisabled) { "DarkYellow" } else { "Gray" })
             }
 
             # Always add resource to assessment (even with 0 usage)
@@ -385,6 +392,9 @@ if ($impactAssessment.Count -gt 0) {
     $chatCount = ($impactAssessment | Where-Object { $_.ChatDetected }).Count
     $callingCount = ($impactAssessment | Where-Object { $_.CallingDetected }).Count
     $phoneCount = ($impactAssessment | Where-Object { $_.PhoneNumbersDetected }).Count
+    $accessKeyAuthDisabledCount = ($impactAssessment | Where-Object { $_.AccessKeysAuthDisabled }).Count
+
+    Write-Host "Access key auth disabled: $accessKeyAuthDisabledCount resource(s)" -ForegroundColor White
 
     if ($resourcesWithRetiringServices -gt 0) {
         Write-Host "`nRetiring Services Detected:" -ForegroundColor Yellow
@@ -418,7 +428,7 @@ if ($impactAssessment.Count -gt 0) {
 
     # Display results table
     Write-Host "`n=== Detailed Results ===" -ForegroundColor Cyan
-    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, TotalChannelsImpacted, EmailUsageCount, SMSUsageCount, ChatUsageCount, CallingUsageCount, PhoneNumbersUsageCount -AutoSize
+    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, AccessKeysAuthDisabled, TotalChannelsImpacted, EmailUsageCount, SMSUsageCount, ChatUsageCount, CallingUsageCount, PhoneNumbersUsageCount -AutoSize
 
 } else {
     Write-Host "`nNo ACS resources found in the scanned subscription(s)." -ForegroundColor Green
