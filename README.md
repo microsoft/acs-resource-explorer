@@ -136,17 +136,18 @@ code acs-transition-agent
 
 **Step 5 — Install required VS Code extensions:**
 
-To run the tool in VS Code, install the **PowerShell** and **Rainbow CSV** extensions. To install each extension, follow these steps:
+To run the tool in VS Code, install the **PowerShell** and **Rainbow CSV** extensions. To install the extensions, repeat the following steps for each extension:
 1. Open VS Code
 2. Click the Extensions icon in the left sidebar (looks like four squares)
 3. Search for the extension name (e.g., **PowerShell** or **Rainbow CSV**)
 4. Click **Install**
 
-**Step 6 — Install Python:**
+**Step 5 — Install Python:**
 
 Python is required to run the tool. Download and install Python from the official website: [Python Downloads](https://www.python.org/downloads/)
 
 > **Note:** GitHub Copilot Free includes 50 chat messages per month. A full ACS scan typically uses 5–10 messages. If you run scans frequently, consider upgrading to GitHub Copilot Pro ($10/month).
+
 
 ---
 
