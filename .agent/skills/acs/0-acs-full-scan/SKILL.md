@@ -22,7 +22,7 @@ azure/1-azure-auth-check           → Verify Azure authentication
 azure/2-azure-subscription-select  → Choose subscription(s) to scan
 acs/1-acs-resource-scan            → Discover all ACS resources
 acs/2-acs-channel-detect           → Fast: Email + Phone Numbers (optional)
-acs/3-acs-metrics-collect          → Full: All 5 channels via Azure Monitor
+acs/3-acs-metrics-collect          → Full: All configured channels via Azure Monitor
 acs/4-acs-impact-analyze           → Map channels to migration guides
 acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
 ```
@@ -61,20 +61,20 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
      1. Fast scan — Email + Phone Numbers only (~30 seconds per subscription)
         (Use if you only need to check Email and Phone Numbers)
 
-     2. Full scan — All 5 channels via Azure Monitor metrics (~3-5 min per subscription)
-        (Recommended — detects Email, SMS, Chat, Calling, and Phone Numbers)
+     2. Full scan — All configured channels via Azure Monitor metrics (~3-5 min per subscription)
+        (Recommended — detects Email, SMS, Chat, Call Automation, Job Router, Advance Messaging, Rooms, and Phone Numbers)
 
      Choose [1/2] (default: 2):
      ```
 
    **If Mode 1 (Fast):**
    - Run **2-acs-channel-detect**
-   - Note: SMS, Chat, Calling cannot be detected in fast mode
+   - Note: SMS, Chat, Call Automation, Job Router, Advance Messaging, and Rooms cannot be detected in fast mode
 
    **If Mode 2 (Full):**
    - Run **3-acs-metrics-collect**
    - Ask for lookback period (default: 90 days, max: 93 days)
-   - Collects usage data for all 5 channels
+   - Collects usage data for all configured channels
 
 ### Step 5: Channel Analysis
    - Run **4-acs-impact-analyze**
@@ -100,7 +100,10 @@ After all steps complete:
 ║   Email:         [N] resources ([Usage])         ║
 ║   SMS:           [N] resources ([Usage])         ║
 ║   Chat:          [N] resources ([Usage])         ║
-║   Calling:       [N] resources ([Usage])         ║
+║   Call Auto:     [N] resources ([Usage])         ║
+║   Job Router:    [N] resources ([Usage])         ║
+║   Adv Msg:       [N] resources ([Usage])         ║
+║   Rooms:         [N] resources ([Usage])         ║
 ║   Phone Numbers: [N] resources ([Usage])         ║
 ╠══════════════════════════════════════════════════╣
 ║ Reports saved to: ./exports/                     ║
@@ -112,7 +115,7 @@ After all steps complete:
 ```
 
 ## Output
-- CSV report (Excel-compatible, 17 columns)
+- CSV report (Excel-compatible, configured columns)
 - Markdown report (human-readable with migration guide links)
 - JSON report (machine-readable)
 - Console summary with channel detection breakdown
@@ -132,7 +135,10 @@ Reference data used by this workflow lives in `docs/knowledge/`. Update these fi
 - 📧 Email — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
 - 📱 SMS — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
 - 💬 Chat — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
-- 📞 Calling — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- 📞 Call Automation — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- 🧭 Job Router — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+- 📨 Advance Messaging — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+- 🏠 Rooms — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 - ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 - All channels — Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
 

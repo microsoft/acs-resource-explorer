@@ -1,6 +1,6 @@
 ---
 name: 2-acs-channel-detect
-description: Fast, resource-based detection of ACS channels (Email, Phone Numbers). Detects Email via EmailServices/Domains child resources and Phone Numbers via phoneNumbers child resources. Note: SMS, Chat, and Calling require metrics — use 3-acs-metrics-collect for complete detection.
+description: Fast, resource-based detection of ACS channels (Email, Phone Numbers). Detects Email via EmailServices/Domains child resources and Phone Numbers via purchased phone Numbers under each ACS resource. Note: SMS, Chat, Call Automation, Job Router, Advance Messaging, and Rooms require metrics — use 3-acs-metrics-collect for complete detection.
 ---
 
 ## When to use this skill
@@ -18,18 +18,21 @@ Examples:
 - User has **Reader** access to resources
 
 > **⚠️ Coverage Limitation:** This skill detects Email and Phone Numbers only.
-> SMS, Chat, and Calling usage cannot be detected without metrics.
-> For complete 5-channel detection, use **3-acs-metrics-collect**.
+> SMS, Chat, Call Automation, Job Router, Advance Messaging, and Rooms usage cannot be detected without metrics.
+> For complete metrics-based channel detection, use **3-acs-metrics-collect**.
 
 ## ACS Channel Detection Configuration
 
 | Channel | Detection Method | Child Resource Type |
 |---------|-----------------|---------------------|
 | Email | Child resources | `Microsoft.Communication/EmailServices/Domains` |
-| Phone Numbers | Child resources | `Microsoft.Communication/CommunicationServices/phoneNumbers` |
+| Phone Numbers | Purchased numbers | Purchased numbers |
 | SMS | ❌ Requires metrics | Use `3-acs-metrics-collect` |
 | Chat | ❌ Requires metrics | Use `3-acs-metrics-collect` |
-| Calling | ❌ Requires metrics | Use `3-acs-metrics-collect` |
+| Call Automation | ❌ Requires metrics | Use `3-acs-metrics-collect` |
+| Job Router | ❌ Requires metrics | Use `3-acs-metrics-collect` |
+| Advance Messaging | ❌ Requires metrics | Use `3-acs-metrics-collect` |
+| Rooms | ❌ Requires metrics | Use `3-acs-metrics-collect` |
 
 ## Workflow
 
@@ -49,7 +52,10 @@ Examples:
        PhoneNumberCount: 0,
        SMSDetected: "Requires metrics",
        ChatDetected: "Requires metrics",
-       CallingDetected: "Requires metrics",
+       CallAutomationDetected: "Requires metrics",
+       JobRouterDetected: "Requires metrics",
+       AdvanceMessagingDetected: "Requires metrics",
+       RoomsDetected: "Requires metrics",
        DetectionMethod: "Resource-based (fast mode)"
      }
      ```
@@ -94,10 +100,13 @@ Examples:
    ⚪ Phone Numbers:   Not detected
    ⚠️ SMS:             Requires metrics (use 3-acs-metrics-collect)
    ⚠️ Chat:            Requires metrics (use 3-acs-metrics-collect)
-   ⚠️ Calling:         Requires metrics (use 3-acs-metrics-collect)
+  ⚠️ Call Automation: Requires metrics (use 3-acs-metrics-collect)
+  ⚠️ Job Router:      Requires metrics (use 3-acs-metrics-collect)
+  ⚠️ Advance Msg:     Requires metrics (use 3-acs-metrics-collect)
+    ⚠️ Rooms:           Requires metrics (use 3-acs-metrics-collect)
 
    Channels detected via resources: 1 out of 2 detectable (Email, Phone Numbers)
-   Channels requiring metrics: 3 (SMS, Chat, Calling)
+    Channels requiring metrics: 6 (SMS, Chat, Call Automation, Job Router, Advance Messaging, Rooms)
    ```
 
 ### 6) **Save Detection Results to Session State**
@@ -108,13 +117,13 @@ Examples:
    ```
    💡 Recommendations:
    - For Email/Phone Numbers only: Proceed to 4-acs-impact-analyze
-   - For complete 5-channel detection: Run 3-acs-metrics-collect
+  - For complete metrics-based channel detection: Run 3-acs-metrics-collect
    ```
 
 ## Output
 - Email Service detection status (detected / not detected) + domain count
 - Phone Numbers detection status + count
-- Clear note that SMS, Chat, Calling require metrics
+- Clear note that SMS, Chat, Call Automation, Job Router, Advance Messaging, and Rooms require metrics
 - Updated session state with detection results
 
 ## Detection Speed
@@ -125,9 +134,12 @@ Examples:
 Use **3-acs-metrics-collect** if you need:
 - SMS usage detection
 - Chat usage detection
-- Calling usage detection
+- Call Automation usage detection
+- Rooms usage detection
+- Job Router usage detection
+- Advance Messaging usage detection
 - Usage-based detection (actual volume, not just configuration)
-- Complete 5-channel coverage
+- Complete configured-channel coverage
 
 ## Related Skills
 - Requires **azure/1-azure-auth-check**, **azure/2-azure-subscription-select**, **1-acs-resource-scan**
