@@ -151,7 +151,7 @@ if ($IncludeMetrics) {
 } else {
     Write-Host "`nDetection Mode: FAST (resource-only)" -ForegroundColor Yellow
     Write-Host "  - Only Email and Phone Numbers can be detected (via resources)" -ForegroundColor White
-    Write-Host "  - SMS, Chat, and Calling require '-IncludeMetrics' flag for detection" -ForegroundColor White
+    Write-Host "  - SMS, Chat, Call Automation, Job Router, Advance Messaging, and Rooms require '-IncludeMetrics' flag for detection" -ForegroundColor White
     Write-Host "  - Recommendation: Re-run with '-IncludeMetrics' for complete results" -ForegroundColor DarkYellow
 }
 
@@ -175,11 +175,13 @@ $totalACSResourcesFound = 0
 
 # Metrics to check for each channel
 $metricsConfig = @{
-    Email = @('EmailMessagesSent', 'EmailDeliveryAttempts', 'EmailOperations')
-    SMS = @('SMSMessagesSent', 'SMSMessagesReceived')
-    Chat = @('ChatMessageCount', 'ChatThreadCount', 'ActiveChatUsers')
-    Calling = @('CallDuration', 'CallCount', 'ParticipantCount')
-    PhoneNumbers = @('PhoneNumberOperations')
+    Email = @('ApiRequests', 'DeliveryStatusUpdate', 'UserEngagement')
+    SMS = @('APIRequestSMS')
+    Chat = @('APIRequestChat')
+    CallAutomation = @('APIRequestCallAutomation', 'APIRequestCallRecording', 'AcsCallAutomationCallbackEvent')
+    JobRouter = @('ApiRequestRouter')
+    AdvanceMessaging = @('APIRequestsAdvancedMessaging')
+    Rooms = @('ApiRequestRooms')
 }
 
 # Scan each subscription
@@ -206,7 +208,7 @@ foreach ($subscription in $subscriptions) {
             # Warn about detection limitations without metrics
             if (-not $IncludeMetrics) {
                 Write-Host "      Note: Running without -IncludeMetrics. Only Email and Phone Numbers can be detected via resources." -ForegroundColor Gray
-                Write-Host "            SMS, Chat, and Calling require -IncludeMetrics flag for detection via usage metrics." -ForegroundColor Gray
+                Write-Host "            SMS, Chat, Call Automation, Job Router, Advance Messaging, and Rooms require -IncludeMetrics flag for detection via usage metrics." -ForegroundColor Gray
             }
 
             # Initialize resource impact data
@@ -225,8 +227,14 @@ foreach ($subscription in $subscriptions) {
                 SMSUsageCount = 0
                 ChatDetected = $false
                 ChatUsageCount = 0
-                CallingDetected = $false
-                CallingUsageCount = 0
+                CallAutomationDetected = $false
+                CallAutomationUsageCount = 0
+                JobRouterDetected = $false
+                JobRouterUsageCount = 0
+                AdvanceMessagingDetected = $false
+                AdvanceMessagingUsageCount = 0
+                RoomsDetected = $false
+                RoomsUsageCount = 0
                 PhoneNumbersDetected = $false
                 PhoneNumbersUsageCount = 0
                 AccessKeysAuthDisabled = $false
@@ -328,17 +336,29 @@ foreach ($subscription in $subscriptions) {
                                 $resourceImpact.TotalChannelsImpacted++
                                 Write-Host "      [+] Chat usage: $totalUsage messages" -ForegroundColor Yellow
                             }
-                            'Calling' {
-                                $resourceImpact.CallingDetected = $true
-                                $resourceImpact.CallingUsageCount = [int]$totalUsage
+                            'CallAutomation' {
+                                $resourceImpact.CallAutomationDetected = $true
+                                $resourceImpact.CallAutomationUsageCount = [int]$totalUsage
                                 $resourceImpact.TotalChannelsImpacted++
-                                Write-Host "      [+] Calling usage: $totalUsage calls" -ForegroundColor Yellow
+                                Write-Host "      [+] Call Automation usage: $totalUsage operations" -ForegroundColor Yellow
                             }
-                            'PhoneNumbers' {
-                                $resourceImpact.PhoneNumbersDetected = $true
-                                $resourceImpact.PhoneNumbersUsageCount = [int]$totalUsage
+                            'JobRouter' {
+                                $resourceImpact.JobRouterDetected = $true
+                                $resourceImpact.JobRouterUsageCount = [int]$totalUsage
                                 $resourceImpact.TotalChannelsImpacted++
-                                Write-Host "      [+] Phone Numbers usage detected" -ForegroundColor Yellow
+                                Write-Host "      [+] Job Router usage: $totalUsage operations" -ForegroundColor Yellow
+                            }
+                            'AdvanceMessaging' {
+                                $resourceImpact.AdvanceMessagingDetected = $true
+                                $resourceImpact.AdvanceMessagingUsageCount = [int]$totalUsage
+                                $resourceImpact.TotalChannelsImpacted++
+                                Write-Host "      [+] Advance Messaging usage: $totalUsage operations" -ForegroundColor Yellow
+                            }
+                            'Rooms' {
+                                $resourceImpact.RoomsDetected = $true
+                                $resourceImpact.RoomsUsageCount = [int]$totalUsage
+                                $resourceImpact.TotalChannelsImpacted++
+                                Write-Host "      [+] Rooms usage: $totalUsage operations" -ForegroundColor Yellow
                             }
                         }
                     }
@@ -351,7 +371,10 @@ foreach ($subscription in $subscriptions) {
                 Write-Host "        Email:         $($resourceImpact.EmailUsageCount) messages $(if ($resourceImpact.EmailUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.EmailDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        SMS:           $($resourceImpact.SMSUsageCount) messages $(if ($resourceImpact.SMSUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.SMSDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Chat:          $($resourceImpact.ChatUsageCount) messages $(if ($resourceImpact.ChatUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.ChatDetected) { "Yellow" } else { "Gray" })
-                Write-Host "        Calling:       $($resourceImpact.CallingUsageCount) calls $(if ($resourceImpact.CallingUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.CallingDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Call Automation: $($resourceImpact.CallAutomationUsageCount) operations $(if ($resourceImpact.CallAutomationUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.CallAutomationDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Job Router:    $($resourceImpact.JobRouterUsageCount) operations $(if ($resourceImpact.JobRouterUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.JobRouterDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Advance Msg:   $($resourceImpact.AdvanceMessagingUsageCount) operations $(if ($resourceImpact.AdvanceMessagingUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.AdvanceMessagingDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        Rooms:         $($resourceImpact.RoomsUsageCount) operations $(if ($resourceImpact.RoomsUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.RoomsDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Phone Numbers: $($resourceImpact.PhoneNumbersUsageCount) operations $(if ($resourceImpact.PhoneNumbersUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Access Key Auth: $(if ($resourceImpact.AccessKeysAuthDisabled) { 'Disabled' } else { 'Enabled' })" -ForegroundColor $(if ($resourceImpact.AccessKeysAuthDisabled) { "DarkYellow" } else { "Gray" })
 
@@ -365,7 +388,10 @@ foreach ($subscription in $subscriptions) {
                 Write-Host "        Email:         $(if ($resourceImpact.EmailDetected) { 'Detected' } else { 'Not detected' })" -ForegroundColor $(if ($resourceImpact.EmailDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        SMS:           Requires -IncludeMetrics flag" -ForegroundColor Gray
                 Write-Host "        Chat:          Requires -IncludeMetrics flag" -ForegroundColor Gray
-                Write-Host "        Calling:       Requires -IncludeMetrics flag" -ForegroundColor Gray
+                Write-Host "        Call Automation: Requires -IncludeMetrics flag" -ForegroundColor Gray
+                Write-Host "        Job Router:    Requires -IncludeMetrics flag" -ForegroundColor Gray
+                Write-Host "        Advance Msg:   Requires -IncludeMetrics flag" -ForegroundColor Gray
+                Write-Host "        Rooms:         Requires -IncludeMetrics flag" -ForegroundColor Gray
                 Write-Host "        Phone Numbers: $(if ($resourceImpact.PhoneNumbersDetected) { 'Detected' } else { 'Not detected' })" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Access Key Auth: $(if ($resourceImpact.AccessKeysAuthDisabled) { 'Disabled' } else { 'Enabled' })" -ForegroundColor $(if ($resourceImpact.AccessKeysAuthDisabled) { "DarkYellow" } else { "Gray" })
             }
@@ -390,7 +416,10 @@ if ($impactAssessment.Count -gt 0) {
     $emailCount = ($impactAssessment | Where-Object { $_.EmailDetected }).Count
     $smsCount = ($impactAssessment | Where-Object { $_.SMSDetected }).Count
     $chatCount = ($impactAssessment | Where-Object { $_.ChatDetected }).Count
-    $callingCount = ($impactAssessment | Where-Object { $_.CallingDetected }).Count
+    $callAutomationCount = ($impactAssessment | Where-Object { $_.CallAutomationDetected }).Count
+    $jobRouterCount = ($impactAssessment | Where-Object { $_.JobRouterDetected }).Count
+    $advanceMessagingCount = ($impactAssessment | Where-Object { $_.AdvanceMessagingDetected }).Count
+    $roomsCount = ($impactAssessment | Where-Object { $_.RoomsDetected }).Count
     $phoneCount = ($impactAssessment | Where-Object { $_.PhoneNumbersDetected }).Count
     $accessKeyAuthDisabledCount = ($impactAssessment | Where-Object { $_.AccessKeysAuthDisabled }).Count
 
@@ -401,7 +430,10 @@ if ($impactAssessment.Count -gt 0) {
         if ($emailCount -gt 0) { Write-Host "  - Email Service: $emailCount resource(s)" -ForegroundColor White }
         if ($smsCount -gt 0) { Write-Host "  - SMS API: $smsCount resource(s)" -ForegroundColor White }
         if ($chatCount -gt 0) { Write-Host "  - Chat SDK: $chatCount resource(s)" -ForegroundColor White }
-        if ($callingCount -gt 0) { Write-Host "  - Calling SDK: $callingCount resource(s)" -ForegroundColor White }
+        if ($callAutomationCount -gt 0) { Write-Host "  - Call Automation API: $callAutomationCount resource(s)" -ForegroundColor White }
+        if ($jobRouterCount -gt 0) { Write-Host "  - Job Router API: $jobRouterCount resource(s)" -ForegroundColor White }
+        if ($advanceMessagingCount -gt 0) { Write-Host "  - Advance Messaging API: $advanceMessagingCount resource(s)" -ForegroundColor White }
+        if ($roomsCount -gt 0) { Write-Host "  - Rooms API: $roomsCount resource(s)" -ForegroundColor White }
         if ($phoneCount -gt 0) { Write-Host "  - Phone Numbers SDK: $phoneCount resource(s)" -ForegroundColor White }
 
     } else {
@@ -428,7 +460,7 @@ if ($impactAssessment.Count -gt 0) {
 
     # Display results table
     Write-Host "`n=== Detailed Results ===" -ForegroundColor Cyan
-    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, AccessKeysAuthDisabled, TotalChannelsImpacted, EmailUsageCount, SMSUsageCount, ChatUsageCount, CallingUsageCount, PhoneNumbersUsageCount -AutoSize
+    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, AccessKeysAuthDisabled, TotalChannelsImpacted, EmailUsageCount, SMSUsageCount, ChatUsageCount, CallAutomationUsageCount, JobRouterUsageCount, AdvanceMessagingUsageCount, RoomsUsageCount, PhoneNumbersUsageCount -AutoSize
 
 } else {
     Write-Host "`nNo ACS resources found in the scanned subscription(s)." -ForegroundColor Green

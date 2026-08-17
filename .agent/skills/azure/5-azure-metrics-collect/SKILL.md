@@ -50,26 +50,29 @@ Examples:
    **Azure Communication Services:**
    ```
    Email:
-     - EmailMessagesSent
-     - EmailDeliveryAttempts
-     - EmailOperations
+     - ApiRequests
+     - DeliveryStatusUpdate
+     - UserEngagement
 
    SMS:
-     - SMSMessagesSent
-     - SMSMessagesReceived
+     - APIRequestSMS
 
    Chat:
-     - ChatMessageCount
-     - ChatThreadCount
-     - ActiveChatUsers
+     - APIRequestChat
 
-   Calling:
-     - CallDuration
-     - CallCount
-     - ParticipantCount
+   CallAutomation:
+     - APIRequestCallAutomation
+     - APIRequestCallRecording
+     - AcsCallAutomationCallbackEvent
 
-   Phone Numbers:
-     - PhoneNumberOperations
+   Job Router:
+     - ApiRequestRouter
+
+   AdvanceMessaging:
+     - APIRequestsAdvancedMessaging
+
+   Rooms:
+     - ApiRequestRooms
    ```
 
    **Storage Accounts:**
@@ -159,11 +162,14 @@ Examples:
      │ Email           │ 1,250        │ ✅ Detected     │
      │ SMS             │ 0            │ ⚪ Zero usage   │
      │ Chat            │ 543          │ ✅ Detected     │
-     │ Calling         │ 0            │ ⚪ Zero usage   │
      │ Phone Numbers   │ 15           │ ✅ Detected     │
+    │ CallAutomation  │ 0            │ ⚪ Zero usage   │
+    │ Job Router      │ 15           │ ✅ Detected     │
+    │ Advance Msg     │ 0            │ ⚪ Zero usage   │
+    │ Rooms           │ 0            │ ⚪ Zero usage   │
      └─────────────────┴──────────────┴────────────────┘
 
-     Total Features with Usage: 3 out of 5
+    Total Features with Usage: 3 out of N
      ```
 
 ### 9) **Provide Lookback Period Guidance**

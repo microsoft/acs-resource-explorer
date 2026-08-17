@@ -1,6 +1,6 @@
 ---
 name: 5-acs-report-generate
-description: Generate ACS deprecation impact reports in CSV, Markdown, or JSON format. Pre-configured with all 5 ACS channel columns, ACS migration guide links, and ACS-specific report sections.
+description: Generate ACS deprecation impact reports in CSV, Markdown, or JSON format. Pre-configured with ACS channel columns, migration guide links, and ACS-specific report sections.
 ---
 
 ## When to use this skill
@@ -29,7 +29,7 @@ Examples:
 
 Default output location: `./exports/`
 
-## ACS CSV Columns (17 total)
+## ACS CSV Columns
 Pre-configured CSV structure:
 ```
 SubscriptionName, SubscriptionId,
@@ -38,7 +38,10 @@ LookbackPeriodDays,
 EmailDetected, EmailUsageCount,
 SMSDetected, SMSUsageCount,
 ChatDetected, ChatUsageCount,
-CallingDetected, CallingUsageCount,
+CallAutomationDetected, CallAutomationUsageCount,
+JobRouterDetected, JobRouterUsageCount,
+AdvanceMessagingDetected, AdvanceMessagingUsageCount,
+RoomsDetected, RoomsUsageCount,
 PhoneNumbersDetected, PhoneNumbersUsageCount,
 TotalChannelsImpacted
 ```
@@ -80,7 +83,7 @@ TotalChannelsImpacted
 
 ### 4) **Generate CSV Report (if selected)**
    - Include ALL scanned resources (even those with zero usage — for complete inventory)
-   - Use the pre-configured 17-column structure
+  - Use the pre-configured channel column structure
    - Build CSV content by constructing a header row followed by one data row per resource,
      with all values comma-separated and quoted where necessary
    - Write the CSV content directly to the output file using the Write tool
@@ -108,7 +111,10 @@ TotalChannelsImpacted
    | Email   | [N] | [Usage count] messages | 🔴 Retirement |
    | SMS     | [N] | [Usage count] messages | 🔴 Retirement |
    | Chat    | [N] | [Usage count] messages | 🔴 Retirement |
-   | Calling | [N] | [Usage count] calls    | 🟡 Breaking Change |
+  | Call Automation | [N] | [Usage count] operations | 🟡 Breaking Change |
+  | Job Router | [N] | [Usage count] operations | 🟡 Breaking Change |
+  | Advance Messaging | [N] | [Usage count] operations | 🟡 Breaking Change |
+    | Rooms | [N] | [Usage count] operations | 🟡 Breaking Change |
    | Phone Numbers | [N] | [Usage count] operations | 🔴 Retirement |
 
    ## Resource Impact Summary
@@ -121,7 +127,7 @@ TotalChannelsImpacted
    - **Guides:**
      - 📧 [Email Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email)
      - 💬 [Chat Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat)
-     - 📞 [Calling Breaking Change Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk) *(if Calling detected)*
+    - 📞 [Calling Breaking Change Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk) *(if Call Automation detected)*
 
    [Repeat for each resource...]
 
@@ -129,7 +135,10 @@ TotalChannelsImpacted
    - 📧 Email — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
    - 📱 SMS — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
    - 💬 Chat — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
-   - 📞 Calling — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+  - 📞 Call Automation — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+  - 🧭 Job Router — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+  - 📨 Advance Messaging — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+    - 🏠 Rooms — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
    - ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 
    ## Next Steps
@@ -162,7 +171,10 @@ TotalChannelsImpacted
            "email": { "resourcesDetected": 1, "totalUsage": 1250 },
            "sms": { "resourcesDetected": 0, "totalUsage": 0 },
            "chat": { "resourcesDetected": 1, "totalUsage": 543 },
-           "calling": { "resourcesDetected": 0, "totalUsage": 0 },
+          "callAutomation": { "resourcesDetected": 0, "totalUsage": 0 },
+          "jobRouter": { "resourcesDetected": 0, "totalUsage": 0 },
+          "advanceMessaging": { "resourcesDetected": 0, "totalUsage": 0 },
+          "rooms": { "resourcesDetected": 0, "totalUsage": 0 },
            "phoneNumbers": { "resourcesDetected": 1, "totalUsage": 15 }
          }
        },
@@ -185,7 +197,10 @@ TotalChannelsImpacted
      📧 Email:         [N] resource(s) — [Total Usage] messages (Retirement)
      📱 SMS:           [N] resource(s) — [Total Usage] messages (Retirement)
      💬 Chat:          [N] resource(s) — [Total Usage] messages (Retirement)
-     📞 Calling:       [N] resource(s) — [Total Usage] calls (Breaking Change — Teams required)
+     📞 Call Automation: [N] resource(s) — [Total Usage] operations (Breaking Change)
+     🧭 Job Router:    [N] resource(s) — [Total Usage] operations (Breaking Change)
+     📨 Advance Msg:   [N] resource(s) — [Total Usage] operations (Breaking Change)
+     🏠 Rooms:         [N] resource(s) — [Total Usage] operations (Breaking Change)
      ☎️ Phone Numbers: [N] resource(s) — [Total Usage] operations (Retirement)
 
    💡 Next Steps:
@@ -203,7 +218,7 @@ TotalChannelsImpacted
    ```
 
 ## Output
-- CSV file with complete ACS channel data (17 columns)
+- CSV file with complete ACS channel data (configured columns)
 - Markdown report with ACS migration guide links
 - JSON file for automated processing
 - Console summary with channel-level statistics
@@ -218,7 +233,10 @@ TotalChannelsImpacted
 - 📧 Email: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
 - 📱 SMS: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
 - 💬 Chat: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
-- 📞 Calling: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- 📞 Call Automation: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
+- 🧭 Job Router: https://aka.ms/acs-retirement-and-breaking-changes-guide
+- 📨 Advance Messaging: https://aka.ms/acs-retirement-and-breaking-changes-guide
+- 🏠 Rooms: https://aka.ms/acs-retirement-and-breaking-changes-guide
 - ☎️ Phone Numbers: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
 - Retirement & Breaking Changes: https://aka.ms/acs-retirement-and-breaking-changes-guide
 - Full migration paths reference: [docs/knowledge/acs-migration-paths.md](../../../../docs/knowledge/acs-migration-paths.md)
