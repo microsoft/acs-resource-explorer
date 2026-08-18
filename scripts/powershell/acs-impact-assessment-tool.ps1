@@ -10,7 +10,7 @@
     Optional. Specific subscription ID to scan. If not provided, scans all accessible subscriptions.
 
 .PARAMETER OutputPath
-    Optional. Path for the CSV output file. Default: ".\ACS_Impact_Assessment.csv"
+    Optional. Path for the CSV output file.
 
 .PARAMETER IncludeMetrics
     Optional. If specified, retrieves usage metrics from Azure Monitor (slower but more detailed).
@@ -47,7 +47,7 @@ param(
     [string]$SubscriptionId,
 
     [Parameter(Mandatory=$false)]
-    [string]$OutputPath = ".\exports\ACS_Impact_Assessment.csv",
+    [string]$OutputPath,
 
     [Parameter(Mandatory=$false)]
     [switch]$IncludeMetrics,
@@ -57,6 +57,32 @@ param(
     [int]$LookbackDays = 90
 )
 
+$toolVersion = "1.0.0"
+$scanType = if ($IncludeMetrics) { "Full" } else { "Fast" }
+$runTimestampUtc = [DateTime]::UtcNow.ToString("yyyyMMddHHmmss", [Globalization.CultureInfo]::InvariantCulture)
+
+if ([string]::IsNullOrWhiteSpace($OutputPath)) {
+    $OutputPath = ".\exports\ACS_Impact_Assessment.csv"
+}
+
+$outputDirectory = Split-Path -Path $OutputPath -Parent
+$outputFileName = Split-Path -Path $OutputPath -Leaf
+$outputExtension = [System.IO.Path]::GetExtension($outputFileName)
+$outputBaseName = if ($outputExtension) {
+    [System.IO.Path]::GetFileNameWithoutExtension($outputFileName)
+} else {
+    $outputFileName
+}
+$outputBaseName = $outputBaseName -replace '_v\d+(?:\.\d+)*(?:_\d{14})?$', ''
+$outputBaseName = $outputBaseName -replace '_(?:Fast|Full)$', ''
+$versionedFileName = "${outputBaseName}_${scanType}_v${toolVersion}_${runTimestampUtc}$outputExtension"
+
+$OutputPath = if ($outputDirectory) {
+    Join-Path -Path $outputDirectory -ChildPath $versionedFileName
+} else {
+    $versionedFileName
+}
+
 # Check if Az module is installed
 if (-not (Get-Module -ListAvailable -Name Az.Accounts)) {
     Write-Error "Az PowerShell module is not installed. Please run: Install-Module -Name Az"
@@ -65,6 +91,7 @@ if (-not (Get-Module -ListAvailable -Name Az.Accounts)) {
 
 # Connect to Azure
 Write-Host "`n=== Azure Communication Services Impact Assessment Tool ===" -ForegroundColor Cyan
+Write-Host "Tool version: $toolVersion" -ForegroundColor Gray
 Write-Host "Checking Azure connection..." -ForegroundColor Yellow
 
 try {
@@ -213,6 +240,7 @@ foreach ($subscription in $subscriptions) {
 
             # Initialize resource impact data
             $resourceImpact = [PSCustomObject]@{
+                ToolVersion = $toolVersion
                 SubscriptionName = $subscription.Name
                 SubscriptionId = $subscription.Id
                 ResourceGroup = $resource.ResourceGroupName
