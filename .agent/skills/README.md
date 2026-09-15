@@ -77,9 +77,9 @@ These skills are pre-configured for the [retiring ACS standalone SDKs and APIs](
 | [0-acs-full-scan](acs/0-acs-full-scan/SKILL.md) | **Orchestrator** — runs the complete ACS workflow end-to-end |
 | [1-acs-resource-scan](acs/1-acs-resource-scan/SKILL.md) | Scan for `Microsoft.Communication/CommunicationServices` resources |
 | [2-acs-channel-detect](acs/2-acs-channel-detect/SKILL.md) | Fast: Email + Phone Numbers via child resources (~30 sec) |
-| [3-acs-metrics-collect](acs/3-acs-metrics-collect/SKILL.md) | Full: All 5 channels via Azure Monitor metrics (~3-5 min) |
+| [3-acs-metrics-collect](acs/3-acs-metrics-collect/SKILL.md) | Full: channel metrics plus PSTN/VoIP billing usage from Log Analytics (~3-5 min) |
 | [4-acs-impact-analyze](acs/4-acs-impact-analyze/SKILL.md) | Map detected ACS channels to Retirement Guide or Breaking Change Guide |
-| [5-acs-report-generate](acs/5-acs-report-generate/SKILL.md) | ACS-specific CSV (19 columns), Markdown with guide links, JSON |
+| [5-acs-report-generate](acs/5-acs-report-generate/SKILL.md) | ACS-specific CSV (32 columns), Markdown with guide links, JSON |
 
 ### ACS Channels Covered
 

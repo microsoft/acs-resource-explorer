@@ -1,7 +1,7 @@
 # ACS Azure Monitor Metric Names
 
 **Source:** Azure Monitor metrics for Microsoft.Communication/CommunicationServices
-**Last Verified:** 2026-02-27
+**Last Verified:** 2026-09-15
 **Update This File When:** Microsoft adds, renames, or deprecates metric names for ACS resources.
 
 ---
@@ -22,6 +22,26 @@
 | **AdvanceMessaging** | `APIRequestsAdvancedMessaging` | Total | Count | Advanced Messaging API Requests |
 | **Rooms** | `ApiRequestRooms` | Total | Count | Rooms API Requests |
 ---
+
+## PSTN and VoIP Billing Usage
+
+PSTN and VoIP billable usage is not exposed as an ACS platform metric. Full scans query the `ACSBillingUsage` table in each Log Analytics workspace connected to the ACS resource through diagnostic settings.
+
+| Report Field | `UsageType` Match | Values Collected |
+|--------------|-------------------|------------------|
+| **PSTN billing usage** | Contains `PSTN` (case-insensitive) | Sum of `Quantity`, unique `RecordId` count, distinct `UnitType` values |
+| **VoIP billing usage** | `Audio` or `VoIP` (case-insensitive) | Sum of `Quantity`, unique `RecordId` count, distinct `UnitType` values |
+
+Records are deduplicated by `RecordId` across workspaces. `Quantity` represents billable usage units such as minutes, messages, or megabytes; it is not a currency cost.
+
+Collection status is reported explicitly:
+
+- `Collected` — the billing table was queried successfully, including when no matching records exist.
+- `NotConfigured` — no Log Analytics diagnostic destination is configured for the ACS resource.
+- `DiagnosticSettingsQueryFailed` — diagnostic settings could not be read.
+- `QueryFailed` — destinations exist, but none of their billing tables could be queried.
+
+> Billing logs are not stored retroactively. The `Usage`/`allLogs` diagnostic category must be enabled and routed to Log Analytics before calls occur.
 
 ## Detection Logic
 
@@ -68,6 +88,16 @@ az monitor metrics list \
 
 # Sum the results (jq):
 # .value[0].timeseries[].data[].total | select(. != null) | add
+```
+
+Billing usage query pattern:
+
+```kusto
+ACSBillingUsage
+| where TimeGenerated between (datetime(<start-time>) .. datetime(<end-time>))
+| where _ResourceId =~ "<acs-resource-id>"
+| summarize arg_max(TimeGenerated, *) by RecordId
+| project RecordId, UsageType, UnitType, Quantity
 ```
 
 ---

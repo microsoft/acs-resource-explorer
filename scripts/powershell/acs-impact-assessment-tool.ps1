@@ -211,6 +211,127 @@ $metricsConfig = @{
     Rooms = @('ApiRequestRooms')
 }
 
+function Get-AcsBillingUsage {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$ResourceId,
+
+        [Parameter(Mandatory=$true)]
+        [datetime]$StartTime,
+
+        [Parameter(Mandatory=$true)]
+        [datetime]$EndTime
+    )
+
+    $result = [PSCustomObject]@{
+        Status = 'NotConfigured'
+        PSTNQuantity = [decimal]0
+        PSTNUnitTypes = ''
+        PSTNRecordCount = 0
+        VoIPQuantity = [decimal]0
+        VoIPUnitTypes = ''
+        VoIPRecordCount = 0
+    }
+
+    $diagnosticSettingsRaw = az monitor diagnostic-settings list `
+        --resource $ResourceId `
+        -o json --only-show-errors 2>$null
+
+    if ($LASTEXITCODE -ne 0) {
+        $result.Status = 'DiagnosticSettingsQueryFailed'
+        return $result
+    }
+
+    $diagnosticSettingsResponse = if ($diagnosticSettingsRaw) { $diagnosticSettingsRaw | ConvertFrom-Json } else { $null }
+    $diagnosticSettings = if ($diagnosticSettingsResponse) { @($diagnosticSettingsResponse.value) } else { @() }
+    $workspaceResourceIds = @(
+        $diagnosticSettings |
+            Where-Object {
+                -not [string]::IsNullOrWhiteSpace($_.workspaceId) -and
+                @($_.logs | Where-Object {
+                    $_.enabled -and ($_.category -eq 'Usage' -or $_.categoryGroup -eq 'allLogs')
+                }).Count -gt 0
+            } |
+            ForEach-Object { $_.workspaceId } |
+            Select-Object -Unique
+    )
+    if ($workspaceResourceIds.Count -eq 0) {
+        return $result
+    }
+
+    $queryStart = $StartTime.ToUniversalTime().ToString('o', [Globalization.CultureInfo]::InvariantCulture)
+    $queryEnd = $EndTime.ToUniversalTime().ToString('o', [Globalization.CultureInfo]::InvariantCulture)
+    $escapedResourceId = $ResourceId.Replace('"', '""')
+    $query = @"
+ACSBillingUsage
+| where TimeGenerated between (datetime($queryStart) .. datetime($queryEnd))
+| where _ResourceId =~ "$escapedResourceId"
+| summarize arg_max(TimeGenerated, *) by RecordId
+| project RecordId, UsageType=tostring(UsageType), UnitType=tostring(UnitType), Quantity=todouble(Quantity)
+"@
+
+    $querySucceeded = $false
+    $processedRecordIds = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    $pSTNUnitTypes = @()
+    $voIPUnitTypes = @()
+
+    foreach ($workspaceResourceId in $workspaceResourceIds) {
+        $workspaceCustomerId = az monitor log-analytics workspace show `
+            --ids $workspaceResourceId `
+            --query customerId -o tsv --only-show-errors 2>$null
+
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($workspaceCustomerId)) {
+            continue
+        }
+
+        $billingRowsRaw = az monitor log-analytics query `
+            --workspace $workspaceCustomerId `
+            --analytics-query $query `
+            --timespan "$queryStart/$queryEnd" `
+            -o json --only-show-errors 2>$null
+
+        if ($LASTEXITCODE -ne 0) {
+            continue
+        }
+
+        $querySucceeded = $true
+        $billingRows = if ($billingRowsRaw) { @($billingRowsRaw | ConvertFrom-Json) } else { @() }
+
+        foreach ($billingRow in $billingRows) {
+            $recordId = [string]$billingRow.RecordId
+            if (-not [string]::IsNullOrWhiteSpace($recordId) -and -not $processedRecordIds.Add($recordId)) {
+                continue
+            }
+
+            $usageType = [string]$billingRow.UsageType
+            $unitType = [string]$billingRow.UnitType
+            $quantity = [decimal]$billingRow.Quantity
+
+            if ($usageType -match '(?i)PSTN') {
+                $result.PSTNQuantity += $quantity
+                $result.PSTNRecordCount++
+                if ($unitType) { $pSTNUnitTypes += $unitType }
+            }
+
+            if ($usageType -match '(?i)^(Audio|VoIP)$') {
+                $result.VoIPQuantity += $quantity
+                $result.VoIPRecordCount++
+                if ($unitType) { $voIPUnitTypes += $unitType }
+            }
+        }
+    }
+
+    if ($querySucceeded) {
+        $result.Status = 'Collected'
+        $result.PSTNUnitTypes = (@($pSTNUnitTypes | Select-Object -Unique) -join '; ')
+        $result.VoIPUnitTypes = (@($voIPUnitTypes | Select-Object -Unique) -join '; ')
+    } else {
+        $result.Status = 'QueryFailed'
+    }
+
+    return $result
+}
+
 # Scan each subscription
 foreach ($subscription in $subscriptions) {
     Write-Host "`nScanning subscription: $($subscription.Name) ($($subscription.Id))" -ForegroundColor Cyan
@@ -265,6 +386,13 @@ foreach ($subscription in $subscriptions) {
                 RoomsUsageCount = 0
                 PhoneNumbersDetected = $false
                 PhoneNumbersUsageCount = 0
+                BillingMetricsStatus = $(if ($IncludeMetrics) { 'Pending' } else { 'NotCollected' })
+                PSTNBillingUsageQuantity = [decimal]0
+                PSTNBillingUnitTypes = ''
+                PSTNBillingRecordCount = 0
+                VoIPBillingUsageQuantity = [decimal]0
+                VoIPBillingUnitTypes = ''
+                VoIPBillingRecordCount = 0
                 AccessKeysAuthDisabled = $false
 
                 # Overall impact
@@ -315,6 +443,16 @@ foreach ($subscription in $subscriptions) {
 
                 $endTime = Get-Date
                 $startTime = $endTime.AddDays(-$LookbackDays)
+
+                Write-Host "      Retrieving PSTN and VoIP billing usage..." -ForegroundColor Gray
+                $billingUsage = Get-AcsBillingUsage -ResourceId $resource.ResourceId -StartTime $startTime -EndTime $endTime
+                $resourceImpact.BillingMetricsStatus = $billingUsage.Status
+                $resourceImpact.PSTNBillingUsageQuantity = $billingUsage.PSTNQuantity
+                $resourceImpact.PSTNBillingUnitTypes = $billingUsage.PSTNUnitTypes
+                $resourceImpact.PSTNBillingRecordCount = $billingUsage.PSTNRecordCount
+                $resourceImpact.VoIPBillingUsageQuantity = $billingUsage.VoIPQuantity
+                $resourceImpact.VoIPBillingUnitTypes = $billingUsage.VoIPUnitTypes
+                $resourceImpact.VoIPBillingRecordCount = $billingUsage.VoIPRecordCount
 
                 # Check each channel's metrics
                 foreach ($channel in $metricsConfig.Keys) {
@@ -404,6 +542,9 @@ foreach ($subscription in $subscriptions) {
                 Write-Host "        Advance Msg:   $($resourceImpact.AdvanceMessagingUsageCount) operations $(if ($resourceImpact.AdvanceMessagingUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.AdvanceMessagingDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Rooms:         $($resourceImpact.RoomsUsageCount) operations $(if ($resourceImpact.RoomsUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.RoomsDetected) { "Yellow" } else { "Gray" })
                 Write-Host "        Phone Numbers: $($resourceImpact.PhoneNumbersUsageCount) operations $(if ($resourceImpact.PhoneNumbersUsageCount -eq 0) { '(zero usage in last ' + $LookbackDays + ' days)' } else { '' })" -ForegroundColor $(if ($resourceImpact.PhoneNumbersDetected) { "Yellow" } else { "Gray" })
+                Write-Host "        PSTN billing:  $($resourceImpact.PSTNBillingUsageQuantity) $($resourceImpact.PSTNBillingUnitTypes) ($($resourceImpact.PSTNBillingRecordCount) record(s))" -ForegroundColor $(if ($resourceImpact.PSTNBillingUsageQuantity -gt 0) { "Yellow" } else { "Gray" })
+                Write-Host "        VoIP billing:  $($resourceImpact.VoIPBillingUsageQuantity) $($resourceImpact.VoIPBillingUnitTypes) ($($resourceImpact.VoIPBillingRecordCount) record(s))" -ForegroundColor $(if ($resourceImpact.VoIPBillingUsageQuantity -gt 0) { "Yellow" } else { "Gray" })
+                Write-Host "        Billing data:  $($resourceImpact.BillingMetricsStatus)" -ForegroundColor $(if ($resourceImpact.BillingMetricsStatus -eq 'Collected') { "Gray" } else { "DarkYellow" })
                 Write-Host "        Access Key Auth: $(if ($resourceImpact.AccessKeysAuthDisabled) { 'Disabled' } else { 'Enabled' })" -ForegroundColor $(if ($resourceImpact.AccessKeysAuthDisabled) { "DarkYellow" } else { "Gray" })
 
                 if ($LookbackDays -lt 93) {
@@ -488,7 +629,7 @@ if ($impactAssessment.Count -gt 0) {
 
     # Display results table
     Write-Host "`n=== Detailed Results ===" -ForegroundColor Cyan
-    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, AccessKeysAuthDisabled, TotalChannelsImpacted, EmailUsageCount, SMSUsageCount, ChatUsageCount, CallAutomationUsageCount, JobRouterUsageCount, AdvanceMessagingUsageCount, RoomsUsageCount, PhoneNumbersUsageCount -AutoSize
+    $impactAssessment | Format-Table -Property ResourceName, ResourceGroup, AccessKeysAuthDisabled, TotalChannelsImpacted, EmailUsageCount, SMSUsageCount, ChatUsageCount, CallAutomationUsageCount, JobRouterUsageCount, AdvanceMessagingUsageCount, RoomsUsageCount, PhoneNumbersUsageCount, BillingMetricsStatus, PSTNBillingUsageQuantity, PSTNBillingUnitTypes, PSTNBillingRecordCount, VoIPBillingUsageQuantity, VoIPBillingUnitTypes, VoIPBillingRecordCount -AutoSize
 
 } else {
     Write-Host "`nNo ACS resources found in the scanned subscription(s)." -ForegroundColor Green

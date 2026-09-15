@@ -31,19 +31,8 @@ Default output location: `./exports/`
 
 ## ACS CSV Columns
 Pre-configured CSV structure:
-```
-SubscriptionName, SubscriptionId,
-ResourceGroup, ResourceName, Location,
-LookbackPeriodDays,
-EmailDetected, EmailUsageCount,
-SMSDetected, SMSUsageCount,
-ChatDetected, ChatUsageCount,
-CallAutomationDetected, CallAutomationUsageCount,
-JobRouterDetected, JobRouterUsageCount,
-AdvanceMessagingDetected, AdvanceMessagingUsageCount,
-RoomsDetected, RoomsUsageCount,
-PhoneNumbersDetected, PhoneNumbersUsageCount,
-TotalChannelsImpacted
+```csv
+ToolVersion,SubscriptionName,SubscriptionId,ResourceGroup,ResourceName,Location,LookbackPeriodDays,EmailDetected,EmailUsageCount,SMSDetected,SMSUsageCount,ChatDetected,ChatUsageCount,CallAutomationDetected,CallAutomationUsageCount,JobRouterDetected,JobRouterUsageCount,AdvanceMessagingDetected,AdvanceMessagingUsageCount,RoomsDetected,RoomsUsageCount,PhoneNumbersDetected,PhoneNumbersUsageCount,BillingMetricsStatus,PSTNBillingUsageQuantity,PSTNBillingUnitTypes,PSTNBillingRecordCount,VoIPBillingUsageQuantity,VoIPBillingUnitTypes,VoIPBillingRecordCount,AccessKeysAuthDisabled,TotalChannelsImpacted
 ```
 
 ## Workflow
@@ -116,6 +105,8 @@ TotalChannelsImpacted
   | Advance Messaging | [N] | [Usage count] operations | 🟡 Breaking Change |
     | Rooms | [N] | [Usage count] operations | 🟡 Breaking Change |
    | Phone Numbers | [N] | [Usage count] operations | 🔴 Retirement |
+  | PSTN billing usage | [N] | [Quantity] [UnitType] | Billable usage units |
+  | VoIP billing usage | [N] | [Quantity] [UnitType] | Billable usage units |
 
    ## Resource Impact Summary
 
@@ -124,6 +115,8 @@ TotalChannelsImpacted
    - **Resource Group:** [Name]
    - **Channels Detected:** Email, Chat, Phone Numbers
    - **Usage:** Email: 1,250 | Chat: 543 | Phone Numbers: 15
+  - **Calling billing usage:** PSTN: 120 minutes (8 records) | VoIP: 450 minutes (20 records)
+  - **Billing collection status:** Collected
    - **Guides:**
      - 📧 [Email Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email)
      - 💬 [Chat Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat)
@@ -150,6 +143,8 @@ TotalChannelsImpacted
    - **High confidence:** Channels detected via Azure Monitor metrics
    - **Limited confidence:** Channels detected via resource existence only (actual usage unknown)
    - **Not assessed:** Channels with zero metrics may still be in use if outside lookback period
+  - **Billing prerequisite:** PSTN and VoIP usage is available only when ACS billing logs were routed to Log Analytics before the activity occurred
+  - **Billing units:** Quantities are billable units, not currency costs
    ```
 
 ### 6) **Generate JSON Report (if selected)**
@@ -175,10 +170,12 @@ TotalChannelsImpacted
           "jobRouter": { "resourcesDetected": 0, "totalUsage": 0 },
           "advanceMessaging": { "resourcesDetected": 0, "totalUsage": 0 },
           "rooms": { "resourcesDetected": 0, "totalUsage": 0 },
-           "phoneNumbers": { "resourcesDetected": 1, "totalUsage": 15 }
+           "phoneNumbers": { "resourcesDetected": 1, "totalUsage": 15 },
+           "pstnBilling": { "resourcesWithUsage": 1, "totalQuantity": 120, "unitTypes": ["Minutes"] },
+           "voipBilling": { "resourcesWithUsage": 1, "totalQuantity": 450, "unitTypes": ["Minutes"] }
          }
        },
-       "resources": [...]
+      "resources": []
      }
      ```
 
@@ -202,6 +199,8 @@ TotalChannelsImpacted
      📨 Advance Msg:   [N] resource(s) — [Total Usage] operations (Breaking Change)
      🏠 Rooms:         [N] resource(s) — [Total Usage] operations (Breaking Change)
      ☎️ Phone Numbers: [N] resource(s) — [Total Usage] operations (Retirement)
+    PSTN billing:     [N] resource(s) — [Quantity] [UnitType] ([Records] records)
+    VoIP billing:     [N] resource(s) — [Quantity] [UnitType] ([Records] records)
 
    💡 Next Steps:
    1. Review exported reports in: ./exports/

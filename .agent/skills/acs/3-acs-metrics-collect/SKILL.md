@@ -1,6 +1,6 @@
 ---
 name: 3-acs-metrics-collect
-description: Comprehensive ACS usage detection via Azure Monitor metrics. All configured ACS channels are pre-mapped (Email, SMS, Chat, Call Automation, Job Router, Advance Messaging, Rooms). Configurable lookback period of 1-93 days.
+description: Comprehensive ACS usage detection via Azure Monitor metrics and billing logs. All configured ACS channels are pre-mapped (Email, SMS, Chat, Call Automation, Job Router, Advance Messaging, Rooms), with PSTN and VoIP billable usage. Configurable lookback period of 1-93 days.
 ---
 
 ## When to use this skill
@@ -37,6 +37,8 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
 | Job Router | `ApiRequestRouter` |
 | Advance Messaging | `APIRequestsAdvancedMessaging` |
 | Rooms | `ApiRequestRooms` |
+
+PSTN and VoIP usage comes from the Log Analytics `ACSBillingUsage` table, not Azure Monitor platform metrics. It requires an ACS diagnostic setting that sends billing usage logs to a Log Analytics workspace.
 
 ## Workflow
 
@@ -75,6 +77,9 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
       JobRouterUsageCount: 0,        JobRouterDetected: false,
       AdvanceMessagingUsageCount: 0, AdvanceMessagingDetected: false,
       RoomsUsageCount: 0,            RoomsDetected: false,
+      BillingMetricsStatus: "Pending",
+      PSTNBillingUsageQuantity: 0,   PSTNBillingUnitTypes: "", PSTNBillingRecordCount: 0,
+      VoIPBillingUsageQuantity: 0,   VoIPBillingUnitTypes: "", VoIPBillingRecordCount: 0,
        TotalChannelsDetected: 0,
        DetectionMethod: "Azure Monitor Metrics",
        DetectionComplete: true
@@ -132,6 +137,15 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
    - Display progress: "  ⏳ Checking Rooms metrics..."
    - If total > 0: Set RoomsDetected = true, store RoomsUsageCount
 
+   **PSTN and VoIP billing usage (Log Analytics):**
+   - Discover Log Analytics workspaces from the ACS resource's diagnostic settings.
+   - Query `ACSBillingUsage` for the resource and selected lookback period.
+   - Deduplicate records by `RecordId` across workspaces.
+   - PSTN: aggregate records whose `UsageType` contains `PSTN`.
+   - VoIP: aggregate records whose `UsageType` is `Audio` or `VoIP`.
+   - Store total `Quantity`, unique record count, distinct `UnitType` values, and collection status separately for PSTN and VoIP.
+   - Do not label `Quantity` as monetary cost; it contains billable units.
+
 ### 6) **Display Resource Usage Summary**
    ```
    📊 Usage Summary: [Resource Name] (Last [N] days)
@@ -146,6 +160,8 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
    │ Job Router      │ 15            │ ✅ Detected     │
    │ Advance Msg     │ 0             │ ⚪ Zero usage   │
    │ Rooms           │ 0             │ ⚪ Zero usage   │
+   │ PSTN billing    │ 120 minutes   │ ✅ Collected    │
+   │ VoIP billing    │ 450 minutes   │ ✅ Collected    │
    └─────────────────┴───────────────┴────────────────┘
 
    Channels with usage: 3 out of N
@@ -183,6 +199,7 @@ All metrics are pre-configured. No manual setup required. See [acs-metric-names.
 
 ## Output
 - Usage counts for all configured ACS channels per resource
+- PSTN and VoIP billable usage quantities, units, record counts, and collection status
 - Detection flags (true/false) for each channel
 - Lookback period used
 - Updated session state with complete ACS metrics data
