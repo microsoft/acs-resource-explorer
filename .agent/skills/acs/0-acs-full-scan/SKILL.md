@@ -22,7 +22,7 @@ azure/1-azure-auth-check           → Verify Azure authentication
 azure/2-azure-subscription-select  → Choose subscription(s) to scan
 acs/1-acs-resource-scan            → Discover all ACS resources
 acs/2-acs-channel-detect           → Fast: Email + Phone Numbers (optional)
-acs/3-acs-metrics-collect          → Full: All configured channels via Azure Monitor
+acs/3-acs-metrics-collect          → Full: Azure Monitor metrics + PSTN/VoIP billing logs
 acs/4-acs-impact-analyze           → Map channels to migration guides
 acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
 ```
@@ -31,6 +31,7 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
 - Azure CLI installed (`az` command available) — https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
 - Reader access (minimum) to target Azure subscription(s)
 - Monitoring Reader access for metrics collection
+- **PSTN/VoIP billing prerequisite:** An ACS diagnostic setting must route billing logs to Log Analytics before calls occur, and the scanning identity needs Log Analytics Reader access to that workspace
 
 ## Workflow
 
@@ -61,8 +62,8 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
      1. Fast scan — Email + Phone Numbers only (~30 seconds per subscription)
         (Use if you only need to check Email and Phone Numbers)
 
-     2. Full scan — All configured channels via Azure Monitor metrics (~3-5 min per subscription)
-        (Recommended — detects Email, SMS, Chat, Call Automation, Job Router, Advance Messaging, Rooms, and Phone Numbers)
+     2. Full scan — Azure Monitor metrics and ACS billing logs (~3-5 min per subscription)
+        (Recommended — detects configured channels and reports PSTN/VoIP billable usage when Log Analytics diagnostics are enabled)
 
      Choose [1/2] (default: 2):
      ```
@@ -75,6 +76,8 @@ acs/5-acs-report-generate          → Export CSV, Markdown, and/or JSON
    - Run **3-acs-metrics-collect**
    - Ask for lookback period (default: 90 days, max: 93 days)
    - Collects usage data for all configured channels
+   - Collects PSTN and VoIP billing quantities, units, and record counts from `ACSBillingUsage`
+   - Reports `NotConfigured` when no Log Analytics diagnostic destination exists; zero is reported only after a successful query
 
 ### Step 5: Channel Analysis
    - Run **4-acs-impact-analyze**

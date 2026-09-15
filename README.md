@@ -330,7 +330,7 @@ Run steps one at a time when you want to re-run a specific part, pick a differen
  
 ### Common Workflows
  
-**Full assessment — all 5 channels (recommended):**
+**Full assessment — all channels plus calling billing usage (recommended):**
 ```
 1-azure-auth-check  →  2-azure-subscription-select  →  1-acs-resource-scan
   →  3-acs-metrics-collect  →  4-acs-impact-analyze  →  5-acs-report-generate
@@ -363,6 +363,10 @@ The full scan checks for active usage of all impacted ACS channels over the past
 | Job Router | 🔴 Retirement | ✅ Full (metrics) |
 | Advance Messaging | 🔴 Retirement | ✅ Full (metrics) |
 | Rooms | 🔴 Retirement | ✅ Full (metrics) |
+| PSTN calls | 🔴 Retirement / calling impact | ✅ Full (billing usage logs) |
+| VoIP calls | 🟡 Calling breaking change | ✅ Full (billing usage logs) |
+
+**PSTN/VoIP billing prerequisite:** ACS billing logs must be routed through a diagnostic setting to a Log Analytics workspace before the activity occurs; billing logs are not retroactive. Report values are billable usage quantities and units, not currency costs.
  
 ---
  
@@ -408,6 +412,11 @@ Copy the code shown, go to https://microsoft.com/devicelogin, and enter the code
 - Check that you have **Monitoring Reader** permissions on the subscription
 - Try extending the lookback period when prompted (up to 93 days maximum)
 - Some metrics may not be available if the resource is in a region that doesn't support Azure Monitor for that channel
+
+### PSTN or VoIP billing status is `NotConfigured`
+- Enable an ACS diagnostic setting that sends the `Usage` category (or `allLogs`) to a Log Analytics workspace
+- Ensure the scanning identity has Log Analytics Reader access to that workspace
+- New billing records are collected only after the diagnostic setting is enabled
  
 ### Claude Code doesn't find the skills
 Make sure you opened Claude Code **inside the repository directory**:
