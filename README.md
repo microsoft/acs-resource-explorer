@@ -1,6 +1,6 @@
 # Azure Transition Agent — ACS Edition
  
-**An AI agent-powered tool that automates the full retirement impact workflow for Azure Communication Services (ACS). It scans Azure subscriptions, detects ACS resources, identifies channels with active usage, reports the last 90 days of usage data, and produces a prioritized migration report with per-channel guidance.**
+**An AI agent-powered tool that scans Azure subscriptions, detects ACS resources, identifies channels with active usage, reports the last 90 days of usage data, and produces a prioritized migration report with per-channel guidance.**
  
 ---
  
