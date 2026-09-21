@@ -240,7 +240,6 @@ foreach ($subscription in $subscriptions) {
 
             # Initialize resource impact data
             $resourceImpact = [PSCustomObject]@{
-                ToolVersion = $toolVersion
                 SubscriptionName = $subscription.Name
                 SubscriptionId = $subscription.Id
                 ResourceGroup = $resource.ResourceGroupName
