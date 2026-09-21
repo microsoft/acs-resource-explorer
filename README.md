@@ -13,8 +13,6 @@ A set of composable **AI Agent Skills** that automate the full assessment workfl
 3. **Analyze** — map detected channels to migration guides based on actual usage
 4. **Report** — export results to CSV, Markdown, and JSON with links to migration guides
  
-The `azure/` skills are a **reusable open pattern** for any Azure service retirement. The `acs/` skills are the first implementation, pre-configured for ACS.
- 
 ---
  
 ## Getting Started
@@ -175,17 +173,12 @@ You should see your account email, subscription name, and tenant ID.
 Make sure you've opened the project folder in VS Code (`code acs-transition-agent`), then:
  
 1. Open the **Chat** panel: press `Ctrl+Alt+I` (Windows/Linux) or `Ctrl+Cmd+I` (macOS)
-2. In the chat input, type:
-   ```
-   Run an ACS deprecation scan
-   ```
-3. GitHub Copilot will read the skills from `.agent/skills/acs/0-acs-full-scan/SKILL.md` and guide you through the workflow
- 
-> **Tip:** If Copilot doesn't automatically find the skill, point it directly:
-> ```
-> Follow the instructions in .agent/skills/acs/0-acs-full-scan/SKILL.md and run the ACS assessment
-> ```
- 
+2. The following are some example prompts you can use in the input:
+   |Prompt|Description|
+   |------|-----------|
+   | `Run full scan  ` | Will run full scan including Email, Phone numbers, and metrics|
+   | `Run fast scan `| Will run fast scan including Email and Phone numbers only|
+   | `Run an ACS deprecation scan `| Will be asking you if you want to run full or fast scan|
 ---
  
 ### Example Output
@@ -266,103 +259,31 @@ After the scan completes, your reports are saved in the `exports/` folder:
  
 ---
  
-## Running the Skills
- 
-### Full Scan — One Command
- 
-The fastest way to run a complete assessment. Start here.
- 
-| Command |
-|---------|
-| `Run an ACS deprecation scan` |
-| `Do a full ACS impact assessment` |
-| `Check my subscriptions for retiring ACS services` |
- 
----
- 
-### Individual Steps
- 
-Run steps one at a time when you want to re-run a specific part, pick a different detection mode, or customize the workflow.
- 
-#### Step 1 — Verify Azure Authentication
- 
-| Command |
-|---------|
-| `Check my Azure authentication` |
- 
-#### Step 2 — Select Subscriptions
- 
-| Command |
-|---------|
-| `Select subscriptions to scan` |
- 
-#### Step 3 — Find ACS Resources
- 
-| Command |
-|---------|
-| `Find my ACS resources` |
- 
-#### Step 4a — Fast Channel Detection *(Email + Phone Numbers only)*
- 
-| Command |
-|---------|
-| `Quick ACS channel check` |
- 
-#### Step 4b — Full Metrics Collection *(all channels)*
- 
-| Command |
-|---------|
-| `Collect ACS usage metrics` |
- 
-#### Step 5 — Analyze Impact
- 
-| Command |
-|---------|
-| `Analyze ACS impact` |
- 
-#### Step 6 — Generate Report
- 
-| Command |
-|---------|
-| `Generate ACS report` |
- 
----
- 
-### Common Workflows
- 
-**Full assessment — all 5 channels (recommended):**
-```
-1-azure-auth-check  →  2-azure-subscription-select  →  1-acs-resource-scan
-  →  3-acs-metrics-collect  →  4-acs-impact-analyze  →  5-acs-report-generate
-```
- 
-**Fast check — Email + Phone Numbers only:**
-```
-1-azure-auth-check  →  2-azure-subscription-select  →  1-acs-resource-scan
-  →  2-acs-channel-detect  →  4-acs-impact-analyze  →  5-acs-report-generate
-```
- 
-**Re-export only** *(already have scan results)*:
-```
-5-acs-report-generate
-```
- 
----
- 
 ## What the Assessment Detects
- 
-The full scan checks for active usage of all impacted ACS channels over the past 90 days:
- 
-| Channel | Status Type | Detection |
-|---------|------------|-----------|
-| Email Service | 🔴 Retirement | ✅ Full (metrics) |
-| SMS | 🔴 Retirement | ✅ Full (metrics) |
-| Chat | 🔴 Retirement | ✅ Full (metrics) |
-| Call Automation | 🟡 Breaking Change — must integrate with Teams | ✅ Full (metrics) |
-| Phone Numbers | 🔴 Retirement | ✅ Full (metrics) |
-| Job Router | 🔴 Retirement | ✅ Full (metrics) |
-| Advance Messaging | 🔴 Retirement | ✅ Full (metrics) |
-| Rooms | 🔴 Retirement | ✅ Full (metrics) |
+
+**Fast Scan**
+
+The fast scan performs a resource-only check and skips usage analysis:
+
+| Channel | Detection |
+|---------|-----------|
+| Email Service | Email Communication Services domains |
+| Phone Numbers | Purchased phone numbers |
+
+
+**Full Scan**
+
+The full scan includes all fast scan checks and analyzes active usage across all impacted ACS channels over the last 90 days.
+
+| Channel | Metric(s) |
+|---------|-----------|
+| Email Service | `ApiRequests`, `DeliveryStatusUpdate`, `UserEngagement` |
+| SMS | `APIRequestSMS` |
+| Chat | `APIRequestChat` |
+| Call Automation | `APIRequestCallAutomation`, `APIRequestCallRecording`, `AcsCallAutomationCallbackEvent` |
+| Job Router | `ApiRequestRouter` |
+| Advance Messaging | `APIRequestsAdvancedMessaging` |
+| Rooms | `ApiRequestRooms` |
  
 ---
  
@@ -372,15 +293,15 @@ After your assessment, use these guides to plan your next steps:
  
 | Channel | Status Type | Guide |
 |---------|------------|-------|
-| Email Service | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email) |
-| SMS | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms) |
-| Chat | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat) |
-| Call Automation | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-call-automation) |
-| Job Router | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide) |
-| Advance Messaging | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-advanced-messaging-whatsapp) |
-| Rooms | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-rooms) |
+| Email Service | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement#acs-email) |
+| SMS | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement#acs-sms) |
+| Chat | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement#acs-chat) |
+| Call Automation | 🟡 Breaking Change | [Breaking Change Guide](https://aka.ms/acs-retirement#acs-call-automation) |
+| Job Router | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement#acs-job-router) |
+| Advance Messaging | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement#acs-advanced-messaging-whatsapp) |
+| Rooms | 🔴 Retirement | [Retirement Guide](https://aka.ms/acs-retirement#acs-rooms) |
  
-All channels effective **July 31, 2028**. Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+Full guidance: [Retirement and breaking changes guide for Azure Communication Services](https://aka.ms/acs-retirement)
  
 ---
  
@@ -409,31 +330,39 @@ Copy the code shown, go to https://microsoft.com/devicelogin, and enter the code
 - Try extending the lookback period when prompted (up to 93 days maximum)
 - Some metrics may not be available if the resource is in a region that doesn't support Azure Monitor for that channel
  
-### Claude Code doesn't find the skills
-Make sure you opened Claude Code **inside the repository directory**:
-```bash
-cd acs-transition-agent
-claude
-```
- 
 ### GitHub Copilot doesn't trigger the skill automatically
 Point it directly to the skill file:
 ```
 Follow the instructions in .agent/skills/acs/0-acs-full-scan/SKILL.md and run the ACS assessment
 ```
- 
+
+### Running script result in a timeout after few minutes?
+The agent may automatically apply a timeout of approximately 2 minutes, especially when running a fast scan. If the scan does not complete within that time, it may fail with a timeout error. To avoid this, you can modify your prompt to explicitly allow a longer execution time or instruct the agent to use a persistent PowerShell session. This gives the scan additional time to complete and helps prevent timeout-related failures. Examples:
+```
+run fast scan and allow it to run for more than 2 minutes
+```
+```
+run fast scan in a persistent PowerShell process
+```
+
 ### Can't use an AI agent at all?
 As an alternative, a standalone PowerShell script is available at `scripts/powershell/acs-impact-assessment-tool.ps1`. It requires the PowerShell Az module (`Install-Module -Name Az`) and runs the assessment without an AI agent. See the script header for usage instructions.
- 
+Run fast scan command
+```
+.\scripts\powershell\acs-impact-assessment-tool.ps1 -SubscriptionId REPLACE_WITH_SUBSCRIPTION_ID
+ ```
+Run full scan command
+```
+.\scripts\powershell\acs-impact-assessment-tool.ps1 -SubscriptionId REPLACE_WITH_SUBSCRIPTION_ID -IncludeMetrics -LookbackDays 90
+ ```
 ---
  
 ## Support
  
 - **Questions or issues:** Open an issue in this repository
-- **ACS migration guidance:** https://aka.ms/acs-retirement-and-breaking-changes-guide
-- **Channel guides:** https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
+- **ACS migration guidance:** [Retirement and breaking changes guide for Azure Communication Services](https://aka.ms/acs-retirement)
  
 ---
  
-**Last Updated:** 2026-08-18
+**Last Updated:** 2026-09-21
  
