@@ -1,4 +1,4 @@
-# Azure Transition Agent — ACS Edition
+# ACS Resource Explorer
  
 **An AI agent-powered tool that scans Azure subscriptions, detects ACS resources, identifies channels with active usage, reports the last 90 days of usage data, and produces a prioritized migration report with per-channel guidance.**
  
@@ -364,5 +364,5 @@ Run full scan command
  
 ---
  
-**Last Updated:** 2026-09-21
+**Last Updated:** 2026-09-22
  
