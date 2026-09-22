@@ -1,6 +1,6 @@
 # ACS Migration Paths
 
-**Source:** https://aka.ms/acs-retirement-and-breaking-changes-guide
+**Source:** https://aka.ms/acs-retirement
 **Last Verified:** 2026-04-21
 **Update This File When:** Microsoft publishes updated migration guidance.
 
@@ -10,14 +10,14 @@
 
 | Service | Action Required | Replace With | Effort | Guide |
 |---------|----------------|-------------|--------|-------|
-| **ACS Email** | Migrate before 2028-07-31 | Evaluate Azure Marketplace alternatives (Exchange is NOT a replacement) | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
-| **ACS SMS** | Migrate before 2028-07-31; port numbers early | Azure Marketplace SMS providers; port via LOA | Low | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
-| **ACS Advanced Messaging (WhatsApp)** | Migrate before 2028-07-31 | Dynamics 365, Copilot Studio WhatsApp channels, or another BSP | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| **ACS Chat** | Migrate before 2028-07-31; export chat history | Microsoft Graph APIs + Microsoft Teams Chat | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
-| **ACS Chat for Teams Meeting Interop** | Migrate before 2028-07-31 | Microsoft Graph Chat APIs | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
-| **ACS Rooms** | Migrate before 2028-07-31 | Teams Meetings via Microsoft Graph API | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| **ACS Number Management (Direct Offer)** | Port numbers before 2028-07-31 | Teams Phone Extensibility (port via support ticket) or third-party provider | Low | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
-| **ACS Job Router** | Migrate before 2028-07-31 | Evaluate Azure Marketplace alternatives | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide |
+| **ACS Email** | Migrate before 2028-07-31 | Evaluate Azure Marketplace alternatives (Exchange is NOT a replacement) | Medium | https://aka.ms/acs-retirement#acs-email |
+| **ACS SMS** | Migrate before 2028-07-31; port numbers early | Azure Marketplace SMS providers; port via LOA | Low | https://aka.ms/acs-retirement#acs-sms |
+| **ACS Advanced Messaging (WhatsApp)** | Migrate before 2028-07-31 | Dynamics 365, Copilot Studio WhatsApp channels, or another BSP | Medium | https://aka.ms/acs-retirement |
+| **ACS Chat** | Migrate before 2028-07-31; export chat history | Microsoft Graph APIs + Microsoft Teams Chat | Medium | https://aka.ms/acs-retirement#acs-chat |
+| **ACS Chat for Teams Meeting Interop** | Migrate before 2028-07-31 | Microsoft Graph Chat APIs | Medium | https://aka.ms/acs-retirement#acs-chat |
+| **ACS Rooms** | Migrate before 2028-07-31 | Teams Meetings via Microsoft Graph API | Medium | https://aka.ms/acs-retirement |
+| **ACS Number Management (Direct Offer)** | Port numbers before 2028-07-31 | Teams Phone Extensibility (port via support ticket) or third-party provider | Low | https://aka.ms/acs-retirement#acs-number-management-direct-offer |
+| **ACS Job Router** | Migrate before 2028-07-31 | Evaluate Azure Marketplace alternatives | Medium | https://aka.ms/acs-retirement |
 
 ---
 
@@ -25,14 +25,14 @@
 
 | Service | Action Required | Integrate With | Effort | Guide |
 |---------|----------------|---------------|--------|-------|
-| **ACS Voice/Video Calling SDK** | Integrate with Teams before 2028-07-31 | Teams Phone Extensibility, Teams Meeting Interop, or Teams Click-2-Call | High | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| **ACS Call Diagnostics** | Integrate with Teams before 2028-07-31 | Teams-aligned calling service | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| **ACS Call Automation** | Integrate with Teams before 2028-07-31 | Teams Phone Extensibility (recommended) or Teams Meeting Interop | High | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| **ACS Audio Streaming** | Integrate with Teams before 2028-07-31 | Teams-aligned calling service | High | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| **ACS Call Recording** | Integrate with Teams before 2028-07-31; export recordings | Teams-aligned calling service | Medium | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| **ACS Closed Captions** | Integrate with Teams before 2028-07-31 | Teams-aligned calling service | Low | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| **ACS Web UI Library SDK** | Transition before 2028-07-31 or fork for ongoing maintenance | Teams-native experiences or custom UI with Teams extensibility | High | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| **ACS Mobile UI Library SDK** | Transition before 2028-07-31 or fork for ongoing maintenance | Teams-native experiences or custom UI with Teams extensibility | High | https://aka.ms/acs-retirement-and-breaking-changes-guide |
+| **ACS Voice/Video Calling SDK** | Integrate with Teams before 2028-07-31 | Teams Phone Extensibility, Teams Meeting Interop, or Teams Click-2-Call | High | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| **ACS Call Diagnostics** | Integrate with Teams before 2028-07-31 | Teams-aligned calling service | Medium | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| **ACS Call Automation** | Integrate with Teams before 2028-07-31 | Teams Phone Extensibility (recommended) or Teams Meeting Interop | High | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| **ACS Audio Streaming** | Integrate with Teams before 2028-07-31 | Teams-aligned calling service | High | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| **ACS Call Recording** | Integrate with Teams before 2028-07-31; export recordings | Teams-aligned calling service | Medium | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| **ACS Closed Captions** | Integrate with Teams before 2028-07-31 | Teams-aligned calling service | Low | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| **ACS Web UI Library SDK** | Transition before 2028-07-31 or fork for ongoing maintenance | Teams-native experiences or custom UI with Teams extensibility | High | https://aka.ms/acs-retirement |
+| **ACS Mobile UI Library SDK** | Transition before 2028-07-31 or fork for ongoing maintenance | Teams-native experiences or custom UI with Teams extensibility | High | https://aka.ms/acs-retirement |
 
 ---
 
@@ -91,10 +91,10 @@ To continue receiving support after July 31, 2028, breaking change services must
 
 | Resource | URL |
 |----------|-----|
-| Retirement & Breaking Changes (comprehensive) | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| Email Retirement Guide | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
-| SMS Retirement Guide | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
-| Chat Retirement Guide | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
-| Calling SDK Breaking Change Guide | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| Phone Numbers Retirement Guide | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
+| Retirement & Breaking Changes (comprehensive) | https://aka.ms/acs-retirement |
+| Email Retirement Guide | https://aka.ms/acs-retirement#acs-email |
+| SMS Retirement Guide | https://aka.ms/acs-retirement#acs-sms |
+| Chat Retirement Guide | https://aka.ms/acs-retirement#acs-chat |
+| Calling SDK Breaking Change Guide | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| Phone Numbers Retirement Guide | https://aka.ms/acs-retirement#acs-number-management-direct-offer |
 | Dynamics 365 customers | https://aka.ms/D365ACSDeprecationGuide |

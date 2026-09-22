@@ -26,16 +26,16 @@ Examples:
 
 | Channel | Status Type | Guide |
 |---------|------------|-------|
-| Email Service | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
-| SMS API | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
-| Chat SDK | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
-| Call Automation API | 🟡 Breaking Change | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| Job Router API | 🟡 Breaking Change | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| Advance Messaging API | 🟡 Breaking Change | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| Rooms API | 🟡 Breaking Change | https://aka.ms/acs-retirement-and-breaking-changes-guide |
-| Phone Numbers SDK | 🔴 Retirement | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
+| Email Service | 🔴 Retirement | https://aka.ms/acs-retirement#acs-email |
+| SMS API | 🔴 Retirement | https://aka.ms/acs-retirement#acs-sms |
+| Chat SDK | 🔴 Retirement | https://aka.ms/acs-retirement#acs-chat |
+| Call Automation API | 🟡 Breaking Change | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| Job Router API | 🟡 Breaking Change | https://aka.ms/acs-retirement |
+| Advance Messaging API | 🟡 Breaking Change | https://aka.ms/acs-retirement |
+| Rooms API | 🟡 Breaking Change | https://aka.ms/acs-retirement |
+| Phone Numbers SDK | 🔴 Retirement | https://aka.ms/acs-retirement#acs-number-management-direct-offer |
 
-> Full guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+> Full guide: https://aka.ms/acs-retirement
 
 ## Workflow
 
@@ -66,16 +66,16 @@ Examples:
    └──────────────────┴──────────────────────────────┴───────────────┘
 
    Channel Totals Across All Resources:
-     📧 Email:         [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
-     📱 SMS:           [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
-     💬 Chat:          [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
-   📞 Call Auto:     [N] resource(s) — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
-   🧭 Job Router:    [N] resource(s) — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-   📨 Advance Msg:   [N] resource(s) — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-   🏠 Rooms:         [N] resource(s) — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-     ☎️ Phone Numbers: [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
+     📧 Email:         [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement#acs-email
+     📱 SMS:           [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement#acs-sms
+     💬 Chat:          [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement#acs-chat
+   📞 Call Auto:     [N] resource(s) — Breaking Change Guide: https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk
+   🧭 Job Router:    [N] resource(s) — Guide: https://aka.ms/acs-retirement
+   📨 Advance Msg:   [N] resource(s) — Guide: https://aka.ms/acs-retirement
+   🏠 Rooms:         [N] resource(s) — Guide: https://aka.ms/acs-retirement
+     ☎️ Phone Numbers: [N] resource(s) — Retirement Guide: https://aka.ms/acs-retirement#acs-number-management-direct-offer
 
-   📘 Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+   📘 Full Guide: https://aka.ms/acs-retirement
    ```
 
 ### 4) **Save Channel Analysis to Session State**
