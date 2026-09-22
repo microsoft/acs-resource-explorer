@@ -111,7 +111,7 @@ After all steps complete:
 
 💡 Next Steps:
 1. Review migration guides for each detected channel
-2. Visit https://aka.ms/acs-retirement-and-breaking-changes-guide
+2. Visit https://aka.ms/acs-retirement
 ```
 
 ## Output
@@ -132,15 +132,15 @@ Reference data used by this workflow lives in `docs/knowledge/`. Update these fi
 | [acs-channel-status.md](../../../../docs/knowledge/acs-channel-status.md) | Full Breaking Change vs Retirement detail |
 
 ## ACS Channel Guides
-- 📧 Email — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
-- 📱 SMS — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
-- 💬 Chat — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
-- 📞 Call Automation — Breaking Change Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
-- 🧭 Job Router — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-- 📨 Advance Messaging — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-- 🏠 Rooms — Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
-- ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
-- All channels — Full Guide: https://aka.ms/acs-retirement-and-breaking-changes-guide
+- 📧 Email — Retirement Guide: https://aka.ms/acs-retirement#acs-email
+- 📱 SMS — Retirement Guide: https://aka.ms/acs-retirement#acs-sms
+- 💬 Chat — Retirement Guide: https://aka.ms/acs-retirement#acs-chat
+- 📞 Call Automation — Breaking Change Guide: https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk
+- 🧭 Job Router — Guide: https://aka.ms/acs-retirement
+- 📨 Advance Messaging — Guide: https://aka.ms/acs-retirement
+- 🏠 Rooms — Guide: https://aka.ms/acs-retirement
+- ☎️ Phone Numbers — Retirement Guide: https://aka.ms/acs-retirement#acs-number-management-direct-offer
+- All channels — Full Guide: https://aka.ms/acs-retirement
 
 ## Related Skills (Individual Steps)
 Run these individually if you need to re-run a specific step:

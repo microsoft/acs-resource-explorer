@@ -46,9 +46,9 @@ Reports are saved to `./exports/` in CSV, Markdown, and JSON formats.
 
 ## Migration Guides
 
-- Email: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
-- SMS: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
-- Chat: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
-- Calling: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
-- Phone Numbers: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
-- Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement-and-breaking-changes-guide
+- Email: https://aka.ms/acs-retirement#acs-email
+- SMS: https://aka.ms/acs-retirement#acs-sms
+- Chat: https://aka.ms/acs-retirement#acs-chat
+- Calling: https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk
+- Phone Numbers: https://aka.ms/acs-retirement#acs-number-management-direct-offer
+- Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement

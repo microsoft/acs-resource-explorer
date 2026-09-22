@@ -1,6 +1,6 @@
 # ACS Retirement Dates
 
-**Source:** https://aka.ms/acs-retirement-and-breaking-changes-guide
+**Source:** https://aka.ms/acs-retirement
 **Planned Announcement Date:** 2026-07-22
 **Effective / Retirement Date:** 2028-07-31
 **Last Verified:** 2026-04-21
@@ -68,10 +68,10 @@
 
 ## Key Links
 
-- Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement-and-breaking-changes-guide
-- Email: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email
-- SMS: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms
-- Chat: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat
-- Calling (Breaking Change): https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk
-- Phone Numbers: https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer
+- Retirement & Breaking Changes (comprehensive): https://aka.ms/acs-retirement
+- Email: https://aka.ms/acs-retirement#acs-email
+- SMS: https://aka.ms/acs-retirement#acs-sms
+- Chat: https://aka.ms/acs-retirement#acs-chat
+- Calling (Breaking Change): https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk
+- Phone Numbers: https://aka.ms/acs-retirement#acs-number-management-direct-offer
 - Dynamics 365 customers: https://aka.ms/D365ACSDeprecationGuide

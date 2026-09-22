@@ -507,4 +507,4 @@ Write-Host "  1. Review the CSV report: $OutputPath" -ForegroundColor White
 Write-Host "  2. Prioritize resources with 'Critical' severity" -ForegroundColor White
 Write-Host "  3. Review migration guides for each detected channel" -ForegroundColor White
 Write-Host "  4. Plan migration timeline based on retirement dates" -ForegroundColor White
-Write-Host "`nFor migration guides, visit: https://aka.ms/acs-retirement-and-breaking-changes-guide" -ForegroundColor Cyan
+Write-Host "`nFor migration guides, visit: https://aka.ms/acs-retirement" -ForegroundColor Cyan

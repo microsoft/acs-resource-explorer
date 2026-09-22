@@ -3,7 +3,7 @@
 Migration guidance for retiring Azure Communication Services (ACS) channels.
 
 **Retirement & Breaking Changes (comprehensive reference):**
-https://aka.ms/acs-retirement-and-breaking-changes-guide
+https://aka.ms/acs-retirement
 
 ---
 
@@ -11,11 +11,11 @@ https://aka.ms/acs-retirement-and-breaking-changes-guide
 
 | Channel | Guide |
 |---------|-------|
-| Email Service | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-email |
-| SMS API | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-sms |
-| Chat SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-chat |
-| Calling SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-voicevideo-calling-sdk |
-| Phone Numbers SDK | https://aka.ms/acs-retirement-and-breaking-changes-guide#acs-number-management-direct-offer |
+| Email Service | https://aka.ms/acs-retirement#acs-email |
+| SMS API | https://aka.ms/acs-retirement#acs-sms |
+| Chat SDK | https://aka.ms/acs-retirement#acs-chat |
+| Calling SDK | https://aka.ms/acs-retirement#acs-voicevideo-calling-sdk |
+| Phone Numbers SDK | https://aka.ms/acs-retirement#acs-number-management-direct-offer |
 
 ---
 
