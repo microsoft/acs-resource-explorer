@@ -178,7 +178,7 @@ Make sure you've opened the project folder in VS Code (`code acs-transition-agen
    |------|-----------|
    | `Run full scan  ` | Will run full scan including Email, Phone numbers, and metrics|
    | `Run fast scan `| Will run fast scan including Email and Phone numbers only|
-   | `Run an ACS deprecation scan `| Will be asking you if you want to run full or fast scan|
+   | `Scan my usage`| Will be asking you if you want to run full or fast scan|
 ---
  
 ### Example Output
@@ -248,9 +248,9 @@ After the scan completes, your reports are saved in the `exports/` folder:
  
 | File | Format | Best for |
 |------|--------|----------|
-| `ACS_Impact_Assessment_Full_v1.0.0_yyyyMMddHHmmss.csv` | CSV | Opening in Excel, filtering and sorting |
-| `ACS_Impact_Assessment_Full_v1.0.0_yyyyMMddHHmmss.md` | Markdown | Sharing with your team |
-| `ACS_Impact_Assessment_Full_v1.0.0_yyyyMMddHHmmss.json` | JSON | Automated processing |
+| `ACS_ResourceExplorer_Full_v{ToolVersion}_yyyyMMddHHmmss.csv` | CSV | Opening in Excel, filtering and sorting |
+| `ACS_ResourceExplorer_Full_v{ToolVersion}_yyyyMMddHHmmss.md` | Markdown | Sharing with your team |
+| `ACS_ResourceExplorer_Full_v{ToolVersion}_yyyyMMddHHmmss.json` | JSON | Automated processing |
  
 **To open the CSV in Excel:**
 1. Open File Explorer and navigate to the `exports/` folder
