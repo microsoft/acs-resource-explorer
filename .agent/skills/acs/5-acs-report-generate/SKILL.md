@@ -19,13 +19,23 @@ Examples:
 
 ## Default File Naming
 ```
-{Timestamp}_ACS_Impact_Assessment.{extension}
+ACS_ResourceExplorer_{Fast|Full}_v{ToolVersion}_{UtcTimestamp}.{extension}
 
 Examples:
-  2026-02-25_ACS_Impact_Assessment.csv
-  2026-02-25_ACS_Impact_Assessment.md
-  2026-02-25_ACS_Impact_Assessment.json
+  ACS_ResourceExplorer_Fast_v{ToolVersion}_20260923065155.csv
+  ACS_ResourceExplorer_Full_v{ToolVersion}_20260923065155.md
+  ACS_ResourceExplorer_Full_v{ToolVersion}_20260923065155.json
 ```
+
+Filename components:
+- `Fast` — resource-based channel detection was used
+- `Full` — Azure Monitor metrics-based detection was used
+- `v` — literal version prefix
+- `ToolVersion` — semantic version read from the repository-root `VERSION` file
+- `UtcTimestamp` — report generation start time in UTC using `yyyyMMddHHmmss`
+
+Capture the UTC timestamp once at the start of report generation and reuse the same
+base filename for every selected output format.
 
 Default output location: `./exports/`
 
@@ -49,6 +59,13 @@ TotalChannelsImpacted
 ## Workflow
 
 ### 0) **Load Knowledge References**
+   Read the repository-root `VERSION` file before generating the report:
+   - Trim surrounding whitespace and use the resulting value as `ToolVersion`
+   - Require a semantic version in `MAJOR.MINOR.PATCH` format, optionally with a
+     prerelease or build suffix
+   - Stop and report an explicit error if the file is missing, unreadable, empty,
+     or contains an invalid version
+
    Read the following knowledge files before generating the report:
    - Read `docs/knowledge/acs-retirement-dates.md` — channel status types and effective dates for report headers
    - Read `docs/knowledge/acs-migration-paths.md` — migration paths and guide links for per-resource recommendations
@@ -75,7 +92,13 @@ TotalChannelsImpacted
      4. All formats
      ```
    - Prompt for output directory (default: `./exports/`)
-   - Prompt for custom filename prefix (default: timestamp + `ACS_Impact_Assessment`)
+   - Determine the scan type from the completed detection method:
+     - Resource-based detection: `Fast`
+     - Azure Monitor metrics-based detection: `Full`
+   - Generate the filename using:
+     `ACS_ResourceExplorer_{Fast|Full}_v{ToolVersion}_{UtcTimestamp}.{extension}`
+   - Capture `UtcTimestamp` once in UTC using `yyyyMMddHHmmss` and reuse it for
+     CSV, Markdown, and JSON outputs generated in the same run
 
 ### 3) **Create Output Directory**
    - Check if `./exports/` exists; create if needed
@@ -161,7 +184,7 @@ TotalChannelsImpacted
          "analysisType": "ACS Deprecation Impact Assessment",
          "detectionMethod": "Azure Monitor Metrics",
          "lookbackPeriodDays": 90,
-         "toolVersion": "1.0"
+         "toolVersion": "{ToolVersion}"
        },
        "summary": {
          "totalACSResources": 2,
@@ -212,9 +235,9 @@ TotalChannelsImpacted
 ### 8) **Display Report Access Information**
    ```
    📁 Reports Generated:
-   ✅ CSV:      ./exports/2026-02-25_ACS_Impact_Assessment.csv
-   ✅ Markdown: ./exports/2026-02-25_ACS_Impact_Assessment.md
-   ✅ JSON:     ./exports/2026-02-25_ACS_Impact_Assessment.json
+   ✅ CSV:      ./exports/ACS_ResourceExplorer_Full_v{ToolVersion}_20260923065155.csv
+   ✅ Markdown: ./exports/ACS_ResourceExplorer_Full_v{ToolVersion}_20260923065155.md
+   ✅ JSON:     ./exports/ACS_ResourceExplorer_Full_v{ToolVersion}_20260923065155.json
    ```
 
 ## Output

@@ -37,7 +37,7 @@
 
 .NOTES
     Requires: Az PowerShell module (Install-Module -Name Az)
-    Version: 1.0
+    Version: See the repository-root VERSION file
     Last Updated: January 2026
 #>
 
@@ -57,12 +57,31 @@ param(
     [int]$LookbackDays = 90
 )
 
-$toolVersion = "1.0.0"
+$repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path -Path $PSScriptRoot -ChildPath "..\.."))
+$versionFilePath = Join-Path -Path $repositoryRoot -ChildPath "VERSION"
+
+if (-not (Test-Path -LiteralPath $versionFilePath -PathType Leaf)) {
+    Write-Error "Tool version file was not found: $versionFilePath"
+    exit 1
+}
+
+try {
+    $toolVersion = (Get-Content -LiteralPath $versionFilePath -Raw -ErrorAction Stop).Trim()
+} catch {
+    Write-Error "Failed to read the tool version from '$versionFilePath': $_"
+    exit 1
+}
+
+if ($toolVersion -notmatch '^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$') {
+    Write-Error "Tool version '$toolVersion' in '$versionFilePath' is not a valid semantic version."
+    exit 1
+}
+
 $scanType = if ($IncludeMetrics) { "Full" } else { "Fast" }
 $runTimestampUtc = [DateTime]::UtcNow.ToString("yyyyMMddHHmmss", [Globalization.CultureInfo]::InvariantCulture)
 
 if ([string]::IsNullOrWhiteSpace($OutputPath)) {
-    $OutputPath = ".\exports\ACS_Impact_Assessment.csv"
+    $OutputPath = ".\exports\ACS_ResourceExplorer.csv"
 }
 
 $outputDirectory = Split-Path -Path $OutputPath -Parent
@@ -73,7 +92,8 @@ $outputBaseName = if ($outputExtension) {
 } else {
     $outputFileName
 }
-$outputBaseName = $outputBaseName -replace '_v\d+(?:\.\d+)*(?:_\d{14})?$', ''
+$outputBaseName = $outputBaseName -replace '_(?:Fast|Full)_v?\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?_\d{14}$', ''
+$outputBaseName = $outputBaseName -replace '_v?\d+(?:\.\d+)*(?:_\d{14})?$', ''
 $outputBaseName = $outputBaseName -replace '_(?:Fast|Full)$', ''
 $versionedFileName = "${outputBaseName}_${scanType}_v${toolVersion}_${runTimestampUtc}$outputExtension"
 
